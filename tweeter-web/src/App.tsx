@@ -12,12 +12,12 @@ import Login from "./components/authentication/login/Login";
 import Register from "./components/authentication/register/Register";
 import MainLayout from "./components/mainLayout/MainLayout";
 import Toaster from "./components/toaster/Toaster";
-import FeedScroller from "./components/mainLayout/FeedScroller";
-import StoryScroller from "./components/mainLayout/StoryScroller";
 import UserItemScroller from "./components/mainLayout/UserItemScroller";
 import { User } from "tweeter-shared/dist/model/domain/User";
 import { FakeData } from "tweeter-shared/dist/util/FakeData";
 import { AuthToken } from "tweeter-shared/dist/model/domain/AuthToken";
+import { Status } from "tweeter-shared/dist/model/domain/Status";
+import StatusItemScroller from "./components/mainLayout/StatusItemScroller";
 
 const App = () => {
   const { currentUser, authToken } = useContext(UserInfoContext);
@@ -63,14 +63,45 @@ const AuthenticatedRoutes = () => {
     return FakeData.instance.getPageOfUsers(lastUser, pageSize, userAlias);
   };
 
+  const loadMoreStoryItems = async (
+    authToken: AuthToken,
+    userAlias: string,
+    pageSize: number,
+    lastItem: Status | null
+  ): Promise<[Status[], boolean]> => {
+    // TODO: Replace with the result of calling server
+    return FakeData.instance.getPageOfStatuses(lastItem, pageSize);
+  };
+
+  const loadMoreFeedItems = async (
+    authToken: AuthToken,
+    userAlias: string,
+    pageSize: number,
+    lastItem: Status | null
+  ): Promise<[Status[], boolean]> => {
+    // TODO: Replace with the result of calling server
+    return FakeData.instance.getPageOfStatuses(lastItem, pageSize);
+  };
+
   return (
     <Routes>
       <Route element={<MainLayout />}>
         <Route index element={<Navigate to={`/feed/${displayedUser!.alias}`} />} />
-        <Route path="feed/:displayedUser" element={<FeedScroller />} />
-        <Route path="story/:displayedUser" element={<StoryScroller />} />
+        <Route path="feed/:displayedUser" element={<StatusItemScroller 
+          key={`feed-${displayedUser!.alias}`}
+          itemDescription="feed" 
+          featureUrl="/feed" 
+          loadMorePosts={loadMoreFeedItems} 
+        />} />
+        <Route path="story/:displayedUser" element={<StatusItemScroller
+          key={`story-${displayedUser!.alias}`}
+          itemDescription="story" 
+          featureUrl="/story" 
+          loadMorePosts={loadMoreStoryItems} 
+        />} />
         <Route path="followees/:displayedUser" element={
-          <UserItemScroller 
+          <UserItemScroller
+            key={`followees-${displayedUser!.alias}`}
             itemDescription="followees" 
             featureUrl="/followees" 
             loadMoreUsers={loadMoreFollowers} 
@@ -78,6 +109,7 @@ const AuthenticatedRoutes = () => {
           />
         <Route path="followers/:displayedUser" element={
           <UserItemScroller 
+            key={`followers-${displayedUser!.alias}`}
             itemDescription="followers" 
             featureUrl="/followers" 
             loadMoreUsers={loadMoreFollowees} 
