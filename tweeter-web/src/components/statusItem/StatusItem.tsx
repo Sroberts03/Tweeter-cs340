@@ -36,7 +36,7 @@ export default function StatusItem({ item, featurePath, onClick }: StatusItemPro
                     </h2>
                     {item.formattedDate}
                     <br />
-                    <Post status={item} featurePath="/story" />
+                    <Post status={item} featurePath={featurePath} />
                     </div>
                 </div>
             </div>
