@@ -92,7 +92,7 @@ const StatusItemScroller = (props: StoryScrollerProps) => {
       if (toUser) {
         if (!toUser.equals(displayedUser!)) {
           setDisplayedUser(toUser);
-          navigate(`/${props.featureUrl}/${toUser.alias}`);
+          navigate(`${props.featureUrl}/${toUser.alias}`);
         }
       }
     } catch (error) {
