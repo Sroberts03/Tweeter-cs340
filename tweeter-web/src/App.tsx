@@ -1,6 +1,5 @@
 import "./App.css";
 import { useContext } from "react";
-import { UserInfoContext } from "./components/userInfo/UserInfoContexts";
 import {
   BrowserRouter,
   Navigate,
@@ -18,9 +17,10 @@ import { FakeData } from "tweeter-shared/dist/util/FakeData";
 import { AuthToken } from "tweeter-shared/dist/model/domain/AuthToken";
 import { Status } from "tweeter-shared/dist/model/domain/Status";
 import StatusItemScroller from "./components/mainLayout/StatusItemScroller";
+import { useUserInfo } from "./components/userInfo/userHooks";
 
 const App = () => {
-  const { currentUser, authToken } = useContext(UserInfoContext);
+  const { currentUser, authToken } = useUserInfo();
 
   const isAuthenticated = (): boolean => {
     return !!currentUser && !!authToken;
@@ -41,7 +41,7 @@ const App = () => {
 };
 
 const AuthenticatedRoutes = () => {
-  const { displayedUser } = useContext(UserInfoContext);
+  const { displayedUser } = useUserInfo();
 
   const loadMoreFollowers = async (
     authToken: AuthToken,
