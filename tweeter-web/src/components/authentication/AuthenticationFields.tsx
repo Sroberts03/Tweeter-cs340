@@ -2,6 +2,8 @@ interface AuthenticationFieldsProps {
     onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => void;
     onAliasChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     onPasswordChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onFirstNameChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onLastNameChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     isRegister: boolean;
 }
 
@@ -22,7 +24,7 @@ export default function AuthenticationFields(props: AuthenticationFieldsProps) {
             type: "text",
             placeholder: "First Name",
             label: "First Name",
-            onChange: props.onAliasChange,
+            onChange: props.onFirstNameChange!,
             onKeyDown: props.onKeyDown,
             forRegisterOnly: true
         },
@@ -31,7 +33,7 @@ export default function AuthenticationFields(props: AuthenticationFieldsProps) {
             type: "text",
             placeholder: "Last Name",
             label: "Last Name",
-            onChange: props.onAliasChange,
+            onChange: props.onLastNameChange!,
             onKeyDown: props.onKeyDown,
             forRegisterOnly: true
         },

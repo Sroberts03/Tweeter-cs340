@@ -132,6 +132,8 @@ const Register = () => {
       <>
         <AuthenticationFields 
           onKeyDown={registerOnEnter}
+          onFirstNameChange={(event) => setFirstName(event.target.value)}
+          onLastNameChange={(event) => setLastName(event.target.value)}
           onAliasChange={(event) => setAlias(event.target.value)}
           onPasswordChange={(event) => setPassword(event.target.value)}
           isRegister={true}

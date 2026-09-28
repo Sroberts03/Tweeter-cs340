@@ -72,7 +72,7 @@ const Login = (props: Props) => {
     return (
       <>
         <AuthenticationFields 
-          onKeyDown={loginOnEnter} 
+          onKeyDown={loginOnEnter}
           onAliasChange={(event) => setAlias(event.target.value)} 
           onPasswordChange={(event) => setPassword(event.target.value)} 
           isRegister={false}
