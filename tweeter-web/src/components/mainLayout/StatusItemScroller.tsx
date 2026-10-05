@@ -22,17 +22,17 @@ const StatusItemScroller = (props: StoryScrollerProps) => {
   const { displayedUser: displayedUserAliasParam } = useParams();
 
   const listener: StatusItemView = {
-      addItems: (newItems: Status[]) => {
-        setItems((previousItems) => [...previousItems, ...newItems]);
-      },
-      displayErrorMessage: (message: string) => {
-        displayErrorMessage(message);
-      },
-    }
-    const presenterRef = useRef<StatusItemPresenter | null>(null);
-    if (!presenterRef.current) {
-      presenterRef.current = props.presenterFactory(listener);
-    }
+    addItems: (newItems: Status[]) => {
+      setItems((previousItems) => [...previousItems, ...newItems]);
+    },
+    displayErrorMessage: (message: string) => {
+      displayErrorMessage(message);
+    },
+  };
+  const presenterRef = useRef<StatusItemPresenter | null>(null);
+  if (!presenterRef.current) {
+    presenterRef.current = props.presenterFactory(listener);
+  };
 
   // Update the displayed user context variable whenever the displayedUser url parameter changes. This allows browser forward and back buttons to work correctly.
   useEffect(() => {
