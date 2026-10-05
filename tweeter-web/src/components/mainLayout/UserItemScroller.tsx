@@ -66,7 +66,7 @@ const UserItemScroller = (props: UserItemScrollerProps) => {
       <InfiniteScroll
         className="pr-0 mr-0"
         dataLength={items.length}
-        next={() => loadMoreItems()}
+        next={loadMoreItems}
         hasMore={presenterRef.current!.hasMoreItems}
         loader={<h4>Loading...</h4>}
       >

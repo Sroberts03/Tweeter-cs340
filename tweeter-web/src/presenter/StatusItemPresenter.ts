@@ -1,23 +1,23 @@
-import { User, AuthToken } from "tweeter-shared";
+import { AuthToken, Status, User } from "tweeter-shared";
 import { UserService } from "../model.service/UserService";
 
-export interface UserItemView {
-    addItems: (newItems: User[]) => void;
+export interface StatusItemView {
+    addItems: (newItems: Status[]) => void;
     displayErrorMessage: (message: string) => void;
 }
 
-export abstract class UserItemPresenter {
-    private _view: UserItemView;
+export abstract class StatusItemPresenter {
+    private _view: StatusItemView;
     private _hasMoreItems = true;
-    private _lastItem: User | null = null;
+    private _lastItem: Status | null = null;
     private userService: UserService;
 
-    protected constructor(view: UserItemView) {
+    protected constructor(view: StatusItemView) {
         this._view = view;
         this.userService = new UserService();
     }
 
-    protected get view(): UserItemView {
+    protected get view(): StatusItemView {
         return this._view;
     }
 
@@ -29,17 +29,12 @@ export abstract class UserItemPresenter {
         this._hasMoreItems = value;
     }
 
-    protected get lastItem(): User | null {
+    protected get lastItem(): Status | null {
         return this._lastItem;
     }
 
-    protected set lastItem(value: User | null) {
+    protected set lastItem(value: Status | null) {
         this._lastItem = value;
-    }
-
-    public reset() {
-        this._hasMoreItems = true;
-        this._lastItem = null;
     }
 
     public async getUser(
@@ -49,5 +44,10 @@ export abstract class UserItemPresenter {
         return this.userService.getUser(authToken, alias);
     };
 
-    public abstract loadMoreItems (authToken: AuthToken, userAlias: string): Promise<void>;
+    public reset() {
+        this._hasMoreItems = true;
+        this._lastItem = null;
+    }
+
+    public abstract loadMoreItems(authToken: AuthToken, userAlias: string): void;
 }
