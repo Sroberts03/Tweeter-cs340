@@ -1,8 +1,8 @@
 import "./Toaster.css";
-import { useEffect } from "react";
-import { useContext } from "react";
+import { useEffect, useRef } from "react";
 import { Toast } from "react-bootstrap";
 import { useMessageActions, useMessageList } from "./MessageHooks";
+import { ToasterPresenter, ToasterView } from "../../presenter/ToasterPresenter";
 
 interface Props {
   position: string;
@@ -11,6 +11,16 @@ interface Props {
 const Toaster = ({ position }: Props) => {
   const messageList = useMessageList();
   const { deleteMessage } = useMessageActions();
+
+  const listener: ToasterView = {
+    deleteMessage: (messageId: string) => {
+      deleteMessage(messageId);
+    }
+  };
+  const presenterRef = useRef<ToasterPresenter | null>(null);
+  if (!presenterRef.current) {
+    presenterRef.current = new ToasterPresenter(listener);
+  }
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -26,16 +36,7 @@ const Toaster = ({ position }: Props) => {
   }, [messageList]);
 
   const deleteExpiredToasts = () => {
-    const now = Date.now();
-
-    for (let message of messageList) {
-      if (
-        message.expirationMillisecond > 0 &&
-        message.expirationMillisecond < now
-      ) {
-        deleteMessage(message.id);
-      }
-    }
+    presenterRef.current!.deleteExpiredToasts(messageList);
   };
 
   return (
