@@ -53,7 +53,7 @@ const Login = (props: Props) => {
   };
 
   const loginOnEnter = (event: React.KeyboardEvent<HTMLElement>) => {
-    presenterRef.current!.loginOnEnter(event, alias, password, rememberMe, props.originalUrl);
+    presenterRef.current!.loginOnEnter(event.key, alias, password, rememberMe, props.originalUrl);
   };
 
   const inputFieldFactory = () => {

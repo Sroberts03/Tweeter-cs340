@@ -14,7 +14,7 @@ export class StoryPresenter extends StatusItemPresenter {
 
     public async loadMoreItems (authToken: AuthToken, userAlias: string): Promise<void> {
       try {
-        const [newItems, hasMore] = await this.statusService.loadMoreFeedItems(
+        const [newItems, hasMore] = await this.statusService.loadMoreStoryItems(
           authToken!,
           userAlias,
           PAGE_SIZE,
@@ -25,7 +25,7 @@ export class StoryPresenter extends StatusItemPresenter {
         this.lastItem = newItems.length > 0 ? newItems[newItems.length - 1] : null;
         this.view.addItems(newItems);
       } catch (error) {
-        this.view.displayErrorMessage(`Failed to load feed items because of exception: ${error}`);
+        this.view.displayErrorMessage(`Failed to load story items because of exception: ${error}`);
       }
     };
 }

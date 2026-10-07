@@ -1,7 +1,6 @@
 import { AuthToken, User } from "tweeter-shared";
 import { AuthService } from "../models.service/AuthService";
 import { Buffer } from "buffer";
-import { ChangeEvent } from "react";
 
 export interface RegisterView {
   setIsLoading: (isLoading: boolean) => void;
@@ -95,13 +94,8 @@ export class RegisterPresenter {
     return file.name.split(".").pop();
   }
 
-  public handleFileChange(event: ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    this.handleImageFile(file);
-  };
-
   public registerOnEnter (
-    event: React.KeyboardEvent<HTMLElement>,
+    key: string,
     firstName: string,
     lastName: string,
     alias: string,
@@ -111,7 +105,7 @@ export class RegisterPresenter {
     imageFileExtension: string,
     rememberMe: boolean
   ) {
-    if (event.key == "Enter" && !this.checkSubmitButtonStatus(
+    if (key == "Enter" && !this.checkSubmitButtonStatus(
       firstName,
       lastName,
       alias,

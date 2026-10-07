@@ -19,13 +19,10 @@ export class PostStatusPresenter {
   }
 
   public async submitPost(
-    event: React.MouseEvent,
     authToken: AuthToken,
     currentUser: User | null,
     post: string,
   ): Promise<void> {
-    event.preventDefault();
-
     var postingStatusToastId = "";
 
     try {
@@ -51,8 +48,7 @@ export class PostStatusPresenter {
     }
   }
 
-  public clearPost(event: React.MouseEvent) {
-    event.preventDefault();
+  public clearPost() {
     this._view.setPost("");
   }
 

@@ -8,7 +8,7 @@ import { AuthToken, User } from "tweeter-shared";
 import AuthenticationFields from "../AuthenticationFields";
 import { useMessageActions } from "../../../../hooks/MessageHooks";
 import { useUserInfoActions } from "../../../social/hooks/userHooks";
-import { RegisterPresenter } from "../../presenters/RegisterPresenter";
+import { RegisterPresenter, RegisterView } from "../../presenters/RegisterPresenter";
 
 const Register = () => {
   const [firstName, setFirstName] = useState("");
@@ -25,7 +25,7 @@ const Register = () => {
   const { updateUserInfo } = useUserInfoActions();
   const { displayErrorMessage } = useMessageActions();
 
-  const listener = {
+  const listener: RegisterView = {
     displayErrorMessage: (message: string): void => {
       displayErrorMessage(message);
     },
@@ -60,7 +60,7 @@ const Register = () => {
 
   const registerOnEnter = (event: React.KeyboardEvent<HTMLElement>) => {
     presenterRef.current!.registerOnEnter(
-      event,
+      event.key,
       firstName,
       lastName,
       alias,
@@ -73,7 +73,7 @@ const Register = () => {
   };
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    presenterRef.current!.handleFileChange(event);
+    presenterRef.current!.handleImageFile(event.target.files?.[0]);
   };
 
   const doRegister = async () => {

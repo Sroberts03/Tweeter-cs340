@@ -33,8 +33,8 @@ const PostStatus = () => {
   }
 
   const submitPost = async (event: React.MouseEvent) => {
+    event.preventDefault();
     await postStatusPresenter.current!.submitPost(
-      event,
       authToken!,
       currentUser!,
       post
@@ -79,7 +79,10 @@ const PostStatus = () => {
           className="btn btn-md btn-secondary"
           type="button"
           disabled={postStatusPresenter.current!.checkButtonStatus(post, authToken, currentUser, isLoading) || false}
-          onClick={postStatusPresenter.current!.clearPost}
+          onClick={(event) => {
+            event.preventDefault();
+            postStatusPresenter.current!.clearPost();
+          }}
         >
           Clear
         </button>

@@ -47,13 +47,13 @@ export class LoginPresenter {
     };
 
     public loginOnEnter (
-        event: React.KeyboardEvent<HTMLElement>, 
-        alias: string, 
-        password: string, 
-        rememberMe: boolean, 
+        key: string,
+        alias: string,
+        password: string,
+        rememberMe: boolean,
         originalUrl: string | undefined
     ): void {
-        if (event.key == "Enter" && !this.checkSubmitButtonStatus(alias, password)) {
+        if (key == "Enter" && !this.checkSubmitButtonStatus(alias, password)) {
             this.doLogin(alias, password, rememberMe, originalUrl);
         }
     };
