@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Status, Type } from "tweeter-shared";
-import { useUserNavigation } from "../userInfo/useUserNavigation";
+import { useUserNavigation } from "../../../social/views.components/userInfo/useUserNavigation";
 
 interface Props {
   status: Status;

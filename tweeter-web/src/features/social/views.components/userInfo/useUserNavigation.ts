@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { AuthToken, FakeData, User } from "tweeter-shared";
 import { useUserInfo, useUserInfoActions } from "./userHooks";
-import { useMessageActions } from "../toaster/MessageHooks";
+import { useMessageActions } from "../../../../components/toaster/MessageHooks";
 
 interface UserNavigation {
     navigateToUser: (event: React.MouseEvent, featureUrl: string) => Promise<void>;

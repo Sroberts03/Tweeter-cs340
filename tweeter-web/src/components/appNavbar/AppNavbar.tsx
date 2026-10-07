@@ -3,7 +3,7 @@ import { Container, Nav, Navbar } from "react-bootstrap";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import Image from "react-bootstrap/Image";
 import { useMessageActions } from "../toaster/MessageHooks";
-import { useUserInfo, useUserInfoActions } from "../userInfo/userHooks";
+import { useUserInfo, useUserInfoActions } from "../../features/social/views.components/userInfo/userHooks";
 import { AppNavbarPresenter, AppNavbarView } from "../../presenter/AppNavbarPresenter";
 import { useRef } from "react";
 

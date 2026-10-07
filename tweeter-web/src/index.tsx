@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
-import UserInfoProvider from "./components/userInfo/UserInfoProvider";
+import UserInfoProvider from "./features/social/views.components/userInfo/UserInfoProvider";
 import ToastInfoProvider from "./components/toaster/ToastInfoProvider";
 
 library.add(fab);

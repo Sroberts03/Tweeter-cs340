@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthToken, FakeData, User } from "tweeter-shared";
-import { useMessageActions } from "../toaster/MessageHooks";
+import { useMessageActions } from "../../../../components/toaster/MessageHooks";
 import { useUserInfo, useUserInfoActions } from "./userHooks";
 
 const UserInfo = () => {

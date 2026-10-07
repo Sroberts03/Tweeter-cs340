@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { AuthToken, User, FakeData } from "tweeter-shared";
 import { useContext } from "react";
-import { useMessageActions } from "../toaster/MessageHooks";
+import { useMessageActions } from "../../../../components/toaster/MessageHooks";
 import { useUserInfo, useUserInfoActions } from "../userInfo/userHooks";
 import { useUserNavigation } from "../userInfo/useUserNavigation";
 
