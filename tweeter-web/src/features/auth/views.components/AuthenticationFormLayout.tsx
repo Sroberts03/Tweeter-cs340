@@ -14,7 +14,7 @@ interface Props {
 }
 
 const AuthenticationFormLayout = (props: Props) => {
-  const { displayInfoMessage, displayErrorMessage, deleteMessage } = useMessageActions();
+  const { displayInfoMessage } = useMessageActions();
 
   const displayInfoMessageWithDarkBackground = (message: string): void => {
     displayInfoMessage(

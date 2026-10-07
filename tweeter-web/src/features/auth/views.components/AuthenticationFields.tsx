@@ -1,3 +1,5 @@
+import { useRef } from "react";
+import { authenticationField, AuthenticationFieldsPresenter } from "../presenters/AuthenticationFieldsPresenter";
 interface AuthenticationFieldsProps {
     onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => void;
     onAliasChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -5,16 +7,6 @@ interface AuthenticationFieldsProps {
     onFirstNameChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     onLastNameChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     isRegister: boolean;
-}
-
-type authenticationField = {
-    id: string;
-    type: string;
-    placeholder: string;
-    label: string;
-    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => void;
-    forRegisterOnly: boolean;
 }
 
 export default function AuthenticationFields(props: AuthenticationFieldsProps) {
@@ -56,13 +48,13 @@ export default function AuthenticationFields(props: AuthenticationFieldsProps) {
             forRegisterOnly: false
         }
     ]
+    const presenter = useRef<AuthenticationFieldsPresenter | null>(null);
+    if (!presenter.current) {
+        presenter.current = new AuthenticationFieldsPresenter();
+    }
 
     const filterAuthFields = (): authenticationField[]  => {
-        if (props.isRegister) {
-            return authField;
-        } else {
-            return authField.filter((field: authenticationField) => !field.forRegisterOnly);
-        }
+        return presenter.current!.filterAuthFields(props.isRegister, authField);
     }
     
     return (
