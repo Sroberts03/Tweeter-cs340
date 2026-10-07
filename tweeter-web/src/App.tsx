@@ -10,7 +10,7 @@ import MainLayout from "./components/mainLayout/MainLayout";
 import Toaster from "./components/toaster/Toaster";
 import UserItemScroller from "./features/social/views.components/UserItemScroller";
 import StatusItemScroller from "./features/post/views.components/StatusItemScroller";
-import { useUserInfo } from "./features/social/views.components/userInfo/userHooks";
+import { useUserInfo } from "./features/social/hooks/userHooks";
 import { StoryPresenter } from "./features/post/presenters/StoryPresenter";
 import { FeedPresenter } from "./features/post/presenters/FeedPresenter";
 import { FolloweePresenter } from "./features/social/presenters/FolloweePresenter";

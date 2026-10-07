@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { Toast, ToastType } from "./Toast";
+import { Toast, ToastType } from "../objects/Toast";
 
 export const ToastListContext = createContext<Toast[]>([]);
 

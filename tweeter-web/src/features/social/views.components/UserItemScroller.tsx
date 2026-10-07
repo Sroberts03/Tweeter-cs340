@@ -3,8 +3,8 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { User } from "tweeter-shared";
 import { useParams } from "react-router-dom";
 import UserItem from "./userItem/UserItem";
-import { useMessageActions } from "../../../components/toaster/MessageHooks";
-import { useUserInfo, useUserInfoActions } from "./userInfo/userHooks";
+import { useMessageActions } from "../../../hooks/MessageHooks";
+import { useUserInfo, useUserInfoActions } from "../hooks/userHooks";
 import { UserItemPresenter, UserItemView } from "../presenters/UserItemPresenter";
 interface UserItemScrollerProps {
   featureUrl: string;

@@ -5,8 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import AuthenticationFormLayout from "../AuthenticationFormLayout";
 import { AuthToken, User } from "tweeter-shared";
 import AuthenticationFields from "../AuthenticationFields";
-import { useMessageActions } from "../../../../components/toaster/MessageHooks";
-import { useUserInfoActions } from "../../../social/views.components/userInfo/userHooks";
+import { useMessageActions } from "../../../../hooks/MessageHooks";
+import { useUserInfoActions } from "../../../social/hooks/userHooks";
 import { LoginPresenter, LoginView } from "../../presenters/LoginPresenter";
 
 interface Props {

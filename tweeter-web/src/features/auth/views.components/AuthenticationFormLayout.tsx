@@ -1,10 +1,10 @@
 import Oauth from "./Oauth";
-import { useMessageActions } from "../../../components/toaster/MessageHooks";
 import {
   AuthenticationFormLayoutPresenter,
   AuthenticationFormLayoutView,
 } from "../presenters/AuthenticationFormLayoutPresenter";
 import { useRef } from "react";
+import { useMessageActions } from "../../../hooks/MessageHooks";
 
 interface Props {
   headingText: string;

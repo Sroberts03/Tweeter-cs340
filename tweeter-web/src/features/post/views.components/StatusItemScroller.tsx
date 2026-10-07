@@ -3,9 +3,9 @@ import { useState, useEffect, useRef } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import StatusItem from "./statusItem/StatusItem";
-import { useMessageActions } from "../../../components/toaster/MessageHooks";
-import { useUserInfo, useUserInfoActions } from "../../social/views.components/userInfo/userHooks";
-import { useUserNavigation } from "../../social/views.components/userInfo/useUserNavigation";
+import { useMessageActions } from "../../../hooks/MessageHooks";
+import { useUserInfo, useUserInfoActions } from "../../social/hooks/userHooks";
+import { useUserNavigation } from "../../social/hooks/useUserNavigation";
 import { StatusItemPresenter, StatusItemView } from "../presenters/StatusItemPresenter";
 interface StoryScrollerProps {
   featureUrl: string;

@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { ToastActionsContext, ToastListContext } from "./ToastContexts";
-import { ToastType } from "./Toast";
+import { ToastActionsContext, ToastListContext } from "../contexts/ToastContexts";
+import { ToastType } from "../objects/Toast";
 
 interface MessageActions {
       displayInfoMessage: (
