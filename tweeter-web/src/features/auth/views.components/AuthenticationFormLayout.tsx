@@ -1,5 +1,5 @@
 import Oauth from "./Oauth";
-import { useMessageActions } from "../toaster/MessageHooks";
+import { useMessageActions } from "../../../components/toaster/MessageHooks";
 
 interface Props {
   headingText: string;

@@ -1,5 +1,5 @@
 import { AuthToken } from "tweeter-shared";
-import { AuthService } from "../model.service/AuthService";
+import { AuthService } from "../features/auth/models.service/AuthService";
 
 export interface AppNavbarView {
     displayInfoMessage: (message: string, duration: number) => string;

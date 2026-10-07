@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import UserItem from "../userItem/UserItem";
 import { useMessageActions } from "../toaster/MessageHooks";
 import { useUserInfo, useUserInfoActions } from "../userInfo/userHooks";
-import { UserItemPresenter, UserItemView } from "../../presenter/UserItemPresenter";
+import { UserItemPresenter, UserItemView } from "../../features/social/presenters/UserItemPresenter";
 interface UserItemScrollerProps {
   featureUrl: string;
   presenterFactory: (listener: UserItemView) => UserItemPresenter;

@@ -6,17 +6,17 @@ import {
   Routes,
   useLocation,
 } from "react-router-dom";
-import Login from "./components/authentication/login/Login";
-import Register from "./components/authentication/register/Register";
 import MainLayout from "./components/mainLayout/MainLayout";
 import Toaster from "./components/toaster/Toaster";
 import UserItemScroller from "./components/mainLayout/UserItemScroller";
 import StatusItemScroller from "./components/mainLayout/StatusItemScroller";
 import { useUserInfo } from "./components/userInfo/userHooks";
-import { FolloweePresenter } from "./presenter/FolloweePresenter";
-import { FollowerPresenter } from "./presenter/FollowerPresenter";
-import { FeedPresenter } from "./presenter/FeedPresenter";
-import { StoryPresenter } from "./presenter/StoryPresenter";
+import { StoryPresenter } from "./features/post/presenters/StoryPresenter";
+import { FeedPresenter } from "./features/post/presenters/FeedPresenter";
+import { FolloweePresenter } from "./features/social/presenters/FolloweePresenter";
+import { FollowerPresenter } from "./features/social/presenters/FollowerPresenter";
+import Login from "./features/auth/views.components/login/Login";
+import Register from "./features/auth/views.components/register/Register";
 
 const App = () => {
   const { currentUser, authToken } = useUserInfo();

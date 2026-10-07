@@ -6,7 +6,7 @@ import StatusItem from "../statusItem/StatusItem";
 import { useMessageActions } from "../toaster/MessageHooks";
 import { useUserInfo, useUserInfoActions } from "../userInfo/userHooks";
 import { useUserNavigation } from "../userInfo/useUserNavigation";
-import { StatusItemPresenter, StatusItemView } from "../../presenter/StatusItemPresenter";
+import { StatusItemPresenter, StatusItemView } from "../../features/post/presenters/StatusItemPresenter";
 interface StoryScrollerProps {
   featureUrl: string;
   presenterFactory: (listener: StatusItemView) => StatusItemPresenter;

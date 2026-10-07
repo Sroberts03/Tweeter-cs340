@@ -1,5 +1,5 @@
 import { AuthToken, User } from "tweeter-shared";
-import { AuthService } from "../model.service/AuthService";
+import { AuthService } from "../models.service/AuthService";
 
 export interface LoginView {
   displayErrorMessage: (message: string) => void;
