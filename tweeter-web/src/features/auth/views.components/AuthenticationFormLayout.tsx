@@ -1,5 +1,10 @@
 import Oauth from "./Oauth";
 import { useMessageActions } from "../../../components/toaster/MessageHooks";
+import {
+  AuthenticationFormLayoutPresenter,
+  AuthenticationFormLayoutView,
+} from "../presenters/AuthenticationFormLayoutPresenter";
+import { useRef } from "react";
 
 interface Props {
   headingText: string;
@@ -15,14 +20,19 @@ interface Props {
 
 const AuthenticationFormLayout = (props: Props) => {
   const { displayInfoMessage } = useMessageActions();
-
-  const displayInfoMessageWithDarkBackground = (message: string): void => {
-    displayInfoMessage(
-      message,
-      3000,
-      "text-white bg-primary"
-    );
+  const listener: AuthenticationFormLayoutView = {
+    displayInfoMessage: (
+      message: string,
+      duration: number,
+      className?: string,
+    ): void => {
+      displayInfoMessage(message, duration, className || "");
+    },
   };
+  const presenterRef = useRef<AuthenticationFormLayoutPresenter | null>(null);
+  if (!presenterRef.current) {
+    presenterRef.current = new AuthenticationFormLayoutPresenter(listener);
+  }
 
   return (
     <div className="center">
@@ -39,9 +49,13 @@ const AuthenticationFormLayout = (props: Props) => {
 
           {props.inputFieldFactory()}
 
-          <Oauth 
+          <Oauth
             oAuthHeading={props.oAuthHeading}
-            displayInfoMessageWithDarkBackground={displayInfoMessageWithDarkBackground}
+            displayInfoMessageWithDarkBackground={(message: string) =>
+              presenterRef.current!.displayInfoMessageWithDarkBackground(
+                message,
+              )
+            }
           />
 
           <div className="checkbox mb-3">
