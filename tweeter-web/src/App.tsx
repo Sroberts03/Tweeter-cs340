@@ -6,8 +6,8 @@ import {
   Routes,
   useLocation,
 } from "react-router-dom";
-import MainLayout from "./components/mainLayout/MainLayout";
-import Toaster from "./components/toaster/Toaster";
+import MainLayout from "./views.components/mainLayout/MainLayout";
+import Toaster from "./views.components/toaster/Toaster";
 import UserItemScroller from "./features/social/views.components/UserItemScroller";
 import StatusItemScroller from "./features/post/views.components/StatusItemScroller";
 import { useUserInfo } from "./features/social/hooks/userHooks";
