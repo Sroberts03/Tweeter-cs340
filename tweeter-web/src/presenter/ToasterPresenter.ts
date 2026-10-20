@@ -1,5 +1,5 @@
 import { Toast } from "../objects/Toast";
-import { MessageView, Presenter, View } from "./Presenter";
+import { MessageView, Presenter } from "./Presenter";
 
 export class ToasterPresenter extends Presenter<MessageView> {
     public deleteExpiredToasts(messageList: Toast[]) {
