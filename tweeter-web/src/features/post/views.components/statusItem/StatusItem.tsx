@@ -1,18 +1,19 @@
 import { Status } from "tweeter-shared";
 import Post from "./Post";
 import { Link } from "react-router-dom";
+import { useUserNavigation } from "../../../social/hooks/useUserNavigation";
 
 interface StatusItemProps {
   item: Status;
   featurePath: string;
-  onClick: (event: React.MouseEvent) => void;
 }
 
 export default function StatusItem({
   item,
   featurePath,
-  onClick,
 }: StatusItemProps) {
+  const { navigateToUser } = useUserNavigation();
+
   return (
     <div className="col bg-light mx-0 px-0">
       <div className="container px-0">
@@ -31,7 +32,7 @@ export default function StatusItem({
                 {item.user.firstName} {item.user.lastName}
               </b>{" "}
               -{" "}
-              <Link to={`/story/${item.user.alias}`} onClick={onClick}>
+              <Link to={`/story/${item.user.alias}`} onClick={(event) => navigateToUser(event, featurePath)}>
                 {item.user.alias}
               </Link>
             </h2>
