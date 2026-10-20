@@ -1,11 +1,9 @@
 import { AuthToken, User } from "tweeter-shared";
 import { AuthService } from "../models.service/AuthService";
 import { Buffer } from "buffer";
+import { BaseView } from "../../../views.components/BaseView";
 
-export interface RegisterView {
-  setIsLoading: (isLoading: boolean) => void;
-  displayErrorMessage: (message: string) => void;
-  navigate: (path: string) => void;
+export interface RegisterView extends BaseView {
   updateUserInfo: (
     user: User,
     displayUser: User,

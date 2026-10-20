@@ -1,8 +1,7 @@
 import { Toast } from "../objects/Toast";
+import { BaseView } from "../views.components/BaseView";
 
-export interface ToasterView {
-    deleteMessage: (messageId: string) => void;
-}
+export interface ToasterView extends BaseView {}
 
 export class ToasterPresenter {
     private _view: ToasterView;
