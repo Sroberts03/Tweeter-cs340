@@ -2,13 +2,11 @@ import "./Register.css";
 import "bootstrap/dist/css/bootstrap.css";
 import { useRef } from "react";
 import { ChangeEvent, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AuthenticationFormLayout from "../AuthenticationFormLayout";
-import { AuthToken, User } from "tweeter-shared";
 import AuthenticationFields from "../AuthenticationFields";
-import { useMessageActions } from "../../../../hooks/MessageHooks";
-import { useUserInfoActions } from "../../../social/hooks/userHooks";
 import { RegisterPresenter, RegisterView } from "../../presenters/RegisterPresenter";
+import { useAuthView } from "../../hooks/authHooks";
 
 const Register = () => {
   const [firstName, setFirstName] = useState("");
@@ -18,31 +16,10 @@ const Register = () => {
   const [imageBytes, setImageBytes] = useState<Uint8Array>(new Uint8Array());
   const [imageUrl, setImageUrl] = useState<string>("");
   const [imageFileExtension, setImageFileExtension] = useState<string>("");
-  const [rememberMe, setRememberMe] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const navigate = useNavigate();
-  const { updateUserInfo } = useUserInfoActions();
-  const { displayErrorMessage } = useMessageActions();
+  const { authView, rememberMe, setRememberMe, isLoading } = useAuthView();
 
   const listener: RegisterView = {
-    displayErrorMessage: (message: string): void => {
-      displayErrorMessage(message);
-    },
-    updateUserInfo: (
-      user: User,
-      displayUser: User,
-      authToken: AuthToken,
-      rememberMe: boolean
-    ): void => {
-      updateUserInfo(user, displayUser, authToken, rememberMe);
-    },
-    navigate: (path: string): void => {
-      navigate(path);
-    },
-    setIsLoading: (loading: boolean): void => {
-      setIsLoading(loading);
-    },
+    ...authView,
     setImageUrl: (imageUrl: string): void => {
       setImageUrl(imageUrl);
     },

@@ -1,13 +1,11 @@
 import "./Login.css";
 import "bootstrap/dist/css/bootstrap.css";
 import { useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AuthenticationFormLayout from "../AuthenticationFormLayout";
-import { AuthToken, User } from "tweeter-shared";
 import AuthenticationFields from "../AuthenticationFields";
-import { useMessageActions } from "../../../../hooks/MessageHooks";
-import { useUserInfoActions } from "../../../social/hooks/userHooks";
-import { LoginPresenter, LoginView } from "../../presenters/LoginPresenter";
+import { LoginPresenter } from "../../presenters/LoginPresenter";
+import { useAuthView } from "../../hooks/authHooks";
 
 interface Props {
   originalUrl?: string;
@@ -16,36 +14,11 @@ interface Props {
 const Login = (props: Props) => {
   const [alias, setAlias] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const navigate = useNavigate();
-  const { updateUserInfo } = useUserInfoActions();
-  const { displayErrorMessage } = useMessageActions();
-
-  const listener: LoginView = {
-    displayErrorMessage: (message: string): void => {
-      displayErrorMessage(message);
-    },
-    updateUserInfo: (
-      user: User, 
-      displayUser: User, 
-      authToken: AuthToken, 
-      rememberMe: boolean
-    ): void => {
-      updateUserInfo(user, displayUser, authToken, rememberMe);
-    },
-    navigate: (path: string): void => {
-      navigate(path);
-    },
-    setIsLoading: (loading: boolean): void => {
-      setIsLoading(loading);
-    }
-  };
+  const { authView, rememberMe, setRememberMe, isLoading } = useAuthView();
 
   const presenterRef = useRef<LoginPresenter | null>(null);
   if (!presenterRef.current) {
-    presenterRef.current = new LoginPresenter(listener);
+    presenterRef.current = new LoginPresenter(authView);
   };
 
   const checkSubmitButtonStatus = (): boolean => {

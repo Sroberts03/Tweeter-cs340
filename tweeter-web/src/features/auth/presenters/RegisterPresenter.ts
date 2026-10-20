@@ -1,28 +1,16 @@
-import { AuthToken, User } from "tweeter-shared";
-import { AuthService } from "../models.service/AuthService";
 import { Buffer } from "buffer";
-import { Presenter, View } from "../../../presenter/Presenter";
+import { AuthPresenter } from "./AuthPresenter";
+import { AuthView } from "../views.components/AuthView";
 
-export interface RegisterView extends View {
-  updateUserInfo: (
-    user: User,
-    displayUser: User,
-    authToken: AuthToken,
-    rememberMe: boolean,
-  ) => void;
+export interface RegisterView extends AuthView {
   setImageUrl: (imageUrl: string) => void;
   setImageBytes: (imageBytes: Uint8Array) => void;
   setImageFileExtension: (imageFileExtension: string) => void;
-  setIsLoading: (loading: boolean) => void;
-  navigate: (path: string) => void;
 }
 
-export class RegisterPresenter extends Presenter<RegisterView> {
-  private authService: AuthService;
-
+export class RegisterPresenter extends AuthPresenter<RegisterView> {
   constructor(view: RegisterView) {
     super(view);
-    this.authService = new AuthService();
   }
 
   public async doRegister(
@@ -34,23 +22,19 @@ export class RegisterPresenter extends Presenter<RegisterView> {
     imageFileExtension: string | null,
     rememberMe: boolean,
   ) {
-    this.doFailureReportingOperation(async () => {
-      this.view.setIsLoading(true);
-
-      const [user, authToken] = await this.authService.register(
-        firstName,
-        lastName,
-        alias,
-        password,
-        imageBytes!,
-        imageFileExtension!,
-      );
-
-      this.view.updateUserInfo(user, user, authToken, rememberMe);
-      this.view.navigate(`/feed/${user.alias}`);
-    }, "register user", () => {
-      this.view.setIsLoading(false);
-    });
+    await this.doAuthentication(
+      () =>
+        this.authService.register(
+          firstName,
+          lastName,
+          alias,
+          password,
+          imageBytes!,
+          imageFileExtension!,
+        ),
+      rememberMe,
+      "register user",
+    );
   }
 
   public handleImageFile(file: File | undefined) {
