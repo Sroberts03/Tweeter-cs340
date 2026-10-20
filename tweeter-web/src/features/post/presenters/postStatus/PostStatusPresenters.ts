@@ -1,17 +1,17 @@
 import { AuthToken, Status, User } from "tweeter-shared";
 import { StatusService } from "../../models.service/StatusService";
-import { BaseView } from "../../../../views.components/BaseView";
+import { MessageView, Presenter } from "../../../../presenter/Presenter";
 
-export interface PostStatusView extends BaseView {
+export interface PostStatusView extends MessageView {
   setPost: (post: string) => void;
+  setIsLoading: (loading: boolean) => void;
 }
 
-export class PostStatusPresenter {
-  private _view: PostStatusView;
+export class PostStatusPresenter extends Presenter<PostStatusView> {
   private statusService: StatusService;
 
   constructor(view: PostStatusView) {
-    this._view = view;
+    super(view);
     this.statusService = new StatusService();
   }
 
@@ -21,10 +21,9 @@ export class PostStatusPresenter {
     post: string,
   ): Promise<void> {
     var postingStatusToastId = "";
-
-    try {
-      this._view.setIsLoading(true);
-      postingStatusToastId = this._view.displayInfoMessage(
+    this.doFailureReportingOperation(async () => {
+      this.view.setIsLoading(true);
+      postingStatusToastId = this.view.displayInfoMessage(
         "Posting status...",
         0,
       );
@@ -33,20 +32,16 @@ export class PostStatusPresenter {
 
       await this.statusService.postStatus(authToken!, status);
 
-      this._view.setPost("");
-      this._view.displayInfoMessage("Status posted!", 2000);
-    } catch (error) {
-      this._view.displayErrorMessage(
-        `Failed to post the status because of exception: ${error}`,
-      );
-    } finally {
-      this._view.deleteMessage(postingStatusToastId);
-      this._view.setIsLoading(false);
-    }
+      this.view.setPost("");
+      this.view.displayInfoMessage("Status posted!", 2000);
+    }, "post the status", () => {
+      this.view.deleteMessage(postingStatusToastId);
+      this.view.setIsLoading(false);
+    });
   }
 
   public clearPost() {
-    this._view.setPost("");
+    this.view.setPost("");
   }
 
   public checkButtonStatus(

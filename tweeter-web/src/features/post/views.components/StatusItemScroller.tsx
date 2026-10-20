@@ -6,10 +6,11 @@ import StatusItem from "./statusItem/StatusItem";
 import { useMessageActions } from "../../../hooks/MessageHooks";
 import { useUserInfo, useUserInfoActions } from "../../social/hooks/userHooks";
 import { useUserNavigation } from "../../social/hooks/useUserNavigation";
-import { StatusItemPresenter, StatusItemView } from "../presenters/StatusItemPresenter";
+import { StatusItemPresenter } from "../presenters/StatusItemPresenter";
+import { PageItemView } from "../../../presenter/PageItemPresenter";
 interface StoryScrollerProps {
   featureUrl: string;
-  presenterFactory: (listener: StatusItemView) => StatusItemPresenter;
+  presenterFactory: (listener: PageItemView<Status>) => StatusItemPresenter;
 }
 
 const StatusItemScroller = (props: StoryScrollerProps) => {
@@ -21,7 +22,7 @@ const StatusItemScroller = (props: StoryScrollerProps) => {
   const { setDisplayedUser } = useUserInfoActions();
   const { displayedUser: displayedUserAliasParam } = useParams();
 
-  const listener: StatusItemView = {
+  const listener: PageItemView<Status> = {
     addItems: (newItems: Status[]) => {
       setItems((previousItems) => [...previousItems, ...newItems]);
     },

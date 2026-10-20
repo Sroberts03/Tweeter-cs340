@@ -2,7 +2,8 @@ import "./Toaster.css";
 import { useEffect, useRef } from "react";
 import { Toast } from "react-bootstrap";
 import { useMessageActions, useMessageList } from "../../hooks/MessageHooks";
-import { ToasterPresenter, ToasterView } from "../../presenter/ToasterPresenter";
+import { ToasterPresenter } from "../../presenter/ToasterPresenter";
+import { MessageView } from "../../presenter/Presenter";
 
 interface Props {
   position: string;
@@ -10,12 +11,18 @@ interface Props {
 
 const Toaster = ({ position }: Props) => {
   const messageList = useMessageList();
-  const { deleteMessage } = useMessageActions();
+  const { deleteMessage, displayErrorMessage, displayInfoMessage } = useMessageActions();
 
-  const listener: ToasterView = {
+  const listener: MessageView = {
     deleteMessage: (messageId: string) => {
       deleteMessage(messageId);
-    }
+    },
+    displayErrorMessage: (message: string) => {
+      displayErrorMessage(message);
+    },
+    displayInfoMessage: (message: string, duration: number): string => {
+      return displayInfoMessage(message, duration);
+    },
   };
   const presenterRef = useRef<ToasterPresenter | null>(null);
   if (!presenterRef.current) {

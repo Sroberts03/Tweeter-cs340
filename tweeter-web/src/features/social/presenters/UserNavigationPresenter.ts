@@ -1,17 +1,17 @@
 import { AuthToken, User } from "tweeter-shared";
 import { UserService } from "../../../model.service/UserService";
-import { BaseView } from "../../../views.components/BaseView";
+import { Presenter, View } from "../../../presenter/Presenter";
 
-export interface UserNavigationView extends BaseView {
+export interface UserNavigationView extends View {
   setDisplayedUser: (user: User) => void;
+  navigate: (path: string) => void;
 }
 
-export class UserNavigationPresenter {
-  private _view: UserNavigationView;
+export class UserNavigationPresenter extends Presenter<UserNavigationView> {
   private userService: UserService;
 
   constructor(view: UserNavigationView) {
-    this._view = view;
+    super(view);
     this.userService = new UserService();
   }
 
@@ -21,22 +21,18 @@ export class UserNavigationPresenter {
     authToken: AuthToken,
     displayedUser: User,
   ): Promise<void> {
-    try {
+    this.doFailureReportingOperation(async () => {
       const alias = this.extractAlias(clickedValue);
 
       const toUser = await this.userService.getUser(authToken, alias);
 
       if (toUser) {
         if (!toUser.equals(displayedUser)) {
-          this._view.setDisplayedUser(toUser);
-          this._view.navigate(`${featureUrl}/${toUser.alias}`);
+          this.view.setDisplayedUser(toUser);
+          this.view.navigate(`${featureUrl}/${toUser.alias}`);
         }
       }
-    } catch (error) {
-      this._view.displayErrorMessage(
-        `Failed to get user because of exception: ${error}`,
-      );
-    }
+    }, "get user");
   }
 
   public extractAlias(value: string): string {

@@ -5,10 +5,11 @@ import { useParams } from "react-router-dom";
 import UserItem from "./userItem/UserItem";
 import { useMessageActions } from "../../../hooks/MessageHooks";
 import { useUserInfo, useUserInfoActions } from "../hooks/userHooks";
-import { UserItemPresenter, UserItemView } from "../presenters/UserItemPresenter";
+import { UserItemPresenter } from "../presenters/UserItemPresenter";
+import { PageItemView } from "../../../presenter/PageItemPresenter";
 interface UserItemScrollerProps {
   featureUrl: string;
-  presenterFactory: (listener: UserItemView) => UserItemPresenter;
+  presenterFactory: (listener: PageItemView<User>) => UserItemPresenter;
 }
 
 const UserItemScroller = (props: UserItemScrollerProps) => {
@@ -18,7 +19,7 @@ const UserItemScroller = (props: UserItemScrollerProps) => {
   const { setDisplayedUser } = useUserInfoActions();
   const { displayedUser: displayedUserAliasParam } = useParams();
 
-  const listener: UserItemView = {
+  const listener: PageItemView<User> = {
     addItems: (newItems: User[]) => {
       setItems((previousItems) => [...previousItems, ...newItems]);
     },

@@ -1,17 +1,18 @@
 import { AuthToken, User } from "tweeter-shared";
 import { AuthService } from "../models.service/AuthService";
-import { BaseView } from "../../../views.components/BaseView";
+import { Presenter, View } from "../../../presenter/Presenter";
 
-export interface LoginView extends BaseView {
+export interface LoginView extends View {
   updateUserInfo: (user: User, displayUser: User, authToken: AuthToken, rememberMe: boolean) => void;
+  setIsLoading: (loading: boolean) => void;
+  navigate: (path: string) => void;
 }
 
-export class LoginPresenter {
-    private view: LoginView;
+export class LoginPresenter extends Presenter<LoginView> {
     private authService: AuthService;
 
     constructor(view: LoginView) {
-        this.view = view;
+        super(view);
         this.authService = new AuthService();
     }
 
@@ -25,7 +26,7 @@ export class LoginPresenter {
         rememberMe: boolean, 
         originalUrl: string | undefined
     ): Promise<void> {
-        try {
+        this.doFailureReportingOperation(async () => {
             this.view.setIsLoading(true);
 
             const [user, authToken] = await this.authService.login(alias, password);
@@ -37,11 +38,9 @@ export class LoginPresenter {
             } else {
                 this.view.navigate(`/feed/${user.alias}`);
             }
-        } catch (error) {
-            this.view.displayErrorMessage(`Failed to log user in because of exception: ${error}`);
-        } finally {
+        }, "log user in", () => {
             this.view.setIsLoading(false);
-        }
+        });
     };
 
     public loginOnEnter (

@@ -1,8 +1,9 @@
 import { Buffer } from "buffer";
 import { FakeData, User } from "tweeter-shared";
 import { AuthToken } from "tweeter-shared/dist/model/domain/AuthToken";
+import { Service } from "../../../model.service/Service";
 
-export class AuthService {
+export class AuthService implements Service {
     public async logout (authToken: AuthToken): Promise<void> {
         // Pause so we can see the logging out message. Delete when the call to the server is implemented.
         await new Promise((res) => setTimeout(res, 1000));

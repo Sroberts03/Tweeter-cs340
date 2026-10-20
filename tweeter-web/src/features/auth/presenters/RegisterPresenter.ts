@@ -1,9 +1,9 @@
 import { AuthToken, User } from "tweeter-shared";
 import { AuthService } from "../models.service/AuthService";
 import { Buffer } from "buffer";
-import { BaseView } from "../../../views.components/BaseView";
+import { Presenter, View } from "../../../presenter/Presenter";
 
-export interface RegisterView extends BaseView {
+export interface RegisterView extends View {
   updateUserInfo: (
     user: User,
     displayUser: User,
@@ -13,14 +13,15 @@ export interface RegisterView extends BaseView {
   setImageUrl: (imageUrl: string) => void;
   setImageBytes: (imageBytes: Uint8Array) => void;
   setImageFileExtension: (imageFileExtension: string) => void;
+  setIsLoading: (loading: boolean) => void;
+  navigate: (path: string) => void;
 }
 
-export class RegisterPresenter {
-  private _view: RegisterView;
+export class RegisterPresenter extends Presenter<RegisterView> {
   private authService: AuthService;
 
   constructor(view: RegisterView) {
-    this._view = view;
+    super(view);
     this.authService = new AuthService();
   }
 
@@ -33,8 +34,8 @@ export class RegisterPresenter {
     imageFileExtension: string | null,
     rememberMe: boolean,
   ) {
-    try {
-      this._view.setIsLoading(true);
+    this.doFailureReportingOperation(async () => {
+      this.view.setIsLoading(true);
 
       const [user, authToken] = await this.authService.register(
         firstName,
@@ -45,20 +46,16 @@ export class RegisterPresenter {
         imageFileExtension!,
       );
 
-      this._view.updateUserInfo(user, user, authToken, rememberMe);
-      this._view.navigate(`/feed/${user.alias}`);
-    } catch (error) {
-      this._view.displayErrorMessage(
-        `Failed to register user because of exception: ${error}`,
-      );
-    } finally {
-      this._view.setIsLoading(false);
-    }
+      this.view.updateUserInfo(user, user, authToken, rememberMe);
+      this.view.navigate(`/feed/${user.alias}`);
+    }, "register user", () => {
+      this.view.setIsLoading(false);
+    });
   }
 
   public handleImageFile(file: File | undefined) {
     if (file) {
-      this._view.setImageUrl(URL.createObjectURL(file));
+      this.view.setImageUrl(URL.createObjectURL(file));
 
       const reader = new FileReader();
       reader.onload = (event: ProgressEvent<FileReader>) => {
@@ -73,18 +70,18 @@ export class RegisterPresenter {
           "base64",
         );
 
-        this._view.setImageBytes(bytes);
+        this.view.setImageBytes(bytes);
       };
       reader.readAsDataURL(file);
 
       // Set image file extension (and move to a separate method)
       const fileExtension = this.getFileExtension(file);
       if (fileExtension) {
-        this._view.setImageFileExtension(fileExtension);
+        this.view.setImageFileExtension(fileExtension);
       }
     } else {
-      this._view.setImageUrl("");
-      this._view.setImageBytes(new Uint8Array());
+      this.view.setImageUrl("");
+      this.view.setImageBytes(new Uint8Array());
     }
   }
 

@@ -17,6 +17,9 @@ import { FolloweePresenter } from "./features/social/presenters/FolloweePresente
 import { FollowerPresenter } from "./features/social/presenters/FollowerPresenter";
 import Login from "./features/auth/views.components/login/Login";
 import Register from "./features/auth/views.components/register/Register";
+import { Status } from "tweeter-shared/dist/model/domain/Status";
+import { PageItemView } from "./presenter/PageItemPresenter";
+import { User } from "tweeter-shared/dist/model/domain/User";
 
 const App = () => {
   const { currentUser, authToken } = useUserInfo();
@@ -49,25 +52,25 @@ const AuthenticatedRoutes = () => {
         <Route path="feed/:displayedUser" element={<StatusItemScroller 
           key={`feed-${displayedUser!.alias}`}
           featureUrl="/feed"
-          presenterFactory={(listener) => new FeedPresenter(listener)}
+          presenterFactory={(listener: PageItemView<Status>) => new FeedPresenter(listener)}
         />} />
         <Route path="story/:displayedUser" element={<StatusItemScroller
           key={`story-${displayedUser!.alias}`}
           featureUrl="/story" 
-          presenterFactory={(listener) => new StoryPresenter(listener)}
+          presenterFactory={(listener: PageItemView<Status>) => new StoryPresenter(listener)}
         />} />
         <Route path="followees/:displayedUser" element={
           <UserItemScroller
             key={`followees-${displayedUser!.alias}`}
             featureUrl="/followees"
-            presenterFactory={(listener) => new FolloweePresenter(listener)}
+            presenterFactory={(listener: PageItemView<User>) => new FolloweePresenter(listener)}
           />} 
         />
         <Route path="followers/:displayedUser" element={
           <UserItemScroller 
             key={`followers-${displayedUser!.alias}`}
             featureUrl="/followers" 
-            presenterFactory={(listener) => new FollowerPresenter(listener)}
+            presenterFactory={(listener: PageItemView<User>) => new FollowerPresenter(listener)}
           />} 
         />
         <Route path="logout" element={<Navigate to="/login" />} />
