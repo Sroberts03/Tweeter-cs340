@@ -16,6 +16,7 @@ export default function AuthenticationFields(props: AuthenticationFieldsProps) {
             type: "text",
             placeholder: "First Name",
             label: "First Name",
+            ariaLabel: "first name",
             onChange: props.onFirstNameChange!,
             onKeyDown: props.onKeyDown,
             forRegisterOnly: true
@@ -25,6 +26,7 @@ export default function AuthenticationFields(props: AuthenticationFieldsProps) {
             type: "text",
             placeholder: "Last Name",
             label: "Last Name",
+            ariaLabel: "last name",
             onChange: props.onLastNameChange!,
             onKeyDown: props.onKeyDown,
             forRegisterOnly: true
@@ -34,6 +36,7 @@ export default function AuthenticationFields(props: AuthenticationFieldsProps) {
             type: "text",
             placeholder: "name@example.com",
             label: "Alias",
+            ariaLabel: "alias",
             onChange: props.onAliasChange,
             onKeyDown: props.onKeyDown,
             forRegisterOnly: false
@@ -43,6 +46,7 @@ export default function AuthenticationFields(props: AuthenticationFieldsProps) {
             type: "password",
             placeholder: "Password",
             label: "Password",
+            ariaLabel: "password",
             onChange: props.onPasswordChange,
             onKeyDown: props.onKeyDown,
             forRegisterOnly: false
@@ -67,6 +71,7 @@ export default function AuthenticationFields(props: AuthenticationFieldsProps) {
                         size={50}
                         id={field.id}
                         placeholder={field.placeholder}
+                        aria-label={field.ariaLabel}
                         onKeyDown={field.onKeyDown}
                         onChange={field.onChange}
                     />

@@ -3,6 +3,7 @@ export type authenticationField = {
     type: string;
     placeholder: string;
     label: string;
+    ariaLabel?: string;
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => void;
     forRegisterOnly: boolean;
