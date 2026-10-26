@@ -4,7 +4,11 @@ import { useMessageActions } from "../../../../hooks/MessageHooks";
 import { useUserInfo } from "../../../social/hooks/userHooks";
 import { PostStatusPresenter, PostStatusView } from "../../presenters/postStatus/PostStatusPresenters";
 
-const PostStatus = () => {
+interface Props {
+  presenter?: PostStatusPresenter;
+}
+
+const PostStatus = (props: Props) => {
   const { displayInfoMessage, displayErrorMessage, deleteMessage } = useMessageActions();
   const { currentUser, authToken } = useUserInfo();
   const [post, setPost] = useState("");
@@ -29,7 +33,7 @@ const PostStatus = () => {
   }
   const postStatusPresenter = useRef<PostStatusPresenter | null>(null);
   if (!postStatusPresenter.current) {
-    postStatusPresenter.current = new PostStatusPresenter(listener);
+    postStatusPresenter.current = props.presenter || new PostStatusPresenter(listener);
   }
 
   const submitPost = async (event: React.MouseEvent) => {
@@ -47,6 +51,7 @@ const PostStatus = () => {
         <textarea
           className="form-control"
           id="postStatusTextArea"
+          aria-label="postStatusText"
           rows={10}
           placeholder="What's on your mind?"
           value={post}
