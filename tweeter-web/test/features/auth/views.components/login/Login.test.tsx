@@ -50,8 +50,8 @@ describe("Login View", () => {
     const originalUrl = "/original-url";
     const alias = "testuser";
     const password = "testpassword";
-    
     const rememberMe = false;
+    
     await user.type(aliasInput, alias);
     await user.type(passwordInput, password);
     expect(signInButton).toBeEnabled();
