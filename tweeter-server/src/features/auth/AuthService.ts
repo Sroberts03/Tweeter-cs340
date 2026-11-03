@@ -17,7 +17,7 @@ export class AuthService implements Service {
         const user = FakeData.instance.firstUser;
     
         if (user === null) {
-          throw new Error("Invalid alias or password");
+          throw new Error("[Bad Request] Invalid alias or password");
         }
     
         return [user, FakeData.instance.authToken];
@@ -39,7 +39,7 @@ export class AuthService implements Service {
         const user = FakeData.instance.firstUser;
 
         if (user === null) {
-            throw new Error("Invalid registration");
+            throw new Error("[Bad Request] Invalid registration");
         }
 
         return [user, FakeData.instance.authToken];
