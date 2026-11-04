@@ -1,8 +1,11 @@
 #!/bin/sh
 # Rebuilds the Lambda layer at ./layer/nodejs/node_modules.
 # tweeter-shared is copied in (not symlinked) so SAM can upload it.
-# Run from tweeter-server/. Re-run whenever tweeter-shared changes.
+# Can be run from any directory. Re-run whenever tweeter-shared changes.
 set -e
+
+# Always operate from tweeter-server/, regardless of where this was invoked.
+cd "$(dirname "$0")/.."
 
 SHARED=../tweeter-shared
 
