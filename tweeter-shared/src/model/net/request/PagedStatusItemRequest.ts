@@ -1,7 +1,7 @@
 import { StatusDto } from "../../dto/StatusDto";
-import { TweeterRequest } from "./TweeterRequest";
+import { AuthorizedRequest } from "./AuthorizedRequest";
 
-export interface PagedStatusItemRequest extends TweeterRequest {
+export interface PagedStatusItemRequest extends AuthorizedRequest {
   readonly userAlias: string;
   readonly pageSize: number;
   readonly lastItem: StatusDto | null;

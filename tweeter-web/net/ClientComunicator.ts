@@ -1,0 +1,123 @@
+import { TweeterRequest, TweeterResponse } from "tweeter-shared";
+
+type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+
+export class ClientCommunicator {
+  private SERVER_URL: string;
+
+  public constructor(SERVER_URL: string) {
+    this.SERVER_URL = SERVER_URL;
+  }
+
+  // GET requests can't carry a body (fetch throws if you give one), so pass
+  // any parameters in the endpoint as a path or query string.
+  public async doGet<RES extends TweeterResponse>(
+    endpoint: string,
+    headers?: Headers,
+  ): Promise<RES> {
+    return this.doRequest<TweeterRequest, RES>("GET", undefined, endpoint, headers);
+  }
+
+  public async doPost<REQ extends TweeterRequest, RES extends TweeterResponse>(
+    req: REQ | undefined,
+    endpoint: string,
+    headers?: Headers,
+  ): Promise<RES> {
+    return this.doRequest<REQ, RES>("POST", req, endpoint, headers);
+  }
+
+  public async doPut<REQ extends TweeterRequest, RES extends TweeterResponse>(
+    req: REQ | undefined,
+    endpoint: string,
+    headers?: Headers,
+  ): Promise<RES> {
+    return this.doRequest<REQ, RES>("PUT", req, endpoint, headers);
+  }
+
+  public async doPatch<REQ extends TweeterRequest, RES extends TweeterResponse>(
+    req: REQ | undefined,
+    endpoint: string,
+    headers?: Headers,
+  ): Promise<RES> {
+    return this.doRequest<REQ, RES>("PATCH", req, endpoint, headers);
+  }
+
+  public async doDelete<REQ extends TweeterRequest, RES extends TweeterResponse>(
+    req: REQ | undefined,
+    endpoint: string,
+    headers?: Headers,
+  ): Promise<RES> {
+    return this.doRequest<REQ, RES>("DELETE", req, endpoint, headers);
+  }
+
+  private async doRequest<
+    REQ extends TweeterRequest,
+    RES extends TweeterResponse,
+  >(
+    method: HttpMethod,
+    req: REQ | undefined,
+    endpoint: string,
+    headers?: Headers,
+  ): Promise<RES> {
+    if (headers && req) {
+      headers.append("Content-type", "application/json");
+    } else if (req) {
+      headers = new Headers({
+        "Content-type": "application/json",
+      });
+    }
+
+    console.log(`The request body is '${JSON.stringify(req)}'`);
+
+    const url = this.getUrl(endpoint);
+    const params = this.getParams(
+      method,
+      headers,
+      req ? JSON.stringify(req) : req,
+    );
+
+    console.log(`Fetching '${url}' with params '${JSON.stringify(params)}'`);
+
+    try {
+      const resp: Response = await fetch(url, params);
+
+      if (resp.ok) {
+        // Be careful with the return type here. resp.json() returns Promise<any> which means there is no type checking on response.
+        const response: RES = await resp.json();
+        return response;
+      } else {
+        const error = await resp.json();
+        throw new Error(error.errorMessage);
+      }
+    } catch (error) {
+      console.error(error);
+      throw new Error(
+        `Client communicator ${params.method} failed:\n${
+          (error as Error).message
+        }`,
+      );
+    }
+  }
+
+  private getUrl(endpoint: string): string {
+    return this.SERVER_URL + endpoint;
+  }
+
+  private getParams(
+    method: HttpMethod,
+    headers?: Headers,
+    body?: BodyInit,
+  ): RequestInit {
+    const params: RequestInit = { method: method };
+
+    if (headers) {
+      params.headers = headers;
+    }
+
+    if (body) {
+      params.body = body;
+    }
+
+    return params;
+  }
+}

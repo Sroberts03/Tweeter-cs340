@@ -1,0 +1,174 @@
+# Attribution Log
+
+## 2026-11-03 — DTOs and request/response types (Claude Code, Opus 5.5)
+
+**Prompt:** "Create all of my DTOs for all the lambdas."
+
+**What the AI did**
+
+Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambda handlers can exchange JSON:
+
+- `src/model/dto/` — `UserDto`, `AuthTokenDto`, `StatusDto` (no segments; `Status` rebuilds them from the post text)
+- `src/model/net/request/` — `TweeterRequest` (base, carries `token`), `LoginRequest`, `RegisterRequest`, `GetUserRequest`, `PagedUserItemRequest`, `PagedStatusItemRequest`, `PostStatusRequest`, `UserRequest`, `IsFollowerRequest`
+- `src/model/net/response/` — `TweeterResponse` (base, `success` + `message`), `AuthResponse`, `GetUserResponse`, `PagedItemResponse<T>`, `IsFollowerResponse`, `CountResponse`, `FollowResponse`
+- Added `dto` getters and `static fromDto()` to `User`, `AuthToken`, and `Status`
+- Exported all new types by name from `src/index.ts` (`export type`, since `isolatedModules` is on)
+
+**Lambda → types**
+
+| Lambda | Request | Response |
+|---|---|---|
+| Login | `LoginRequest` | `AuthResponse` |
+| Register | `RegisterRequest` | `AuthResponse` |
+| Logout | `TweeterRequest` | `TweeterResponse` |
+| GetUser | `GetUserRequest` | `GetUserResponse` |
+| GetFollowers / GetFollowees | `PagedUserItemRequest` | `PagedItemResponse<UserDto>` |
+| GetIsFollower | `IsFollowerRequest` | `IsFollowerResponse` |
+| GetFollowerCount / GetFolloweeCount | `UserRequest` | `CountResponse` |
+| Follow / Unfollow | `UserRequest` | `FollowResponse` |
+| GetFeed / GetStory | `PagedStatusItemRequest` | `PagedItemResponse<StatusDto>` |
+| PostStatus | `PostStatusRequest` | `TweeterResponse` |
+
+**Verified:** `tweeter-shared` compiles and `tweeter-server` typechecks against it.
+
+**Not done by AI:** handler implementations and service signature changes.
+
+## 2026-11-03 — Agent instructions (Claude Code, Opus 5.5)
+
+**Prompt:** "Update the Agents.md file to include that after every change made by an agent they update the AttributionLog with what they did. As well as to run npm run typecheck."
+
+**What the AI did:** Wrote `tweeter-server/Agents.md` (it was empty), requiring agents to run `npm run typecheck` (and `npm run compile` in `tweeter-shared` first when shared types change) and to add an entry to this log after every change.
+
+**Verified:** `npm run typecheck` passed.
+
+## 2026-11-03 — SAM template for the real project (Claude Code, Opus 5.5)
+
+**Prompt:** "update the template.yaml to represent my actual project"
+
+**What the AI did:** Rewrote the placeholder parts of `tweeter-server/template.yaml`:
+
+- Replaced the two example endpoints/functions with all 14 Lambdas, each a POST endpoint on `tweeterApi`: `/auth/login`, `/auth/register`, `/auth/logout`, `/user/get`, `/follower/list`, `/followee/list`, `/follower/count`, `/followee/count`, `/follower/status`, `/follow`, `/unfollow`, `/feed/list`, `/story/list`, `/status/post`
+- Handlers point at `features/<feature>/handlers/<Name>.<Name>` (e.g. `features/auth/handlers/Login.Login`), matching the existing `export const Login` convention
+- Replaced the example `visit` table with `user` (alias), `authtoken` (token), `story` (sender_alias + timestamp), and `feed` (receiver_alias + timestamp); kept `follow` with `follow_index`
+- Removed all TODO comments; left the commented-out Milestone 4 SQS sections in place
+
+**Verified:** `sam validate` passed; `npm run typecheck` passed. `sam validate --lint` warns only that `nodejs20.x` is deprecated.
+
+**Not done by AI:** each handler file must export a function with the same name as the file (most are still empty). The client's ServerFacade needs to use these paths. No S3 bucket for profile images was added.
+
+## 2026-11-03 — Handler export rename (Claude Code, Opus 5.5)
+
+**Prompt:** "Ok lets actually change these so its now something like Login.Handler"
+
+**What the AI did:** Changed all 14 `Handler:` entries in `tweeter-server/template.yaml` from `<Name>.<Name>` to `<Name>.handler` (e.g. `features/auth/handlers/Login.handler`). Renamed the export in `src/features/auth/handlers/Login.ts` from `Login` to `handler`.
+
+**Verified:** `sam validate` passed; `npm run typecheck` passed.
+
+**Not done by AI:** the other 13 handler files are still empty and each needs `export const handler = ...`.
+
+## 2026-11-03 — YAML editor warnings (Claude Code, Opus 5.5)
+
+**Prompt:** "whats with these error" (VS Code showing `Unresolved tag: !Ref` in `template.yaml`)
+
+**What the AI did:** Added `yaml.customTags` for the CloudFormation tags (`!Ref`, `!GetAtt`, `!Sub`, etc.) to `.vscode/settings.json` at the repo root. This is an editor setting only; the template was already valid.
+
+**Verified:** No code changed, so the typecheck wasn't needed.
+
+## 2026-11-03 — Error message format (Claude Code, Opus 5.5)
+
+**Prompt:** "lets change the spelling to be like Bad Request"
+
+**What the AI did:**
+- In `tweeter-server/template.yaml`, changed the API Gateway error patterns to `.*\[Bad Request\].*` (400), `.*\[Unauthorized\].*` (401), and `.*\[Internal Server Error\].*` (500). Before this, thrown `[Bad Request]` errors didn't match and came back as 200.
+- In `src/features/auth/AuthService.ts`, changed `"Invalid registration"` to `"[Bad Request] Invalid registration"` so it returns a 400.
+
+**Verified:** `sam validate` passed; `npm run typecheck` passed.
+
+**Not done by AI:** future errors must start with `[Bad Request]`, `[Unauthorized]`, or `[Internal Server Error]` (exact case, with brackets). The DTO serialization issue in `Login.ts` (returning `User`/`AuthToken` instead of `.dto`) is still unfixed.
+
+## 2026-11-04 — build-layer.sh working directory (Claude Code, Opus 5.5)
+
+**Prompt:** User ran `./build-layer.sh` from `tweeter-server/scripts/` and got `cd: ../tweeter-shared: No such file or directory`.
+
+**What the AI did:** In `tweeter-server/scripts/build-layer.sh`, added `cd "$(dirname "$0")/.."` before the build steps so the script always works from `tweeter-server/`, wherever it's called from. Updated the header comment to match.
+
+**Verified:** Only a shell script changed, so no TypeScript was affected. The AI didn't run the script after the change.
+
+**Not done by AI:** The student needs to re-run the script to confirm it builds the layer. The script runs `npm install`.
+
+**Note:** the AI didn't add this log entry when it made the change. It was added afterwards, at the student's request.
+
+## 2026-11-04 — Request/response base interfaces (Claude Code, Opus 5.5)
+
+**Prompt:** "change how the Tweeter response and tweeter request are set up and I just want them to be empty interfaces that all the req and res implement/extend. Then i need you to create an AuthorizedRequest that extends tweeterRequest and have all request that require a token extend the AuthorizedRequest"
+
+**What the AI did:**
+- `tweeter-shared/src/model/net/request/TweeterRequest.ts`: now an empty interface.
+- Created `tweeter-shared/src/model/net/request/AuthorizedRequest.ts` (extends `TweeterRequest`, adds `token`) and exported it from `tweeter-shared/src/index.ts`.
+- `LoginRequest` and `RegisterRequest` now extend `TweeterRequest`. `GetUserRequest`, `IsFollowerRequest`, `PagedUserItemRequest`, `PagedStatusItemRequest`, `PostStatusRequest` and `UserRequest` now extend `AuthorizedRequest`.
+- `tweeter-server/src/features/auth/handlers/Logout.ts` now takes an `AuthorizedRequest`.
+- `TweeterResponse` was briefly emptied too, then changed back in the next entry.
+
+**Verified:** `npm run compile` (shared) passed; `npm run typecheck` (server) passed; `tsc --noEmit` (web) passed.
+
+**Note:** the AI didn't add this log entry when it made the change. It was added afterwards, together with the next entry.
+
+## 2026-11-04 — Restore TweeterResponse fields; AuthFacade (Claude Code, Opus 5.5)
+
+**Prompt:** User shared an example facade (`getMoreFollowees`) that checks `response.success` / `response.message`, then chose "do number 1": put `success` and `message` back on `TweeterResponse` and write the facades in that style.
+
+**What the AI did:**
+- `tweeter-shared/src/model/net/response/TweeterResponse.ts`: brought back `success` and `message`, and later put back its original comment ("Logout and PostStatus return this directly"), which the AI had shortened by mistake. `TweeterRequest` is still empty.
+- `tweeter-server/src/features/auth/handlers/Login.ts`, `Register.ts`, `Logout.ts`: return `success: true` and a `message` again.
+- `tweeter-web/src/features/auth/facade.net/AuthFacade.ts`: rewrote it with `login`, `register` and `logout` in the style of the example. Login and register return `[User, AuthToken]` (converted from the DTOs). All three throw `response.message` when `success` is false.
+
+**Verified:** `npm run compile` (shared) passed; `npm run typecheck` (server) passed; `tsc --noEmit` (web) passed.
+
+**Not done by AI:**
+- `SERVER_URL` in `AuthFacade` is still `""`. It needs the API Gateway URL.
+- `template.yaml` maps `/auth/logout` to DELETE, but `ClientCommunicator.doPost` always sends POST, so logout won't reach its route. Either change the template to POST or give `ClientCommunicator` a way to choose the HTTP method. The same applies to the GET/DELETE routes for users, follows and feeds.
+- Nothing in `tweeter-web/src/features/auth/models.service/AuthService.ts` calls `AuthFacade` yet. It still returns `FakeData`.
+
+## 2026-11-04 — SERVER_URL from .env (Claude Code, Opus 5.5)
+
+**Prompt:** "make it so this `private SERVER_URL: string = "";` is getting the server url from the .env file"
+
+**What the AI did:**
+- `tweeter-web/src/features/auth/facade.net/AuthFacade.ts`: `SERVER_URL` now reads `import.meta.env.VITE_SERVER_URL`.
+- `tweeter-web/.env`: renamed the key `SERVER_URL` to `VITE_SERVER_URL`, because Vite only passes `VITE_`-prefixed variables to client code. The value is unchanged.
+- `tweeter-web/src/vite-env.d.ts`: added an `ImportMetaEnv` type for `VITE_SERVER_URL`.
+
+**Verified:** `npm run typecheck` (server) passed; `tsc --noEmit` (web) passed. The app and tests weren't run.
+
+**Not done by AI:**
+- Restart the Vite dev server so it picks up the renamed variable.
+- Jest may fail on `import.meta` in any test that imports `AuthFacade`, depending on the Babel config. If it does, pass the URL into the facade or mock the facade in those tests.
+
+**Note:** the AI didn't read `Agents.md` or add this log entry when it made the change. Both were done afterwards, at the student's request.
+
+## 2026-11-04 — Fix AuthService type errors (Claude Code, Opus 5.5)
+
+**Prompt:** "fix the erros in AuthService.ts"
+
+**What the AI did:** In `tweeter-web/src/features/auth/models.service/AuthService.ts`:
+- `logout` now sends `{ token: authToken.token }`. The old code sent `{ authToken }`, which isn't a field on `AuthorizedRequest`.
+- `register` now sends the base64 string (`imageStringBase64`) as `userImageBytes`. `RegisterRequest` expects a string, not a `Uint8Array`.
+- `register` now returns the auth token from the server. It used to return `FakeData.instance.authToken`. Also removed the `user === null` check, because `AuthFacade` already throws when it gets no user.
+- `AuthToken` is now imported from `tweeter-shared` instead of `tweeter-shared/dist/model/domain/AuthToken`. Removed the unused `FakeData` import.
+
+**Verified:** `tsc --noEmit` (web) passed; `npm run typecheck` (server) passed.
+
+**Not done by AI:** `SERVER_URL` must be set in `tweeter-web/.env`. `template.yaml` maps `/auth/logout` to DELETE, but `ClientCommunicator.doPost` sends POST, so the logout route may still not match. This hasn't been tested against a deployed API.
+
+## 2026-11-04 — Add GET/PUT/PATCH/DELETE to ClientCommunicator (Claude Code, Opus 5.5)
+
+**Prompt:** "I want you to add the other main HTTP request methods to my clientcommunicator"
+
+**What the AI did:** In `tweeter-web/net/ClientComunicator.ts`:
+- Moved the body of `doPost` into a private `doRequest(method, req, endpoint, headers)`. `doPost` keeps its old signature and now calls `doRequest`.
+- Added `doGet(endpoint, headers)`, `doPut`, `doPatch`, and `doDelete`. `doGet` takes no request body because `fetch` throws on a GET with a body, so GET parameters have to go in the endpoint path or query string. `doDelete` still accepts a body.
+- Added a `HttpMethod` type and used it for `getParams`.
+
+**Verified:** `npm run typecheck` (server) passed; `tsc --noEmit` (web) passed. Nothing was run against the API.
+
+**Not done by AI:** `AuthFacade` still calls `doPost` everywhere. Switch each call to the method that matches its route in `template.yaml`, for example `doDelete` for `/auth/logout`.

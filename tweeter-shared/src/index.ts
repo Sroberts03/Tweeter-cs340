@@ -11,6 +11,7 @@ export type { StatusDto } from "./model/dto/StatusDto";
 
 // Requests
 export type { TweeterRequest } from "./model/net/request/TweeterRequest";
+export type { AuthorizedRequest } from "./model/net/request/AuthorizedRequest";
 export type { LoginRequest } from "./model/net/request/LoginRequest";
 export type { RegisterRequest } from "./model/net/request/RegisterRequest";
 export type { GetUserRequest } from "./model/net/request/GetUserRequest";
