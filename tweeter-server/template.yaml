@@ -373,7 +373,7 @@ Resources:
           Properties:
             RestApiId: !Ref tweeterApi
             Path: /auth/logout
-            Method: POST
+            Method: DELETE
 
 
   # Users
@@ -390,7 +390,7 @@ Resources:
           Properties:
             RestApiId: !Ref tweeterApi
             Path: /user/get
-            Method: POST
+            Method: GET
 
 
   # Social (followers / followees)
@@ -407,7 +407,7 @@ Resources:
           Properties:
             RestApiId: !Ref tweeterApi
             Path: /follower/list
-            Method: POST
+            Method: GET
 
   getFolloweesFunction:
     Type: AWS::Serverless::Function
@@ -421,7 +421,7 @@ Resources:
           Properties:
             RestApiId: !Ref tweeterApi
             Path: /followee/list
-            Method: POST
+            Method: GET
 
   getFollowerCountFunction:
     Type: AWS::Serverless::Function
@@ -435,7 +435,7 @@ Resources:
           Properties:
             RestApiId: !Ref tweeterApi
             Path: /follower/count
-            Method: POST
+            Method: GET
 
   getFolloweeCountFunction:
     Type: AWS::Serverless::Function
@@ -449,7 +449,7 @@ Resources:
           Properties:
             RestApiId: !Ref tweeterApi
             Path: /followee/count
-            Method: POST
+            Method: GET
 
   getIsFollowerFunction:
     Type: AWS::Serverless::Function
@@ -463,7 +463,7 @@ Resources:
           Properties:
             RestApiId: !Ref tweeterApi
             Path: /follower/status
-            Method: POST
+            Method: GET
 
   followFunction:
     Type: AWS::Serverless::Function
@@ -491,7 +491,7 @@ Resources:
           Properties:
             RestApiId: !Ref tweeterApi
             Path: /unfollow
-            Method: POST
+            Method: DELETE
 
 
   # Statuses (feed / story)
@@ -508,7 +508,7 @@ Resources:
           Properties:
             RestApiId: !Ref tweeterApi
             Path: /feed/list
-            Method: POST
+            Method: GET
 
   getStoryFunction:
     Type: AWS::Serverless::Function
@@ -522,7 +522,7 @@ Resources:
           Properties:
             RestApiId: !Ref tweeterApi
             Path: /story/list
-            Method: POST
+            Method: GET
 
   postStatusFunction:
     Type: AWS::Serverless::Function
