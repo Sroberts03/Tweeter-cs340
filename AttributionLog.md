@@ -172,3 +172,30 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 **Verified:** `npm run typecheck` (server) passed; `tsc --noEmit` (web) passed. Nothing was run against the API.
 
 **Not done by AI:** `AuthFacade` still calls `doPost` everywhere. Switch each call to the method that matches its route in `template.yaml`, for example `doDelete` for `/auth/logout`.
+
+## 2026-11-04 — Fix logout CORS 403 (Claude Code, Opus 5.5)
+
+**Prompt:** "why am i getting this error" (logout failed with "Client communicator DELETE failed: Load failed". The browser console showed a 403 and "not allowed by Access-Control-Allow-Origin".)
+
+**Cause:** the client sends DELETE to `/auth/logout`, but the swagger `DefinitionBody` in `template.yaml` only defined `post:` for that path. API Gateway returned its own 403, and that response has no CORS header, so the browser blocked it.
+
+**What the AI did:** `tweeter-server/template.yaml`: changed `/auth/logout` from `post:` to `delete:` in the swagger section. The integration's `httpMethod: POST` stays the same, because Lambda is always invoked with POST.
+
+**Verified:** `npm run typecheck` (server) passed. The stack wasn't redeployed.
+
+**Not done by AI:**
+- Run `sam build && sam deploy`.
+- The `Events` blocks list GET for the read routes and DELETE for `/unfollow`, but the swagger defines all of them as `post:`. Those routes work for now because the client sends POST. If you switch any of them, change the swagger method too. GET routes would also need their parameters moved from the request body into the URL.
+
+## 2026-11-04 — Switch all endpoints to POST, per the spec (Claude Code, Opus 5.5)
+
+**Prompt:** The student pasted the milestone spec, which recommends using POST for every endpoint and sending auth info in the JSON body.
+
+**What the AI did:**
+- `tweeter-server/template.yaml`: changed `/auth/logout` in the swagger section back to `post:`, which reverses the previous entry. Also changed every function `Events` `Method:` from GET or DELETE to POST, so the event methods match the swagger. All 14 routes are now POST.
+- `tweeter-web/src/features/auth/facade.net/AuthFacade.ts`: `logout` calls `doPost` again instead of `doDelete`.
+- Left `doGet`, `doPut`, `doPatch` and `doDelete` in `ClientComunicator.ts`. Nothing calls them now.
+
+**Verified:** `npm run typecheck` (server) passed; `tsc --noEmit` (web) passed. The stack wasn't redeployed.
+
+**Not done by AI:** Run `sam build && sam deploy`. You can delete the unused `ClientCommunicator` methods if you don't want them.

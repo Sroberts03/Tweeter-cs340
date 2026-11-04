@@ -9,45 +9,12 @@ export class ClientCommunicator {
     this.SERVER_URL = SERVER_URL;
   }
 
-  // GET requests can't carry a body (fetch throws if you give one), so pass
-  // any parameters in the endpoint as a path or query string.
-  public async doGet<RES extends TweeterResponse>(
-    endpoint: string,
-    headers?: Headers,
-  ): Promise<RES> {
-    return this.doRequest<TweeterRequest, RES>("GET", undefined, endpoint, headers);
-  }
-
   public async doPost<REQ extends TweeterRequest, RES extends TweeterResponse>(
     req: REQ | undefined,
     endpoint: string,
     headers?: Headers,
   ): Promise<RES> {
     return this.doRequest<REQ, RES>("POST", req, endpoint, headers);
-  }
-
-  public async doPut<REQ extends TweeterRequest, RES extends TweeterResponse>(
-    req: REQ | undefined,
-    endpoint: string,
-    headers?: Headers,
-  ): Promise<RES> {
-    return this.doRequest<REQ, RES>("PUT", req, endpoint, headers);
-  }
-
-  public async doPatch<REQ extends TweeterRequest, RES extends TweeterResponse>(
-    req: REQ | undefined,
-    endpoint: string,
-    headers?: Headers,
-  ): Promise<RES> {
-    return this.doRequest<REQ, RES>("PATCH", req, endpoint, headers);
-  }
-
-  public async doDelete<REQ extends TweeterRequest, RES extends TweeterResponse>(
-    req: REQ | undefined,
-    endpoint: string,
-    headers?: Headers,
-  ): Promise<RES> {
-    return this.doRequest<REQ, RES>("DELETE", req, endpoint, headers);
   }
 
   private async doRequest<
