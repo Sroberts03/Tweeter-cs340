@@ -1,8 +1,10 @@
 import {
   PagedItemRequest,
   PagedItemResponse,
+  PostStatusRequest,
   Status,
   StatusDto,
+  TweeterResponse,
 } from "tweeter-shared";
 import { ClientCommunicator } from "../../../../net/ClientComunicator";
 
@@ -33,6 +35,23 @@ export class PostFacade {
 
     return this.handlePostResponse(response);
   }
+
+  public async postStatus(
+    request: PostStatusRequest,
+  ): Promise<TweeterResponse> {
+    const response = await this.clientCommunicator.doPost<
+      PostStatusRequest,
+      TweeterResponse
+    >(request, "/status/post");
+
+    if (!response.success) {
+      console.error(response);
+      throw new Error(response.message ?? undefined);
+    }
+
+    return response;
+  }
+
   private handlePostResponse(
     response: PagedItemResponse<StatusDto>,
   ): [Status[], boolean] {

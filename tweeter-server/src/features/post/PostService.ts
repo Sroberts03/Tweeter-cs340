@@ -25,7 +25,7 @@ export class PostService implements Service {
   }
 
   public async postStatus(
-    authToken: AuthToken,
+    authToken: string,
     newStatus: Status,
   ): Promise<void> {
     // Pause so we can see the logging out message. Remove when connected to the server
