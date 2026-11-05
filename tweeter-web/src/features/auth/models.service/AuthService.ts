@@ -6,7 +6,7 @@ import { AuthFacade } from "../facade.net/AuthFacade";
 export class AuthService implements Service {
     public async logout (authToken: AuthToken): Promise<void> {
         const facade = new AuthFacade();
-        await facade.logout({ token: authToken.token });
+        await facade.logout({ authToken: authToken.toDto() });
     };
 
     public async login (

@@ -1,14 +1,14 @@
-import { PagedItemRequest, PagedItemResponse, Status, StatusDto } from "tweeter-shared";
+import { AuthToken, PagedItemRequest, PagedItemResponse, Status, StatusDto } from "tweeter-shared";
 import { PostService } from "../PostService";
 
 export const handler = async (
   req: PagedItemRequest<StatusDto>,
 ): Promise<PagedItemResponse<StatusDto>> => {
-  const { token, userAlias, pageSize, lastItem } = req;
+  const { authToken, userAlias, pageSize, lastItem } = req;
 
   const postService = new PostService();
   const [statuses, hasMorePages] = await postService.loadMoreFeedItems(
-    token,
+    AuthToken.fromDto(authToken)!,
     userAlias,
     pageSize,
     Status.fromDto(lastItem),

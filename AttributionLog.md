@@ -252,3 +252,19 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 **Verified:** `tsc --noEmit` (web) passed; `npm run typecheck` (server) passed. The stack wasn't redeployed and the fix wasn't tested in the browser.
 
 **Not done by AI:** Run `sam build && sam deploy` if `getFeedFunction` and the new GetFeed handler code haven't been deployed yet. Story should call `/story/list` and posting should call `/status/post`.
+
+## 2026-11-05 — Send auth token as an AuthTokenDto (Claude Code, Opus 5.5)
+
+**Prompt:** "fix how im passing the auth token from client to server and make it so we have a authtoken dto and have a authToken.toDto method"
+
+**What the AI did:**
+- `tweeter-shared/src/model/domain/AuthToken.ts`: replaced the `dto` getter with a `toDto()` method. `AuthTokenDto` and `AuthToken.fromDto` already existed.
+- `tweeter-shared/src/model/net/request/AuthorizedRequest.ts`: `token: string` is now `authToken: AuthTokenDto`, so every authorized request sends the full token (string and timestamp).
+- `tweeter-web/src/features/post/models.service/StatusService.ts`, `tweeter-web/src/features/auth/models.service/AuthService.ts`: these now send `authToken: authToken.toDto()`.
+- `tweeter-server/src/features/post/handlers/{GetFeed,GetStory,PostStatus}.ts`, `tweeter-server/src/features/auth/handlers/Logout.ts`: these rebuild the token with `AuthToken.fromDto(req.authToken)!`.
+- `tweeter-server/src/features/auth/handlers/{Login,Register}.ts`: these use `authToken.toDto()`.
+- `tweeter-server/src/features/post/PostService.ts`, `tweeter-server/src/features/auth/AuthService.ts`: these now take `authToken: AuthToken` instead of `string`.
+
+**Verified:** `npm run compile` (shared) passed; `npm run typecheck` (server) passed; `tsc --noEmit` (web) passed.
+
+**Not done by AI:** The social and user handlers aren't written yet. When you write them, read the token from `req.authToken` and convert it with `AuthToken.fromDto`. Redeploy (`sam build && sam deploy`) so the Lambdas expect the new request shape. Nothing was run end to end.

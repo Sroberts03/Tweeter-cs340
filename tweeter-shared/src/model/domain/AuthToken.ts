@@ -64,7 +64,7 @@ export class AuthToken {
     return JSON.stringify(this);
   }
 
-  public get dto(): AuthTokenDto {
+  public toDto(): AuthTokenDto {
     return { token: this.token, timestamp: this.timestamp };
   }
 

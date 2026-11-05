@@ -5,7 +5,7 @@ import { Service } from "../../Service";
 
 export class PostService implements Service {
   public async loadMoreStoryItems(
-    authToken: string,
+    authToken: AuthToken,
     userAlias: string,
     pageSize: number,
     lastItem: Status | null,
@@ -15,7 +15,7 @@ export class PostService implements Service {
   }
 
   public async loadMoreFeedItems(
-    authToken: string,
+    authToken: AuthToken,
     userAlias: string,
     pageSize: number,
     lastItem: Status | null,
@@ -25,7 +25,7 @@ export class PostService implements Service {
   }
 
   public async postStatus(
-    authToken: string,
+    authToken: AuthToken,
     newStatus: Status,
   ): Promise<void> {
     // Pause so we can see the logging out message. Remove when connected to the server

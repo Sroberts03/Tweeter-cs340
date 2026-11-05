@@ -14,7 +14,7 @@ export class StatusService implements Service {
   ): Promise<[Status[], boolean]> {
     const facade = new PostFacade();
     return facade.loadMoreStoryItems({
-      token: authToken.token,
+      authToken: authToken.toDto(),
       userAlias,
       pageSize,
       lastItem: lastItem?.dto ?? null,
@@ -29,7 +29,7 @@ export class StatusService implements Service {
   ): Promise<[Status[], boolean]> {
     const facade = new PostFacade();
     return facade.loadMoreFeedItems({
-      token: authToken.token,
+      authToken: authToken.toDto(),
       userAlias,
       pageSize,
       lastItem: lastItem?.dto ?? null,
@@ -42,7 +42,7 @@ export class StatusService implements Service {
   ): Promise<TweeterResponse> {
     const facade = new PostFacade();
     return facade.postStatus({
-      token: authToken.token,
+      authToken: authToken.toDto(),
       newStatus: newStatus.dto,
     });
   }

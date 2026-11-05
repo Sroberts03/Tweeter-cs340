@@ -13,7 +13,7 @@ export const handler = async (req: RegisterRequest): Promise<AuthResponse> => {
   );
   return {
     user: user.dto,
-    authToken: authToken.dto,
+    authToken: authToken.toDto(),
     success: true,
     message: "Registration successful",
   };
