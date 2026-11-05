@@ -268,3 +268,30 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 **Verified:** `npm run compile` (shared) passed; `npm run typecheck` (server) passed; `tsc --noEmit` (web) passed.
 
 **Not done by AI:** The social and user handlers aren't written yet. When you write them, read the token from `req.authToken` and convert it with `AuthToken.fromDto`. Redeploy (`sam build && sam deploy`) so the Lambdas expect the new request shape. Nothing was run end to end.
+
+## 2026-11-05 — Fix "authToken.toDto is not a function" on login (Claude Code, Opus 5.5)
+
+**Prompt:** "help with this error" (a screenshot of the deployed Login Lambda returning `TypeError: authToken.toDto is not a function`)
+
+**Cause:** The Lambda layer at `tweeter-server/layer/` still held an old build of `tweeter-shared` in which `AuthToken` had a `dto` getter instead of the new `toDto()` method. The handler code that was deployed called `toDto()`, but the layer didn't have it.
+
+**What the AI did:**
+- Ran `npm run build:layer` in `tweeter-server/`, which rebuilt `tweeter-server/layer/nodejs/node_modules/tweeter-shared` from the current shared source. No source files were changed.
+
+**Verified:** The rebuilt layer's `AuthToken.js` now defines `toDto()`. `npm run typecheck` (server) passed.
+
+**Not done by AI:** Run `sam build && sam deploy` to upload the new layer and point the functions at the new layer version, then try logging in again.
+
+## 2026-11-05 — Fix "undefined undefined" when opening a user from their alias (Claude Code, Opus 5.5)
+
+**Prompt:** "ok now when i get a user by clicking on their tag I'm getting this. that needs to be fixed" (a screenshot of the profile card showing "undefined undefined" and no image)
+
+**Cause:** Domain objects were being sent over the network instead of DTOs. `JSON.stringify` writes their private fields (`_firstName`, `_token`, ...), so the receiving side's `fromDto` read `undefined` for every field. TypeScript didn't catch this because `User` and `AuthToken` have getters with the same names as the DTO fields, so they pass as DTOs structurally.
+
+**What the AI did:**
+- `tweeter-server/src/features/user/handlers/GetUser.ts`: the handler now returns `user: user ? user.dto : null` instead of the `User` object.
+- `tweeter-web/src/model.service/UserService.ts`: the request now sends `authToken: authToken.toDto()` instead of the `AuthToken` object.
+
+**Verified:** `npm run typecheck` (server) passed. `tsc --noEmit` (web) passed. Not tested in the browser.
+
+**Not done by AI:** Redeploy the server (`npm run compile && sam build && sam deploy` in `tweeter-server/`). When you write the other handlers, return `.dto` / `.toDto()` and never the domain objects.
