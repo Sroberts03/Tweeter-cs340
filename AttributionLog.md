@@ -199,3 +199,56 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 **Verified:** `npm run typecheck` (server) passed; `tsc --noEmit` (web) passed. The stack wasn't redeployed.
 
 **Not done by AI:** Run `sam build && sam deploy`. You can delete the unused `ClientCommunicator` methods if you don't want them.
+
+## 2026-11-05 — Fix type errors in GetFeed handler (Claude Code, Opus 5.5)
+
+**Prompt:** "fix the error in GetFeed"
+
+**Cause:** `GetFeed.ts` passed the request's `lastItem` (a `StatusDto`) to `PostService.loadMoreFeedItems`, which expects a `Status` domain object. The handler's return type was also written as `PagedItemResponse<Status>` without a `Promise`, which an async function can't have, and it returned `Status` objects instead of DTOs.
+
+**What the AI did:** `tweeter-server/src/features/post/handlers/GetFeed.ts`: converts `lastItem` with `Status.fromDto(...)`, maps the returned statuses to `status.dto`, and changes the return type to `Promise<PagedItemResponse<StatusDto>>`.
+
+**Verified:** `npm run typecheck` (server) passed.
+
+**Not done by AI:** `GetStory.ts` is still empty; it will need the same DTO conversions. `PostService.loadMoreStoryItems` still takes an `AuthToken`, while `loadMoreFeedItems` now takes a `string`.
+
+## 2026-11-05 — Fix errors after merging paged request types (Claude Code, Opus 5.5)
+
+**Prompt:** "help with these errors" (the screenshot showed `Cannot find module './model/net/request/PagedItemRequest'` in `tweeter-shared/src/index.ts`.)
+
+**Cause:** The student replaced `PagedStatusItemRequest` and `PagedUserItemRequest` with one generic `PagedItemRequest<T>`. The shared source compiled fine; the index.ts error came from the editor's TS server still holding the old file list. `GetFeed.ts` used `PagedItemRequest` without importing it, and the server was checking against a `dist` that hadn't been rebuilt.
+
+**What the AI did:**
+- `tweeter-shared/src/model/net/request/PagedItemRequest.ts`: removed the unused `StatusDto` import.
+- `tweeter-server/src/features/post/handlers/GetFeed.ts`: added `PagedItemRequest` to the `tweeter-shared` import.
+- Ran `npm run compile` in `tweeter-shared/` so `dist` includes the new type.
+
+**Verified:** `npm run typecheck` (server) passed.
+
+**Not done by AI:** If VS Code still shows the error, run "TypeScript: Restart TS Server". The social handlers (GetFollowers/GetFollowees) will need `PagedItemRequest<UserDto>` when you implement them.
+
+## 2026-11-05 — Fix type error in PostFacade (Claude Code, Opus 5.5)
+
+**Prompt:** "help fix the error in PostFacade"
+
+**Cause:** `PostFacade` typed the request and response as `PagedItemRequest<Status>` / `PagedItemResponse<Status>`, but what goes over the network is `StatusDto`. `Status.fromDto` returns `Status | null`, so mapping the response produced `(Status | null)[]`, which isn't assignable to `Status[]`. `StatusService` was also sending the `Status` object itself as `lastItem`. JSON-serialized, its fields come out as `_post`, `_user`, and so on, which the server would misread.
+
+**What the AI did:**
+- `tweeter-web/src/features/post/facade.net/PostFacade.ts`: changed the request and response types to use `StatusDto`, and added a non-null assertion on `Status.fromDto(statusDto)!`, because the items in the response are never null.
+- `tweeter-web/src/features/post/models.service/StatusService.ts`: sends `lastItem: lastItem?.dto ?? null`.
+
+**Verified:** `tsc --noEmit` (web) passed; `npm run typecheck` (server) passed.
+
+**Not done by AI:** Story loading and posting a status still use FakeData or TODOs. Nothing was deployed or run end to end.
+
+## 2026-11-05 — Fix feed request 403 / CORS error (Claude Code, Opus 5.5)
+
+**Prompt:** "im getting this error..." (screenshot: the feed failed to load with "Client communicator POST failed: Load failed". The console showed "Preflight response is not successful. Status code: 403" for `/Stage/post/feed`.)
+
+**Cause:** The client requested `/post/feed`, but `template.yaml` defines the feed route as `/feed/list`. API Gateway returned its own 403 for the unknown path, and that response has no CORS headers, so the browser reported it as a CORS failure.
+
+**What the AI did:** `tweeter-web/src/features/post/facade.net/PostFacade.ts`: the base URL is now `SERVER_URL` (it dropped `/post`), and the request path is now `/feed/list`.
+
+**Verified:** `tsc --noEmit` (web) passed; `npm run typecheck` (server) passed. The stack wasn't redeployed and the fix wasn't tested in the browser.
+
+**Not done by AI:** Run `sam build && sam deploy` if `getFeedFunction` and the new GetFeed handler code haven't been deployed yet. Story should call `/story/list` and posting should call `/status/post`.

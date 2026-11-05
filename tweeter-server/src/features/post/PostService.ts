@@ -15,7 +15,7 @@ export class PostService implements Service {
   }
 
   public async loadMoreFeedItems(
-    authToken: AuthToken,
+    authToken: string,
     userAlias: string,
     pageSize: number,
     lastItem: Status | null,

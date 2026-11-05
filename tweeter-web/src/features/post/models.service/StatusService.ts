@@ -2,6 +2,7 @@ import { AuthToken } from "tweeter-shared/dist/model/domain/AuthToken";
 import { Status } from "tweeter-shared/dist/model/domain/Status";
 import { FakeData } from "tweeter-shared/dist/util/FakeData";
 import { Service } from "../../../model.service/Service";
+import { PostFacade } from "../facade.net/PostFacade";
 
 export class StatusService implements Service {
   public async loadMoreStoryItems(
@@ -20,8 +21,13 @@ export class StatusService implements Service {
     pageSize: number,
     lastItem: Status | null,
   ): Promise<[Status[], boolean]> {
-    // TODO: Replace with the result of calling server
-    return FakeData.instance.getPageOfStatuses(lastItem, pageSize);
+    const facade = new PostFacade();
+    return facade.loadMoreFeedItems({
+      token: authToken.token,
+      userAlias,
+      pageSize,
+      lastItem: lastItem?.dto ?? null,
+    });
   }
 
   public async postStatus(

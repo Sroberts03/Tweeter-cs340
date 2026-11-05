@@ -12,14 +12,14 @@ import { ClientCommunicator } from "tweeter-web/net/ClientComunicator";
 export class AuthFacade {
   private SERVER_URL: string = import.meta.env.VITE_SERVER_URL;
   private clientCommunicator: ClientCommunicator = new ClientCommunicator(
-    this.SERVER_URL,
+    this.SERVER_URL + "/auth",
   );
 
   public async login(request: LoginRequest): Promise<[User, AuthToken]> {
     const response = await this.clientCommunicator.doPost<
       LoginRequest,
       AuthResponse
-    >(request, "/auth/login");
+    >(request, "/login");
 
     return this.handleAuthResponse(response);
   }
@@ -28,7 +28,7 @@ export class AuthFacade {
     const response = await this.clientCommunicator.doPost<
       RegisterRequest,
       AuthResponse
-    >(request, "/auth/register");
+    >(request, "/register");
 
     return this.handleAuthResponse(response);
   }
@@ -37,7 +37,7 @@ export class AuthFacade {
     const response = await this.clientCommunicator.doPost<
       AuthorizedRequest,
       TweeterResponse
-    >(request, "/auth/logout");
+    >(request, "/logout");
 
     // Handle errors
     if (!response.success) {
