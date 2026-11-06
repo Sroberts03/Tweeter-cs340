@@ -1,4 +1,4 @@
-import { FollowResponse, UserRequest } from "tweeter-shared";
+import { CountResponse, FollowResponse, UserRequest } from "tweeter-shared";
 import { ClientCommunicator } from "../../../../net/ClientComunicator";
 
 export class SocialFacade {
@@ -16,6 +16,24 @@ export class SocialFacade {
     >(request, "/follow");
 
     return this.handleFollowResponse(response);
+  }
+
+  public async getFolloweeCount(request: UserRequest): Promise<number> {
+    const response = await this.clientCommunicator.doPost<
+      UserRequest,
+      CountResponse
+    >(request, "/followee/count");
+
+    return this.handleCountResponse(response);
+  }
+
+  private handleCountResponse(response: CountResponse): number {
+    if (!response.success) {
+      console.error(response);
+      throw new Error(response.message ?? undefined);
+    }
+
+    return response.count;
   }
 
   private handleFollowResponse(
