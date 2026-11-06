@@ -334,3 +334,16 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 **Verified:** `npm run typecheck` (server) passed. `tsc --noEmit` (web) passed. Not tested in the browser.
 
 **Not done by AI:** `template.yaml` already routes `/followee/count` to this handler. Redeploy with `npm run compile && sam build && sam deploy`. GetFollowerCount can reuse `handleCountResponse` with the route `/follower/count`.
+
+## 2026-11-06 — Implement GetFollowees end to end (Claude Code, Opus 5.5)
+
+**Prompt:** "ok get followees next"
+
+**What the AI did:**
+- `tweeter-server/src/features/social/handlers/GetFollowees.ts` (was empty): the Lambda handler takes a `PagedItemRequest<UserDto>`, calls `SocialService.loadMoreFollowees` with `AuthToken.fromDto` / `User.fromDto(lastItem)`, and returns a `PagedItemResponse<UserDto>` built from `user.dto`. This mirrors `GetFeed`.
+- `tweeter-web/src/features/social/facade.net/SocialFacade.ts`: added `loadMoreFollowees(request)`, which POSTs to `/followee/list`, and a shared `handlePagedUserResponse` helper that maps the DTOs back to `User` objects.
+- `tweeter-web/src/features/social/models.service/SocialService.ts`: `loadMoreFollowees()` now calls the facade with `authToken.toDto()` and `lastUser?.dto ?? null` instead of FakeData.
+
+**Verified:** `npm run typecheck` (server) passed. `tsc --noEmit` (web) passed. Not tested in the browser.
+
+**Not done by AI:** `template.yaml` already routes `/followee/list` to this handler. Redeploy with `npm run compile && sam build && sam deploy`. GetFollowers can reuse `handlePagedUserResponse` with the route `/follower/list`.

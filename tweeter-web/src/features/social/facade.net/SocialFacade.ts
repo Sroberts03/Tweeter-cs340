@@ -1,4 +1,12 @@
-import { CountResponse, FollowResponse, UserRequest } from "tweeter-shared";
+import {
+  CountResponse,
+  FollowResponse,
+  PagedItemRequest,
+  PagedItemResponse,
+  User,
+  UserDto,
+  UserRequest,
+} from "tweeter-shared";
 import { ClientCommunicator } from "../../../../net/ClientComunicator";
 
 export class SocialFacade {
@@ -6,6 +14,17 @@ export class SocialFacade {
   private clientCommunicator: ClientCommunicator = new ClientCommunicator(
     this.SERVER_URL,
   );
+
+  public async loadMoreFollowees(
+    request: PagedItemRequest<UserDto>,
+  ): Promise<[User[], boolean]> {
+    const response = await this.clientCommunicator.doPost<
+      PagedItemRequest<UserDto>,
+      PagedItemResponse<UserDto>
+    >(request, "/followee/list");
+
+    return this.handlePagedUserResponse(response);
+  }
 
   public async follow(
     request: UserRequest,
@@ -25,6 +44,18 @@ export class SocialFacade {
     >(request, "/followee/count");
 
     return this.handleCountResponse(response);
+  }
+
+  private handlePagedUserResponse(
+    response: PagedItemResponse<UserDto>,
+  ): [User[], boolean] {
+    if (!response.success) {
+      console.error(response);
+      throw new Error(response.message ?? undefined);
+    }
+
+    const users: User[] = response.items.map((userDto) => User.fromDto(userDto)!);
+    return [users, response.hasMore];
   }
 
   private handleCountResponse(response: CountResponse): number {
