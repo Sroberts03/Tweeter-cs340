@@ -1,8 +1,8 @@
 import { User } from "tweeter-shared";
 import { PageItemPresenter } from "../../../presenter/PageItemPresenter";
-import { FollowService } from "../models.service/FollowService";
-export abstract class UserItemPresenter extends PageItemPresenter<User, FollowService> {
-    protected serviceFactory(): FollowService {
-        return new FollowService();
+import { SocialService } from "../models.service/SocialService";
+export abstract class UserItemPresenter extends PageItemPresenter<User, SocialService> {
+    protected serviceFactory(): SocialService {
+        return new SocialService();
     }
 }

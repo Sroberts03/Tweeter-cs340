@@ -295,3 +295,29 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 **Verified:** `npm run typecheck` (server) passed. `tsc --noEmit` (web) passed. Not tested in the browser.
 
 **Not done by AI:** Redeploy the server (`npm run compile && sam build && sam deploy` in `tweeter-server/`). When you write the other handlers, return `.dto` / `.toDto()` and never the domain objects.
+
+## 2026-11-06 — Implement Follow end to end (Claude Code, Opus 5.5)
+
+**Prompt:** "set up the follow function. Make sure to follow the same structure as the other functions. You can see an example of this through the get post function"
+
+**What the AI did:**
+- `tweeter-server/src/features/social/handlers/Follow.ts` (was empty): the Lambda handler takes a `UserRequest`, converts it with `AuthToken.fromDto` / `User.fromDto`, calls `SocialService.follow`, and returns a `FollowResponse` with `followerCount` and `followeeCount`.
+- `tweeter-web/src/features/social/facade.net/FollowFacade.ts` (new): `follow(request)` POSTs to `/follow`, throws if `success` is false, and returns `[followerCount, followeeCount]`. This mirrors `PostFacade` and `UserFacade`.
+- `tweeter-web/src/features/social/models.service/FollowService.ts`: `follow()` now calls `FollowFacade` with `authToken.toDto()` and `userToFollow.dto`, replacing the fake delay and the local count lookups.
+
+**Verified:** `npm run typecheck` (server) passed. `tsc --noEmit` (web) passed. Not tested in the browser.
+
+**Not done by AI:** `SocialService.follow` on the server still uses FakeData, which is expected for this milestone. `template.yaml` already routes `/follow` to `features/social/handlers/Follow.handler`. Redeploy with `npm run compile && sam build && sam deploy` in `tweeter-server/`. Unfollow still needs the same treatment.
+
+## 2026-11-06 — Rename FollowService/FollowFacade to SocialService/SocialFacade (Claude Code, Opus 5.5)
+
+**Prompt:** "change the names from followservice and followfacade to SocialService and SocialFacade"
+
+**What the AI did:**
+- Renamed `tweeter-web/src/features/social/models.service/FollowService.ts` → `SocialService.ts` (class `SocialService`).
+- Renamed `tweeter-web/src/features/social/facade.net/FollowFacade.ts` → `SocialFacade.ts` (class `SocialFacade`).
+- Updated imports and usages in `tweeter-web/src/features/social/presenters/UserInfoPresenter.ts` and `UserItemPresenter.ts`. In `UserInfoPresenter`, the field `followService` is now `socialService`.
+
+**Verified:** `npm run typecheck` (server) passed. `tsc --noEmit` (web) passed.
+
+**Not done by AI:** Nothing.

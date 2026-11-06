@@ -1,5 +1,5 @@
 import { AuthToken, User } from "tweeter-shared";
-import { FollowService } from "../models.service/FollowService";
+import { SocialService } from "../models.service/SocialService";
 import { MessageView, Presenter, View } from "../../../presenter/Presenter";
 
 export interface UserInfoView extends MessageView {
@@ -12,11 +12,11 @@ export interface UserInfoView extends MessageView {
 }
 
 export class UserInfoPresenter extends Presenter<UserInfoView> {
-  private followService: FollowService;
+  private socialService: SocialService;
 
   constructor(view: UserInfoView) {
     super(view);
-    this.followService = new FollowService();
+    this.socialService = new SocialService();
   }
 
   public async setIsFollowerStatus(
@@ -29,7 +29,7 @@ export class UserInfoPresenter extends Presenter<UserInfoView> {
         this.view.setIsFollower(false);
       } else {
         this.view.setIsFollower(
-          await this.followService.getIsFollowerStatus(
+          await this.socialService.getIsFollowerStatus(
             authToken,
             currentUser,
             displayedUser,
@@ -45,7 +45,7 @@ export class UserInfoPresenter extends Presenter<UserInfoView> {
   ): Promise<void> {
     this.doFailureReportingOperation(async () => {
       this.view.setFolloweeCount(
-        await this.followService.getFolloweeCount(authToken, displayedUser),
+        await this.socialService.getFolloweeCount(authToken, displayedUser),
       );
     }, "get followees count");
   }
@@ -56,7 +56,7 @@ export class UserInfoPresenter extends Presenter<UserInfoView> {
   ): Promise<void> {
     this.doFailureReportingOperation(async () => {
       this.view.setFollowerCount(
-        await this.followService.getFollowerCount(authToken, displayedUser),
+        await this.socialService.getFollowerCount(authToken, displayedUser),
       );
     }, "get followers count");
   }
@@ -84,7 +84,7 @@ export class UserInfoPresenter extends Presenter<UserInfoView> {
           0,
         );
 
-        const [followerCount, followeeCount] = await this.followService.follow(
+        const [followerCount, followeeCount] = await this.socialService.follow(
           authToken,
           displayedUser,
         );
@@ -115,7 +115,7 @@ export class UserInfoPresenter extends Presenter<UserInfoView> {
         );
 
         const [followerCount, followeeCount] =
-          await this.followService.unfollow(authToken, displayedUser);
+          await this.socialService.unfollow(authToken, displayedUser);
 
         this.view.setIsFollower(false);
         this.view.setFollowerCount(followerCount);
