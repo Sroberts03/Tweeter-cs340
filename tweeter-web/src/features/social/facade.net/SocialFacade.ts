@@ -46,6 +46,15 @@ export class SocialFacade {
     return this.handleCountResponse(response);
   }
 
+  public async getFollowerCount(request: UserRequest): Promise<number> {
+    const response = await this.clientCommunicator.doPost<
+      UserRequest,
+      CountResponse
+    >(request, "/follower/count");
+
+    return this.handleCountResponse(response);
+  }
+
   private handlePagedUserResponse(
     response: PagedItemResponse<UserDto>,
   ): [User[], boolean] {

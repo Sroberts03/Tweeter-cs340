@@ -347,3 +347,16 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 **Verified:** `npm run typecheck` (server) passed. `tsc --noEmit` (web) passed. Not tested in the browser.
 
 **Not done by AI:** `template.yaml` already routes `/followee/list` to this handler. Redeploy with `npm run compile && sam build && sam deploy`. GetFollowers can reuse `handlePagedUserResponse` with the route `/follower/list`.
+
+## 2026-11-06 — Implement GetFollowerCount end to end (Claude Code, Opus 5.5)
+
+**Prompt:** "ok next getFollowercount"
+
+**What the AI did:**
+- `tweeter-server/src/features/social/handlers/GetFollowerCount.ts` (was empty): the Lambda handler takes a `UserRequest`, calls `SocialService.getFollowerCount`, and returns a `CountResponse`.
+- `tweeter-web/src/features/social/facade.net/SocialFacade.ts`: added `getFollowerCount(request)`, which POSTs to `/follower/count` and reuses `handleCountResponse`.
+- `tweeter-web/src/features/social/models.service/SocialService.ts`: `getFollowerCount()` now calls the facade with `authToken.toDto()` and `user.dto` instead of FakeData.
+
+**Verified:** `npm run typecheck` (server) passed. `tsc --noEmit` (web) passed. Not tested in the browser.
+
+**Not done by AI:** `template.yaml` already routes `/follower/count` to this handler. Redeploy with `npm run compile && sam build && sam deploy`.
