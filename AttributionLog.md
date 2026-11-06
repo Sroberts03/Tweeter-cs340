@@ -373,3 +373,16 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 **Verified:** `npm run typecheck` (server) passed. `tsc --noEmit` (web) passed. Not tested in the browser.
 
 **Not done by AI:** `template.yaml` already routes `/follower/list` to this handler. Redeploy with `npm run compile && sam build && sam deploy`. GetIsFollower and Unfollow still use FakeData on the web side.
+
+## 2026-11-06 — Implement GetIsFollower end to end (Claude Code, Opus 5.5)
+
+**Prompt:** "ok next lets do getisfollowe"
+
+**What the AI did:**
+- `tweeter-server/src/features/social/handlers/GetIsFollower.ts` (was empty): the Lambda handler takes an `IsFollowerRequest`, rebuilds the token, `user` and `selectedUser` with `fromDto`, calls `SocialService.getIsFollowerStatus`, and returns an `IsFollowerResponse`.
+- `tweeter-web/src/features/social/facade.net/SocialFacade.ts`: added `getIsFollowerStatus(request)`, which POSTs to `/follower/status`, throws if `success` is false, and returns `isFollower`.
+- `tweeter-web/src/features/social/models.service/SocialService.ts`: `getIsFollowerStatus()` now calls the facade with `authToken.toDto()`, `user.dto` and `selectedUser.dto` instead of FakeData.
+
+**Verified:** `npm run typecheck` (server) passed. `tsc --noEmit` (web) passed. Not tested in the browser.
+
+**Not done by AI:** `template.yaml` already routes `/follower/status` to this handler. Redeploy with `npm run compile && sam build && sam deploy`. Unfollow still uses FakeData on the web side.

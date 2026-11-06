@@ -40,8 +40,12 @@ export class SocialService implements Service {
         user: User,
         selectedUser: User
       ): Promise<boolean> {
-        // TODO: Replace with the result of calling server
-        return FakeData.instance.isFollower();
+        const facade = new SocialFacade();
+        return facade.getIsFollowerStatus({
+          authToken: authToken.toDto(),
+          user: user.dto,
+          selectedUser: selectedUser.dto,
+        });
       };
 
       public async getFolloweeCount(
