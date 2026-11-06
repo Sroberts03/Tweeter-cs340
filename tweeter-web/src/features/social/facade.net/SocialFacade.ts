@@ -84,6 +84,17 @@ export class SocialFacade {
     return response.isFollower;
   }
 
+  public async unfollow(
+    request: UserRequest,
+  ): Promise<[followerCount: number, followeeCount: number]> {
+    const response = await this.clientCommunicator.doPost<
+      UserRequest,
+      FollowResponse
+    >(request, "/unfollow");
+
+    return this.handleFollowResponse(response);
+  }
+
   private handlePagedUserResponse(
     response: PagedItemResponse<UserDto>,
   ): [User[], boolean] {

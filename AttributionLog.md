@@ -386,3 +386,16 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 **Verified:** `npm run typecheck` (server) passed. `tsc --noEmit` (web) passed. Not tested in the browser.
 
 **Not done by AI:** `template.yaml` already routes `/follower/status` to this handler. Redeploy with `npm run compile && sam build && sam deploy`. Unfollow still uses FakeData on the web side.
+
+## 2026-11-06 — Implement Unfollow end to end (Claude Code, Opus 5.5)
+
+**Prompt:** "ok set up unfollow now"
+
+**What the AI did:**
+- `tweeter-server/src/features/social/handlers/Unfollow.ts` (was empty): the Lambda handler takes a `UserRequest`, calls `SocialService.unfollow`, and returns a `FollowResponse` with `followerCount` and `followeeCount`. This mirrors `Follow`.
+- `tweeter-web/src/features/social/facade.net/SocialFacade.ts`: added `unfollow(request)`, which POSTs to `/unfollow` and reuses `handleFollowResponse`.
+- `tweeter-web/src/features/social/models.service/SocialService.ts`: `unfollow()` now calls the facade, replacing the fake delay and the local count lookups. Removed the unused `FakeData` import, since every web social method now calls the server.
+
+**Verified:** `npm run typecheck` (server) passed. `tsc --noEmit` (web) passed. Not tested in the browser.
+
+**Not done by AI:** `template.yaml` already routes `/unfollow` to this handler. Redeploy with `npm run compile && sam build && sam deploy`. The server's `SocialService` still uses FakeData, which is expected for this milestone.
