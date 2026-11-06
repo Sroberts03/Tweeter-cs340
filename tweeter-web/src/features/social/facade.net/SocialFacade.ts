@@ -15,6 +15,17 @@ export class SocialFacade {
     this.SERVER_URL,
   );
 
+  public async loadMoreFollowers(
+    request: PagedItemRequest<UserDto>,
+  ): Promise<[User[], boolean]> {
+    const response = await this.clientCommunicator.doPost<
+      PagedItemRequest<UserDto>,
+      PagedItemResponse<UserDto>
+    >(request, "/follower/list");
+
+    return this.handlePagedUserResponse(response);
+  }
+
   public async loadMoreFollowees(
     request: PagedItemRequest<UserDto>,
   ): Promise<[User[], boolean]> {

@@ -11,8 +11,13 @@ export class SocialService implements Service {
         pageSize: number,
         lastUser: User | null
       ): Promise<[User[], boolean]> {
-        // TODO: Replace with the result of calling server
-        return FakeData.instance.getPageOfUsers(lastUser, pageSize, userAlias);
+        const facade = new SocialFacade();
+        return facade.loadMoreFollowers({
+          authToken: authToken.toDto(),
+          userAlias,
+          pageSize,
+          lastItem: lastUser?.dto ?? null,
+        });
       };
 
       public async loadMoreFollowees(
