@@ -54,7 +54,7 @@ export class ClientCommunicator {
         return response;
       } else {
         const error = await resp.json();
-        throw new Error(error.errorMessage);
+        throw new Error(error.error);
       }
     } catch (error) {
       console.error(error);

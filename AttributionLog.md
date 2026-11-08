@@ -399,3 +399,14 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 **Verified:** `npm run typecheck` (server) passed. `tsc --noEmit` (web) passed. Not tested in the browser.
 
 **Not done by AI:** `template.yaml` already routes `/unfollow` to this handler. Redeploy with `npm run compile && sam build && sam deploy`. The server's `SocialService` still uses FakeData, which is expected for this milestone.
+
+## 2026-11-06 — Add API method descriptions (Claude Code, Opus 5.5)
+
+**Prompt:** "fix 1 for me" (add a description to each API Gateway method so it shows up in the exported Swagger file, as Milestone 3 requires)
+
+**What the AI did:**
+- `tweeter-server/template.yaml`: added a `summary` and a `description` under `post:` for all 14 paths: `/auth/login`, `/auth/register`, `/auth/logout`, `/user/get`, `/follower/list`, `/followee/list`, `/follower/count`, `/followee/count`, `/follower/status`, `/follow`, `/unfollow`, `/feed/list`, `/story/list` and `/status/post`.
+
+**Verified:** `npm run typecheck` (server) passed. `sam validate --lint` found no problems with the change. It still shows the existing warning that the `nodejs20.x` runtime is deprecated.
+
+**Not done by AI:** Redeploy with `npm run compile && sam build && sam deploy`. Then, in the API Gateway console, open Documentation, click "Publish Documentation", pick the stage, enter a version, and publish. Export the Swagger file and check that the descriptions are there.

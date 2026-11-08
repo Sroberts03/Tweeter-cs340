@@ -1,6 +1,5 @@
 import { AuthToken } from "tweeter-shared/dist/model/domain/AuthToken";
 import { Status } from "tweeter-shared/dist/model/domain/Status";
-import { FakeData } from "tweeter-shared/dist/util/FakeData";
 import { Service } from "../../../model.service/Service";
 import { PostFacade } from "../facade.net/PostFacade";
 import { TweeterResponse } from "tweeter-shared/dist/model/net/response/TweeterResponse";
