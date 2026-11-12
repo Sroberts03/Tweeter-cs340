@@ -410,3 +410,31 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 **Verified:** `npm run typecheck` (server) passed. `sam validate --lint` found no problems with the change. It still shows the existing warning that the `nodejs20.x` runtime is deprecated.
 
 **Not done by AI:** Redeploy with `npm run compile && sam build && sam deploy`. Then, in the API Gateway console, open Documentation, click "Publish Documentation", pick the stage, enter a version, and publish. Export the Swagger file and check that the descriptions are there.
+
+## 2026-11-07 — Integration tests for the server facades and StatusService (Claude Code, Opus 5.5)
+
+**Prompt:** Implement the Milestone 3 automated tests. Write Jest integration tests for the client-side server facade covering Register, GetFollowers, and GetFollowerCount/GetFolloweeCount. Write a Jest integration test showing that StatusService loads story pages successfully. Use `isomorphic-fetch`.
+
+**What the AI did:**
+- `tweeter-web/test/net/ServerFacade.test.ts` (new): integration tests against the deployed API through `AuthFacade` and `SocialFacade`.
+  - `register` returns Allen Anderson and a valid `AuthToken`.
+  - `loadMoreFollowers` returns the expected first page and the expected next page. Both are compared to `FakeData.getPageOfUsers`.
+  - `getFollowerCount` and `getFolloweeCount` return integers from 1 to 10.
+- `tweeter-web/test/features/post/models.service/StatusService.test.ts` (new): `StatusService.loadMoreStoryItems` returns statuses that exactly match `FakeData.getPageOfStatuses`, for the first page and the next page.
+- `tweeter-web/test/importMetaTransformer.js` (new): a ts-jest AST transformer. The facades read `import.meta.env.VITE_SERVER_URL`, which Jest's CommonJS output can't handle, so the transformer replaces `import.meta` with `{ env: {...} }` using the values in `tweeter-web/.env`. It uses ts-jest's own TypeScript instance. The `ts-jest-mock-import-meta` package was tried first and removed, because npm hoisted it next to TypeScript 5.4 while ts-jest uses tweeter-web's TypeScript 4.9, so it never matched.
+- `tweeter-web/package.json`: added the `isomorphic-fetch` dev dependency. The ts-jest transform now uses the transformer above and ignores diagnostic TS1343.
+
+**Verified:** `npx jest` (web) passed: 6 suites, 23 tests, including the 7 new integration tests against the live API Gateway stage. `npm run typecheck` (server) passed.
+
+**Not done by AI:** These tests call the deployed server, so it must be deployed and reachable. They depend on FakeData and will need updating once real data replaces it.
+
+## 2026-11-07 — Make the VS Code Jest extension use tweeter-web's config (Claude Code, Opus 5.5)
+
+**Prompt:** The user pasted a failure from the VS Code Jest extension. `StatusService.test.ts` failed with "Missing semicolon" at a non-null assertion (`!`).
+
+**What the AI did:**
+- `.vscode/settings.json` (new): set `"jest.rootPath": "tweeter-web"` and `"jest.jestCommandLine": "npx jest"`. The extension had been running Jest from the repo root, where there is no Jest or Babel config. Babel therefore parsed the TypeScript test without TypeScript support and stopped at the `!`. With this setting, the extension uses the ts-jest config in `tweeter-web/package.json`.
+
+**Verified:** `npx jest` (web) passed all 7 integration tests. `npm run typecheck` (server) passed. Not checked inside the VS Code extension itself.
+
+**Not done by AI:** Restart the Jest extension in VS Code so it picks up the new setting.
