@@ -452,3 +452,15 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 **Verified:** `npm run typecheck` (server) passed. The diagram was checked visually.
 
 **Not done by AI:** Redeploy (`npm run compile && sam build && sam deploy`). Publish the documentation in the API Gateway console (Documentation → Publish Documentation → stage `prod`). Export the Swagger file (Stages → prod → Export → Swagger + API Gateway extensions). Zip the project without `node_modules`/`dist` (for example `git archive -o tweeter.zip HEAD` after committing). Upload everything to Canvas.
+
+## 2026-11-17 — Fix `sam deploy` S3 AccessDenied (Claude Code, Opus 5.5)
+
+**Prompt:** The user pasted a `sam deploy` failure: "Unable to upload artifact ../../layer referenced by ContentUri parameter of tweeterLayer resource ... (AccessDenied) when calling the PutObject operation".
+
+**What the AI did:**
+- Found that the `default` AWS CLI profile belongs to a different account. That account has no `tweeter-server` stack, no API and no access to the `srober29-cs340-sam` bucket. The `cs340` profile owns the bucket, the stack and the `tweeterApi` (`vef6u4ati7`).
+- `tweeter-server/samconfig.toml`: added `profile = "cs340"` under `[default.deploy.parameters]`, so `sam deploy` uses the right account.
+
+**Verified:** `npm run typecheck` (server) passed. Using the `cs340` profile, the AI confirmed that the bucket is reachable and the stack exists. The AI did not run the deploy.
+
+**Not done by AI:** Run `sam build && sam deploy` again. The other `aws` commands, such as the Swagger export, still default to the other account unless you pass `--profile cs340`.

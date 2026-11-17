@@ -4,6 +4,7 @@ version = 0.1
 stack_name = "tweeter-server"
 s3_bucket = "srober29-cs340-sam"
 region = "us-east-1"
+profile = "cs340"
 confirm_changeset = true
 capabilities = "CAPABILITY_NAMED_IAM"
 image_repositories = []
