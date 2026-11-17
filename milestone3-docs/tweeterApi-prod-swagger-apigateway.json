@@ -1,0 +1,2762 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "version" : "1.0",
+    "title" : "tweeterApi"
+  },
+  "host" : "vef6u4ati7.execute-api.us-east-1.amazonaws.com",
+  "basePath" : "/prod",
+  "schemes" : [ "https" ],
+  "paths" : {
+    "/auth/login" : {
+      "post" : {
+        "summary" : "Sign in a user",
+        "description" : "Signs in a user with an alias and password. Returns the user and a new auth token.",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "uri" : "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:710271918659:function:loginFunction/invocations",
+          "httpMethod" : "POST",
+          "responses" : {
+            "default" : {
+              "statusCode" : "200",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              }
+            },
+            ".*\\[Unauthorized\\].*" : {
+              "statusCode" : "401",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            },
+            ".*\\[Bad Request\\].*" : {
+              "statusCode" : "400",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            },
+            ".*\\[Internal Server Error\\].*" : {
+              "statusCode" : "500",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "$input.json('$')"
+          },
+          "passthroughBehavior" : "when_no_match",
+          "type" : "aws"
+        }
+      },
+      "options" : {
+        "summary" : "CORS support",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Default response for CORS method",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "responses" : {
+            "default" : {
+              "statusCode" : "200",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Methods" : "'GET,POST,PUT,DELETE'",
+                "method.response.header.Access-Control-Allow-Headers" : "'*'",
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{}\n"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "{\n  \"statusCode\" : 200\n}\n"
+          },
+          "passthroughBehavior" : "when_no_match",
+          "type" : "mock"
+        }
+      }
+    },
+    "/auth/logout" : {
+      "post" : {
+        "summary" : "Sign out a user",
+        "description" : "Signs out the user and invalidates the given auth token.",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "uri" : "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:710271918659:function:logoutFunction/invocations",
+          "httpMethod" : "POST",
+          "responses" : {
+            "default" : {
+              "statusCode" : "200",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              }
+            },
+            ".*\\[Unauthorized\\].*" : {
+              "statusCode" : "401",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            },
+            ".*\\[Bad Request\\].*" : {
+              "statusCode" : "400",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            },
+            ".*\\[Internal Server Error\\].*" : {
+              "statusCode" : "500",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "$input.json('$')"
+          },
+          "passthroughBehavior" : "when_no_match",
+          "type" : "aws"
+        }
+      },
+      "options" : {
+        "summary" : "CORS support",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Default response for CORS method",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "responses" : {
+            "default" : {
+              "statusCode" : "200",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Methods" : "'GET,POST,PUT,DELETE'",
+                "method.response.header.Access-Control-Allow-Headers" : "'*'",
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{}\n"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "{\n  \"statusCode\" : 200\n}\n"
+          },
+          "passthroughBehavior" : "when_no_match",
+          "type" : "mock"
+        }
+      }
+    },
+    "/auth/register" : {
+      "post" : {
+        "summary" : "Register a new user",
+        "description" : "Creates a new user account from first name, last name, alias, password, and profile image. Returns the user and a new auth token.",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "uri" : "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:710271918659:function:registerFunction/invocations",
+          "httpMethod" : "POST",
+          "responses" : {
+            "default" : {
+              "statusCode" : "200",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              }
+            },
+            ".*\\[Unauthorized\\].*" : {
+              "statusCode" : "401",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            },
+            ".*\\[Bad Request\\].*" : {
+              "statusCode" : "400",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            },
+            ".*\\[Internal Server Error\\].*" : {
+              "statusCode" : "500",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "$input.json('$')"
+          },
+          "passthroughBehavior" : "when_no_match",
+          "type" : "aws"
+        }
+      },
+      "options" : {
+        "summary" : "CORS support",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Default response for CORS method",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "responses" : {
+            "default" : {
+              "statusCode" : "200",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Methods" : "'GET,POST,PUT,DELETE'",
+                "method.response.header.Access-Control-Allow-Headers" : "'*'",
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{}\n"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "{\n  \"statusCode\" : 200\n}\n"
+          },
+          "passthroughBehavior" : "when_no_match",
+          "type" : "mock"
+        }
+      }
+    },
+    "/feed/list" : {
+      "post" : {
+        "summary" : "Get a page of feed statuses",
+        "description" : "Returns a paginated list of statuses posted by the users the given user follows, plus whether more pages exist. Requires an auth token.",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "uri" : "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:710271918659:function:getFeedFunction/invocations",
+          "httpMethod" : "POST",
+          "responses" : {
+            "default" : {
+              "statusCode" : "200",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              }
+            },
+            ".*\\[Unauthorized\\].*" : {
+              "statusCode" : "401",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            },
+            ".*\\[Bad Request\\].*" : {
+              "statusCode" : "400",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            },
+            ".*\\[Internal Server Error\\].*" : {
+              "statusCode" : "500",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "$input.json('$')"
+          },
+          "passthroughBehavior" : "when_no_match",
+          "type" : "aws"
+        }
+      },
+      "options" : {
+        "summary" : "CORS support",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Default response for CORS method",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "responses" : {
+            "default" : {
+              "statusCode" : "200",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Methods" : "'GET,POST,PUT,DELETE'",
+                "method.response.header.Access-Control-Allow-Headers" : "'*'",
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{}\n"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "{\n  \"statusCode\" : 200\n}\n"
+          },
+          "passthroughBehavior" : "when_no_match",
+          "type" : "mock"
+        }
+      }
+    },
+    "/follow" : {
+      "post" : {
+        "summary" : "Follow a user",
+        "description" : "Makes the signed-in user follow the given user. Returns the updated follower and followee counts. Requires an auth token.",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "uri" : "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:710271918659:function:followFunction/invocations",
+          "httpMethod" : "POST",
+          "responses" : {
+            "default" : {
+              "statusCode" : "200",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              }
+            },
+            ".*\\[Unauthorized\\].*" : {
+              "statusCode" : "401",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            },
+            ".*\\[Bad Request\\].*" : {
+              "statusCode" : "400",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            },
+            ".*\\[Internal Server Error\\].*" : {
+              "statusCode" : "500",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "$input.json('$')"
+          },
+          "passthroughBehavior" : "when_no_match",
+          "type" : "aws"
+        }
+      },
+      "options" : {
+        "summary" : "CORS support",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Default response for CORS method",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "responses" : {
+            "default" : {
+              "statusCode" : "200",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Methods" : "'GET,POST,PUT,DELETE'",
+                "method.response.header.Access-Control-Allow-Headers" : "'*'",
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{}\n"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "{\n  \"statusCode\" : 200\n}\n"
+          },
+          "passthroughBehavior" : "when_no_match",
+          "type" : "mock"
+        }
+      }
+    },
+    "/followee/count" : {
+      "post" : {
+        "summary" : "Get followee count",
+        "description" : "Returns the number of users the given user follows. Requires an auth token.",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "uri" : "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:710271918659:function:getFolloweeCountFunction/invocations",
+          "httpMethod" : "POST",
+          "responses" : {
+            "default" : {
+              "statusCode" : "200",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              }
+            },
+            ".*\\[Unauthorized\\].*" : {
+              "statusCode" : "401",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            },
+            ".*\\[Bad Request\\].*" : {
+              "statusCode" : "400",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            },
+            ".*\\[Internal Server Error\\].*" : {
+              "statusCode" : "500",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "$input.json('$')"
+          },
+          "passthroughBehavior" : "when_no_match",
+          "type" : "aws"
+        }
+      },
+      "options" : {
+        "summary" : "CORS support",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Default response for CORS method",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "responses" : {
+            "default" : {
+              "statusCode" : "200",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Methods" : "'GET,POST,PUT,DELETE'",
+                "method.response.header.Access-Control-Allow-Headers" : "'*'",
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{}\n"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "{\n  \"statusCode\" : 200\n}\n"
+          },
+          "passthroughBehavior" : "when_no_match",
+          "type" : "mock"
+        }
+      }
+    },
+    "/followee/list" : {
+      "post" : {
+        "summary" : "Get a page of followees",
+        "description" : "Returns a paginated list of the users the given user follows, plus whether more pages exist. Requires an auth token.",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "uri" : "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:710271918659:function:getFolloweesFunction/invocations",
+          "httpMethod" : "POST",
+          "responses" : {
+            "default" : {
+              "statusCode" : "200",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              }
+            },
+            ".*\\[Unauthorized\\].*" : {
+              "statusCode" : "401",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            },
+            ".*\\[Bad Request\\].*" : {
+              "statusCode" : "400",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            },
+            ".*\\[Internal Server Error\\].*" : {
+              "statusCode" : "500",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "$input.json('$')"
+          },
+          "passthroughBehavior" : "when_no_match",
+          "type" : "aws"
+        }
+      },
+      "options" : {
+        "summary" : "CORS support",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Default response for CORS method",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "responses" : {
+            "default" : {
+              "statusCode" : "200",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Methods" : "'GET,POST,PUT,DELETE'",
+                "method.response.header.Access-Control-Allow-Headers" : "'*'",
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{}\n"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "{\n  \"statusCode\" : 200\n}\n"
+          },
+          "passthroughBehavior" : "when_no_match",
+          "type" : "mock"
+        }
+      }
+    },
+    "/follower/count" : {
+      "post" : {
+        "summary" : "Get follower count",
+        "description" : "Returns the number of followers the given user has. Requires an auth token.",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "uri" : "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:710271918659:function:getFollowerCountFunction/invocations",
+          "httpMethod" : "POST",
+          "responses" : {
+            "default" : {
+              "statusCode" : "200",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              }
+            },
+            ".*\\[Unauthorized\\].*" : {
+              "statusCode" : "401",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            },
+            ".*\\[Bad Request\\].*" : {
+              "statusCode" : "400",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            },
+            ".*\\[Internal Server Error\\].*" : {
+              "statusCode" : "500",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "$input.json('$')"
+          },
+          "passthroughBehavior" : "when_no_match",
+          "type" : "aws"
+        }
+      },
+      "options" : {
+        "summary" : "CORS support",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Default response for CORS method",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "responses" : {
+            "default" : {
+              "statusCode" : "200",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Methods" : "'GET,POST,PUT,DELETE'",
+                "method.response.header.Access-Control-Allow-Headers" : "'*'",
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{}\n"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "{\n  \"statusCode\" : 200\n}\n"
+          },
+          "passthroughBehavior" : "when_no_match",
+          "type" : "mock"
+        }
+      }
+    },
+    "/follower/list" : {
+      "post" : {
+        "summary" : "Get a page of followers",
+        "description" : "Returns a paginated list of the users who follow the given user, plus whether more pages exist. Requires an auth token.",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "uri" : "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:710271918659:function:getFollowersFunction/invocations",
+          "httpMethod" : "POST",
+          "responses" : {
+            "default" : {
+              "statusCode" : "200",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              }
+            },
+            ".*\\[Unauthorized\\].*" : {
+              "statusCode" : "401",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            },
+            ".*\\[Bad Request\\].*" : {
+              "statusCode" : "400",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            },
+            ".*\\[Internal Server Error\\].*" : {
+              "statusCode" : "500",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "$input.json('$')"
+          },
+          "passthroughBehavior" : "when_no_match",
+          "type" : "aws"
+        }
+      },
+      "options" : {
+        "summary" : "CORS support",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Default response for CORS method",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "responses" : {
+            "default" : {
+              "statusCode" : "200",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Methods" : "'GET,POST,PUT,DELETE'",
+                "method.response.header.Access-Control-Allow-Headers" : "'*'",
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{}\n"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "{\n  \"statusCode\" : 200\n}\n"
+          },
+          "passthroughBehavior" : "when_no_match",
+          "type" : "mock"
+        }
+      }
+    },
+    "/follower/status" : {
+      "post" : {
+        "summary" : "Get follower status",
+        "description" : "Returns whether one user follows another user. Requires an auth token.",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "uri" : "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:710271918659:function:getIsFollowerFunction/invocations",
+          "httpMethod" : "POST",
+          "responses" : {
+            "default" : {
+              "statusCode" : "200",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              }
+            },
+            ".*\\[Unauthorized\\].*" : {
+              "statusCode" : "401",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            },
+            ".*\\[Bad Request\\].*" : {
+              "statusCode" : "400",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            },
+            ".*\\[Internal Server Error\\].*" : {
+              "statusCode" : "500",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "$input.json('$')"
+          },
+          "passthroughBehavior" : "when_no_match",
+          "type" : "aws"
+        }
+      },
+      "options" : {
+        "summary" : "CORS support",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Default response for CORS method",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "responses" : {
+            "default" : {
+              "statusCode" : "200",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Methods" : "'GET,POST,PUT,DELETE'",
+                "method.response.header.Access-Control-Allow-Headers" : "'*'",
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{}\n"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "{\n  \"statusCode\" : 200\n}\n"
+          },
+          "passthroughBehavior" : "when_no_match",
+          "type" : "mock"
+        }
+      }
+    },
+    "/status/post" : {
+      "post" : {
+        "summary" : "Post a status",
+        "description" : "Posts a new status for the signed-in user. Requires an auth token.",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "uri" : "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:710271918659:function:postStatusFunction/invocations",
+          "httpMethod" : "POST",
+          "responses" : {
+            "default" : {
+              "statusCode" : "200",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              }
+            },
+            ".*\\[Unauthorized\\].*" : {
+              "statusCode" : "401",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            },
+            ".*\\[Bad Request\\].*" : {
+              "statusCode" : "400",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            },
+            ".*\\[Internal Server Error\\].*" : {
+              "statusCode" : "500",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "$input.json('$')"
+          },
+          "passthroughBehavior" : "when_no_match",
+          "type" : "aws"
+        }
+      },
+      "options" : {
+        "summary" : "CORS support",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Default response for CORS method",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "responses" : {
+            "default" : {
+              "statusCode" : "200",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Methods" : "'GET,POST,PUT,DELETE'",
+                "method.response.header.Access-Control-Allow-Headers" : "'*'",
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{}\n"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "{\n  \"statusCode\" : 200\n}\n"
+          },
+          "passthroughBehavior" : "when_no_match",
+          "type" : "mock"
+        }
+      }
+    },
+    "/story/list" : {
+      "post" : {
+        "summary" : "Get a page of story statuses",
+        "description" : "Returns a paginated list of statuses posted by the given user, plus whether more pages exist. Requires an auth token.",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "uri" : "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:710271918659:function:getStoryFunction/invocations",
+          "httpMethod" : "POST",
+          "responses" : {
+            "default" : {
+              "statusCode" : "200",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              }
+            },
+            ".*\\[Unauthorized\\].*" : {
+              "statusCode" : "401",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            },
+            ".*\\[Bad Request\\].*" : {
+              "statusCode" : "400",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            },
+            ".*\\[Internal Server Error\\].*" : {
+              "statusCode" : "500",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "$input.json('$')"
+          },
+          "passthroughBehavior" : "when_no_match",
+          "type" : "aws"
+        }
+      },
+      "options" : {
+        "summary" : "CORS support",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Default response for CORS method",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "responses" : {
+            "default" : {
+              "statusCode" : "200",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Methods" : "'GET,POST,PUT,DELETE'",
+                "method.response.header.Access-Control-Allow-Headers" : "'*'",
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{}\n"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "{\n  \"statusCode\" : 200\n}\n"
+          },
+          "passthroughBehavior" : "when_no_match",
+          "type" : "mock"
+        }
+      }
+    },
+    "/unfollow" : {
+      "post" : {
+        "summary" : "Unfollow a user",
+        "description" : "Makes the signed-in user stop following the given user. Returns the updated follower and followee counts. Requires an auth token.",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "uri" : "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:710271918659:function:unfollowFunction/invocations",
+          "httpMethod" : "POST",
+          "responses" : {
+            "default" : {
+              "statusCode" : "200",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              }
+            },
+            ".*\\[Unauthorized\\].*" : {
+              "statusCode" : "401",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            },
+            ".*\\[Bad Request\\].*" : {
+              "statusCode" : "400",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            },
+            ".*\\[Internal Server Error\\].*" : {
+              "statusCode" : "500",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "$input.json('$')"
+          },
+          "passthroughBehavior" : "when_no_match",
+          "type" : "aws"
+        }
+      },
+      "options" : {
+        "summary" : "CORS support",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Default response for CORS method",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "responses" : {
+            "default" : {
+              "statusCode" : "200",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Methods" : "'GET,POST,PUT,DELETE'",
+                "method.response.header.Access-Control-Allow-Headers" : "'*'",
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{}\n"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "{\n  \"statusCode\" : 200\n}\n"
+          },
+          "passthroughBehavior" : "when_no_match",
+          "type" : "mock"
+        }
+      }
+    },
+    "/user/get" : {
+      "post" : {
+        "summary" : "Get a user",
+        "description" : "Returns the user with the given alias. Requires an auth token.",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "uri" : "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:710271918659:function:getUserFunction/invocations",
+          "httpMethod" : "POST",
+          "responses" : {
+            "default" : {
+              "statusCode" : "200",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              }
+            },
+            ".*\\[Unauthorized\\].*" : {
+              "statusCode" : "401",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            },
+            ".*\\[Bad Request\\].*" : {
+              "statusCode" : "400",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            },
+            ".*\\[Internal Server Error\\].*" : {
+              "statusCode" : "500",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{ \"error\": \"$input.path('$.errorMessage')\" }"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "$input.json('$')"
+          },
+          "passthroughBehavior" : "when_no_match",
+          "type" : "aws"
+        }
+      },
+      "options" : {
+        "summary" : "CORS support",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Default response for CORS method",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "responses" : {
+            "default" : {
+              "statusCode" : "200",
+              "responseParameters" : {
+                "method.response.header.Access-Control-Allow-Methods" : "'GET,POST,PUT,DELETE'",
+                "method.response.header.Access-Control-Allow-Headers" : "'*'",
+                "method.response.header.Access-Control-Allow-Origin" : "'*'"
+              },
+              "responseTemplates" : {
+                "application/json" : "{}\n"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "{\n  \"statusCode\" : 200\n}\n"
+          },
+          "passthroughBehavior" : "when_no_match",
+          "type" : "mock"
+        }
+      }
+    }
+  },
+  "x-amazon-apigateway-documentation" : {
+    "version" : "3",
+    "createdDate" : "2026-11-17T18:46:20Z",
+    "documentationParts" : [ {
+      "location" : {
+        "type" : "METHOD",
+        "path" : "/auth/login",
+        "method" : "OPTIONS"
+      },
+      "properties" : {
+        "summary" : "CORS support"
+      }
+    }, {
+      "location" : {
+        "type" : "METHOD",
+        "path" : "/auth/login",
+        "method" : "POST"
+      },
+      "properties" : {
+        "summary" : "Sign in a user",
+        "description" : "Signs in a user with an alias and password. Returns the user and a new auth token."
+      }
+    }, {
+      "location" : {
+        "type" : "METHOD",
+        "path" : "/auth/logout",
+        "method" : "OPTIONS"
+      },
+      "properties" : {
+        "summary" : "CORS support"
+      }
+    }, {
+      "location" : {
+        "type" : "METHOD",
+        "path" : "/auth/logout",
+        "method" : "POST"
+      },
+      "properties" : {
+        "summary" : "Sign out a user",
+        "description" : "Signs out the user and invalidates the given auth token."
+      }
+    }, {
+      "location" : {
+        "type" : "METHOD",
+        "path" : "/auth/register",
+        "method" : "OPTIONS"
+      },
+      "properties" : {
+        "summary" : "CORS support"
+      }
+    }, {
+      "location" : {
+        "type" : "METHOD",
+        "path" : "/auth/register",
+        "method" : "POST"
+      },
+      "properties" : {
+        "summary" : "Register a new user",
+        "description" : "Creates a new user account from first name, last name, alias, password, and profile image. Returns the user and a new auth token."
+      }
+    }, {
+      "location" : {
+        "type" : "METHOD",
+        "path" : "/feed/list",
+        "method" : "OPTIONS"
+      },
+      "properties" : {
+        "summary" : "CORS support"
+      }
+    }, {
+      "location" : {
+        "type" : "METHOD",
+        "path" : "/feed/list",
+        "method" : "POST"
+      },
+      "properties" : {
+        "summary" : "Get a page of feed statuses",
+        "description" : "Returns a paginated list of statuses posted by the users the given user follows, plus whether more pages exist. Requires an auth token."
+      }
+    }, {
+      "location" : {
+        "type" : "METHOD",
+        "path" : "/follow",
+        "method" : "OPTIONS"
+      },
+      "properties" : {
+        "summary" : "CORS support"
+      }
+    }, {
+      "location" : {
+        "type" : "METHOD",
+        "path" : "/follow",
+        "method" : "POST"
+      },
+      "properties" : {
+        "summary" : "Follow a user",
+        "description" : "Makes the signed-in user follow the given user. Returns the updated follower and followee counts. Requires an auth token."
+      }
+    }, {
+      "location" : {
+        "type" : "METHOD",
+        "path" : "/followee/count",
+        "method" : "OPTIONS"
+      },
+      "properties" : {
+        "summary" : "CORS support"
+      }
+    }, {
+      "location" : {
+        "type" : "METHOD",
+        "path" : "/followee/count",
+        "method" : "POST"
+      },
+      "properties" : {
+        "summary" : "Get followee count",
+        "description" : "Returns the number of users the given user follows. Requires an auth token."
+      }
+    }, {
+      "location" : {
+        "type" : "METHOD",
+        "path" : "/followee/list",
+        "method" : "OPTIONS"
+      },
+      "properties" : {
+        "summary" : "CORS support"
+      }
+    }, {
+      "location" : {
+        "type" : "METHOD",
+        "path" : "/followee/list",
+        "method" : "POST"
+      },
+      "properties" : {
+        "summary" : "Get a page of followees",
+        "description" : "Returns a paginated list of the users the given user follows, plus whether more pages exist. Requires an auth token."
+      }
+    }, {
+      "location" : {
+        "type" : "METHOD",
+        "path" : "/follower/count",
+        "method" : "OPTIONS"
+      },
+      "properties" : {
+        "summary" : "CORS support"
+      }
+    }, {
+      "location" : {
+        "type" : "METHOD",
+        "path" : "/follower/count",
+        "method" : "POST"
+      },
+      "properties" : {
+        "summary" : "Get follower count",
+        "description" : "Returns the number of followers the given user has. Requires an auth token."
+      }
+    }, {
+      "location" : {
+        "type" : "METHOD",
+        "path" : "/follower/list",
+        "method" : "OPTIONS"
+      },
+      "properties" : {
+        "summary" : "CORS support"
+      }
+    }, {
+      "location" : {
+        "type" : "METHOD",
+        "path" : "/follower/list",
+        "method" : "POST"
+      },
+      "properties" : {
+        "summary" : "Get a page of followers",
+        "description" : "Returns a paginated list of the users who follow the given user, plus whether more pages exist. Requires an auth token."
+      }
+    }, {
+      "location" : {
+        "type" : "METHOD",
+        "path" : "/follower/status",
+        "method" : "OPTIONS"
+      },
+      "properties" : {
+        "summary" : "CORS support"
+      }
+    }, {
+      "location" : {
+        "type" : "METHOD",
+        "path" : "/follower/status",
+        "method" : "POST"
+      },
+      "properties" : {
+        "summary" : "Get follower status",
+        "description" : "Returns whether one user follows another user. Requires an auth token."
+      }
+    }, {
+      "location" : {
+        "type" : "METHOD",
+        "path" : "/status/post",
+        "method" : "OPTIONS"
+      },
+      "properties" : {
+        "summary" : "CORS support"
+      }
+    }, {
+      "location" : {
+        "type" : "METHOD",
+        "path" : "/status/post",
+        "method" : "POST"
+      },
+      "properties" : {
+        "summary" : "Post a status",
+        "description" : "Posts a new status for the signed-in user. Requires an auth token."
+      }
+    }, {
+      "location" : {
+        "type" : "METHOD",
+        "path" : "/story/list",
+        "method" : "OPTIONS"
+      },
+      "properties" : {
+        "summary" : "CORS support"
+      }
+    }, {
+      "location" : {
+        "type" : "METHOD",
+        "path" : "/story/list",
+        "method" : "POST"
+      },
+      "properties" : {
+        "summary" : "Get a page of story statuses",
+        "description" : "Returns a paginated list of statuses posted by the given user, plus whether more pages exist. Requires an auth token."
+      }
+    }, {
+      "location" : {
+        "type" : "METHOD",
+        "path" : "/unfollow",
+        "method" : "OPTIONS"
+      },
+      "properties" : {
+        "summary" : "CORS support"
+      }
+    }, {
+      "location" : {
+        "type" : "METHOD",
+        "path" : "/unfollow",
+        "method" : "POST"
+      },
+      "properties" : {
+        "summary" : "Unfollow a user",
+        "description" : "Makes the signed-in user stop following the given user. Returns the updated follower and followee counts. Requires an auth token."
+      }
+    }, {
+      "location" : {
+        "type" : "METHOD",
+        "path" : "/user/get",
+        "method" : "OPTIONS"
+      },
+      "properties" : {
+        "summary" : "CORS support"
+      }
+    }, {
+      "location" : {
+        "type" : "METHOD",
+        "path" : "/user/get",
+        "method" : "POST"
+      },
+      "properties" : {
+        "summary" : "Get a user",
+        "description" : "Returns the user with the given alias. Requires an auth token."
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/auth/login",
+        "method" : "OPTIONS",
+        "statusCode" : "200"
+      },
+      "properties" : {
+        "description" : "Default response for CORS method"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/auth/login",
+        "method" : "POST",
+        "statusCode" : "200"
+      },
+      "properties" : {
+        "description" : "OK"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/auth/login",
+        "method" : "POST",
+        "statusCode" : "400"
+      },
+      "properties" : {
+        "description" : "Bad Request"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/auth/login",
+        "method" : "POST",
+        "statusCode" : "401"
+      },
+      "properties" : {
+        "description" : "Unauthorized"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/auth/login",
+        "method" : "POST",
+        "statusCode" : "500"
+      },
+      "properties" : {
+        "description" : "Internal Server Error"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/auth/logout",
+        "method" : "OPTIONS",
+        "statusCode" : "200"
+      },
+      "properties" : {
+        "description" : "Default response for CORS method"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/auth/logout",
+        "method" : "POST",
+        "statusCode" : "200"
+      },
+      "properties" : {
+        "description" : "OK"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/auth/logout",
+        "method" : "POST",
+        "statusCode" : "400"
+      },
+      "properties" : {
+        "description" : "Bad Request"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/auth/logout",
+        "method" : "POST",
+        "statusCode" : "401"
+      },
+      "properties" : {
+        "description" : "Unauthorized"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/auth/logout",
+        "method" : "POST",
+        "statusCode" : "500"
+      },
+      "properties" : {
+        "description" : "Internal Server Error"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/auth/register",
+        "method" : "OPTIONS",
+        "statusCode" : "200"
+      },
+      "properties" : {
+        "description" : "Default response for CORS method"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/auth/register",
+        "method" : "POST",
+        "statusCode" : "200"
+      },
+      "properties" : {
+        "description" : "OK"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/auth/register",
+        "method" : "POST",
+        "statusCode" : "400"
+      },
+      "properties" : {
+        "description" : "Bad Request"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/auth/register",
+        "method" : "POST",
+        "statusCode" : "401"
+      },
+      "properties" : {
+        "description" : "Unauthorized"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/auth/register",
+        "method" : "POST",
+        "statusCode" : "500"
+      },
+      "properties" : {
+        "description" : "Internal Server Error"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/feed/list",
+        "method" : "OPTIONS",
+        "statusCode" : "200"
+      },
+      "properties" : {
+        "description" : "Default response for CORS method"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/feed/list",
+        "method" : "POST",
+        "statusCode" : "200"
+      },
+      "properties" : {
+        "description" : "OK"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/feed/list",
+        "method" : "POST",
+        "statusCode" : "400"
+      },
+      "properties" : {
+        "description" : "Bad Request"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/feed/list",
+        "method" : "POST",
+        "statusCode" : "401"
+      },
+      "properties" : {
+        "description" : "Unauthorized"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/feed/list",
+        "method" : "POST",
+        "statusCode" : "500"
+      },
+      "properties" : {
+        "description" : "Internal Server Error"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/follow",
+        "method" : "OPTIONS",
+        "statusCode" : "200"
+      },
+      "properties" : {
+        "description" : "Default response for CORS method"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/follow",
+        "method" : "POST",
+        "statusCode" : "200"
+      },
+      "properties" : {
+        "description" : "OK"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/follow",
+        "method" : "POST",
+        "statusCode" : "400"
+      },
+      "properties" : {
+        "description" : "Bad Request"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/follow",
+        "method" : "POST",
+        "statusCode" : "401"
+      },
+      "properties" : {
+        "description" : "Unauthorized"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/follow",
+        "method" : "POST",
+        "statusCode" : "500"
+      },
+      "properties" : {
+        "description" : "Internal Server Error"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/followee/count",
+        "method" : "OPTIONS",
+        "statusCode" : "200"
+      },
+      "properties" : {
+        "description" : "Default response for CORS method"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/followee/count",
+        "method" : "POST",
+        "statusCode" : "200"
+      },
+      "properties" : {
+        "description" : "OK"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/followee/count",
+        "method" : "POST",
+        "statusCode" : "400"
+      },
+      "properties" : {
+        "description" : "Bad Request"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/followee/count",
+        "method" : "POST",
+        "statusCode" : "401"
+      },
+      "properties" : {
+        "description" : "Unauthorized"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/followee/count",
+        "method" : "POST",
+        "statusCode" : "500"
+      },
+      "properties" : {
+        "description" : "Internal Server Error"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/followee/list",
+        "method" : "OPTIONS",
+        "statusCode" : "200"
+      },
+      "properties" : {
+        "description" : "Default response for CORS method"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/followee/list",
+        "method" : "POST",
+        "statusCode" : "200"
+      },
+      "properties" : {
+        "description" : "OK"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/followee/list",
+        "method" : "POST",
+        "statusCode" : "400"
+      },
+      "properties" : {
+        "description" : "Bad Request"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/followee/list",
+        "method" : "POST",
+        "statusCode" : "401"
+      },
+      "properties" : {
+        "description" : "Unauthorized"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/followee/list",
+        "method" : "POST",
+        "statusCode" : "500"
+      },
+      "properties" : {
+        "description" : "Internal Server Error"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/follower/count",
+        "method" : "OPTIONS",
+        "statusCode" : "200"
+      },
+      "properties" : {
+        "description" : "Default response for CORS method"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/follower/count",
+        "method" : "POST",
+        "statusCode" : "200"
+      },
+      "properties" : {
+        "description" : "OK"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/follower/count",
+        "method" : "POST",
+        "statusCode" : "400"
+      },
+      "properties" : {
+        "description" : "Bad Request"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/follower/count",
+        "method" : "POST",
+        "statusCode" : "401"
+      },
+      "properties" : {
+        "description" : "Unauthorized"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/follower/count",
+        "method" : "POST",
+        "statusCode" : "500"
+      },
+      "properties" : {
+        "description" : "Internal Server Error"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/follower/list",
+        "method" : "OPTIONS",
+        "statusCode" : "200"
+      },
+      "properties" : {
+        "description" : "Default response for CORS method"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/follower/list",
+        "method" : "POST",
+        "statusCode" : "200"
+      },
+      "properties" : {
+        "description" : "OK"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/follower/list",
+        "method" : "POST",
+        "statusCode" : "400"
+      },
+      "properties" : {
+        "description" : "Bad Request"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/follower/list",
+        "method" : "POST",
+        "statusCode" : "401"
+      },
+      "properties" : {
+        "description" : "Unauthorized"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/follower/list",
+        "method" : "POST",
+        "statusCode" : "500"
+      },
+      "properties" : {
+        "description" : "Internal Server Error"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/follower/status",
+        "method" : "OPTIONS",
+        "statusCode" : "200"
+      },
+      "properties" : {
+        "description" : "Default response for CORS method"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/follower/status",
+        "method" : "POST",
+        "statusCode" : "200"
+      },
+      "properties" : {
+        "description" : "OK"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/follower/status",
+        "method" : "POST",
+        "statusCode" : "400"
+      },
+      "properties" : {
+        "description" : "Bad Request"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/follower/status",
+        "method" : "POST",
+        "statusCode" : "401"
+      },
+      "properties" : {
+        "description" : "Unauthorized"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/follower/status",
+        "method" : "POST",
+        "statusCode" : "500"
+      },
+      "properties" : {
+        "description" : "Internal Server Error"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/status/post",
+        "method" : "OPTIONS",
+        "statusCode" : "200"
+      },
+      "properties" : {
+        "description" : "Default response for CORS method"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/status/post",
+        "method" : "POST",
+        "statusCode" : "200"
+      },
+      "properties" : {
+        "description" : "OK"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/status/post",
+        "method" : "POST",
+        "statusCode" : "400"
+      },
+      "properties" : {
+        "description" : "Bad Request"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/status/post",
+        "method" : "POST",
+        "statusCode" : "401"
+      },
+      "properties" : {
+        "description" : "Unauthorized"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/status/post",
+        "method" : "POST",
+        "statusCode" : "500"
+      },
+      "properties" : {
+        "description" : "Internal Server Error"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/story/list",
+        "method" : "OPTIONS",
+        "statusCode" : "200"
+      },
+      "properties" : {
+        "description" : "Default response for CORS method"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/story/list",
+        "method" : "POST",
+        "statusCode" : "200"
+      },
+      "properties" : {
+        "description" : "OK"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/story/list",
+        "method" : "POST",
+        "statusCode" : "400"
+      },
+      "properties" : {
+        "description" : "Bad Request"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/story/list",
+        "method" : "POST",
+        "statusCode" : "401"
+      },
+      "properties" : {
+        "description" : "Unauthorized"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/story/list",
+        "method" : "POST",
+        "statusCode" : "500"
+      },
+      "properties" : {
+        "description" : "Internal Server Error"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/unfollow",
+        "method" : "OPTIONS",
+        "statusCode" : "200"
+      },
+      "properties" : {
+        "description" : "Default response for CORS method"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/unfollow",
+        "method" : "POST",
+        "statusCode" : "200"
+      },
+      "properties" : {
+        "description" : "OK"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/unfollow",
+        "method" : "POST",
+        "statusCode" : "400"
+      },
+      "properties" : {
+        "description" : "Bad Request"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/unfollow",
+        "method" : "POST",
+        "statusCode" : "401"
+      },
+      "properties" : {
+        "description" : "Unauthorized"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/unfollow",
+        "method" : "POST",
+        "statusCode" : "500"
+      },
+      "properties" : {
+        "description" : "Internal Server Error"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/user/get",
+        "method" : "OPTIONS",
+        "statusCode" : "200"
+      },
+      "properties" : {
+        "description" : "Default response for CORS method"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/user/get",
+        "method" : "POST",
+        "statusCode" : "200"
+      },
+      "properties" : {
+        "description" : "OK"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/user/get",
+        "method" : "POST",
+        "statusCode" : "400"
+      },
+      "properties" : {
+        "description" : "Bad Request"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/user/get",
+        "method" : "POST",
+        "statusCode" : "401"
+      },
+      "properties" : {
+        "description" : "Unauthorized"
+      }
+    }, {
+      "location" : {
+        "type" : "RESPONSE",
+        "path" : "/user/get",
+        "method" : "POST",
+        "statusCode" : "500"
+      },
+      "properties" : {
+        "description" : "Internal Server Error"
+      }
+    } ]
+  },
+  "x-amazon-apigateway-security-policy" : "TLS_1_0"
+}
