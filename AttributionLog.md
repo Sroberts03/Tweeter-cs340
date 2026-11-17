@@ -438,3 +438,17 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 **Verified:** `npx jest` (web) passed all 7 integration tests. `npm run typecheck` (server) passed. Not checked inside the VS Code extension itself.
 
 **Not done by AI:** Restart the Jest extension in VS Code so it picks up the new setting.
+
+## 2026-11-17 — Milestone 3 Documents: 400 validation and the Post Status sequence diagram (Claude Code, Opus 5.5)
+
+**Prompt:** "Help me with this assignment". The user pasted the Milestone 3 Documents spec: a Swagger export with method descriptions and 200/400/500 integration responses, code that actually returns some 400s, a PDF UML sequence diagram of a successful post status from `submitPost()` to `displayInfoMessage()`, and the AI attribution log.
+
+**What the AI did:**
+- `tweeter-server/src/features/auth/AuthService.ts`: `login` throws `[Bad Request]` when the alias or password is empty. `register` throws `[Bad Request]` when any field is missing. The existing `[Bad Request]` checks only ran when `FakeData.firstUser` was null, which never happens.
+- `tweeter-server/src/features/post/handlers/PostStatus.ts`: throws `[Bad Request]` when the auth token is missing, or the status is missing or has empty text. This check runs before `fromDto`, so bad input returns a 400 instead of crashing with a 500.
+- `milestone3-docs/PostStatusSequenceDiagram.pdf` and `.svg` (new): the sequence diagram. It runs from `PostStatus.submitPost()` through `PostStatusPresenter`, `Status`, `StatusService`, `PostFacade`, `ClientCommunicator`, API Gateway (integration request and response mapping), the Lambda handler and the server `PostService`, then back to `listener.displayInfoMessage("Status posted!", 2000)`. A Python script generated it (not saved in the repo), and headless Chrome printed the PDF.
+- Checked `template.yaml`: every method already has a description and the 200/400/401/500 integration responses from earlier entries.
+
+**Verified:** `npm run typecheck` (server) passed. The diagram was checked visually.
+
+**Not done by AI:** Redeploy (`npm run compile && sam build && sam deploy`). Publish the documentation in the API Gateway console (Documentation → Publish Documentation → stage `prod`). Export the Swagger file (Stages → prod → Export → Swagger + API Gateway extensions). Zip the project without `node_modules`/`dist` (for example `git archive -o tweeter.zip HEAD` after committing). Upload everything to Canvas.

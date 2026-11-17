@@ -11,6 +11,10 @@ export class AuthService implements Service {
         alias: string,
         password: string
     ): Promise<[User, AuthToken]> {
+        if (!alias?.trim() || !password?.trim()) {
+          throw new Error("[Bad Request] Alias and password are required");
+        }
+
         // TODO: Replace with the result of calling the server
         const user = FakeData.instance.firstUser;
     
@@ -29,6 +33,13 @@ export class AuthService implements Service {
         userImageBase64: string,
         imageFileExtension: string
     ): Promise<[User, AuthToken]> {
+        if (
+            !firstName?.trim() || !lastName?.trim() || !alias?.trim() ||
+            !password?.trim() || !userImageBase64 || !imageFileExtension
+        ) {
+            throw new Error("[Bad Request] All registration fields are required");
+        }
+
         // TODO: Replace with the result of calling the server
         const user = FakeData.instance.firstUser;
 
