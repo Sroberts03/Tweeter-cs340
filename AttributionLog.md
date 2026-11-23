@@ -557,7 +557,17 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 
 **Not done by AI:** None.
 
+## 2026-11-22 — Create IUserDao interface (Phase 2) (Antigravity, Claude Opus 4.6)
 
+**Prompt:** "We're going to start working on phase 2. Create the DAO interfaces one at a time. IUserDao should only have the getUser function matching UserService, and use the User domain model as its return type."
+
+**What the AI did:**
+- `tweeter-server/src/features/user/dal/interface/IUserDao.ts` (new): Created a database-agnostic DAO interface with a single `getUser(alias): Promise<User | null>` method, matching the `UserService` operation. Uses the `User` domain model from `tweeter-shared`.
+- `specs/2026-11-22-milestone-4a.md`: Added a Directory Structure section documenting the `features/<feature>/dal/interface/` and `features/<feature>/dal/dao/` layout convention.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Remaining Phase 2 interfaces: `IAuthTokenDao`, `IImageDao`, `IFollowDao`, `IStoryDao`, `IFeedDao`, `IDaoFactory`.
 
 
 

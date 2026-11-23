@@ -85,6 +85,37 @@ flowchart TD
 
 ---
 
+### Directory Structure
+
+```
+src/features/
+  user/
+    dal/
+      interface/IUserDao.ts
+      dao/DynamoUserDao.ts
+  auth/
+    dal/
+      interface/IAuthTokenDao.ts
+      interface/IImageDao.ts
+      dao/DynamoAuthTokenDao.ts
+      dao/S3ImageDao.ts
+  social/
+    dal/
+      interface/IFollowDao.ts
+      dao/DynamoFollowDao.ts
+  post/
+    dal/
+      interface/IStoryDao.ts
+      interface/IFeedDao.ts
+      dao/DynamoStoryDao.ts
+      dao/DynamoFeedDao.ts
+```
+
+> [!NOTE]
+> `IDaoFactory` lives at `src/dao/IDaoFactory.ts` since it spans all features.
+
+---
+
 ## 3. Data Model & DynamoDB Table Design
 
 The tables match the configuration already defined in `tweeter-server/template.yaml`:
