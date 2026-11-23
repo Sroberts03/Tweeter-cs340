@@ -113,9 +113,13 @@ src/features/
       interface/IFeedDao.ts
       dao/DynamoStoryDao.ts
       dao/DynamoFeedDao.ts
-src/dao/
-  IDaoFactory.ts
-  DynamoDaoFactory.ts
+src/dal/
+  interface/
+    IDaoFactory.ts
+  dao/
+    DynamoDaoFactory.ts
+    dynamo/
+      DynamoClient.ts
 ```
 
 > [!NOTE]
@@ -302,7 +306,7 @@ export class S3ImageDao implements IImageDao {
   - Create `src/features/post/dal/interface/IStoryDao.ts`
   - Create `src/features/post/dal/interface/IFeedDao.ts`
   - Create `src/dao/IDaoFactory.ts`
-- [ ] **Phase 3: DynamoDB & S3 Implementations**
+- [x] **Phase 3: DynamoDB & S3 Implementations**
   - [x] Create DynamoDB client helper with AWS SDK v3 DocumentClient (`src/dal/dao/dynamo/DynamoClient.ts`).
   - [x] Implement `src/features/user/dal/dao/DynamoUserDao.ts`
   - [x] Implement `src/features/auth/dal/dao/DynamoAuthTokenDao.ts`
@@ -311,7 +315,7 @@ export class S3ImageDao implements IImageDao {
   - [x] Implement `src/features/social/dal/dao/DynamoSocialDao.ts`
   - [x] Implement `src/features/post/dal/dao/DynamoStoryDao.ts`
   - [x] Implement `src/features/post/dal/dao/DynamoFeedDao.ts`
-  - Implement `src/dao/DynamoDaoFactory.ts` (implements `IDaoFactory`)
+  - [x] Implement `src/dal/dao/DynamoDaoFactory.ts` (implements `IDaoFactory`)
 - [ ] **Phase 4: Service Layer & Authorization Refactoring**
   - Implement `AuthorizationService` for token validation across handlers.
   - Refactor `AuthService` (register, login with bcrypt, logout).

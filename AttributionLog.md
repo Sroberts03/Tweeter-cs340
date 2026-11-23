@@ -992,3 +992,23 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 **Verified:** `npm run typecheck` passed.
 
 **Not done by AI:** Remaining Phase 3 DAO implementation (`DynamoDaoFactory`).
+
+
+## 2026-11-23 — Implement DynamoDaoFactory (Phase 3) (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "lets do it"
+
+**What the AI did:**
+- `tweeter-server/src/dao/DynamoDaoFactory.ts` (new): Implemented `IDaoFactory` with lazy-initialized singleton instances for all DynamoDB and S3 DAOs:
+  - `getUserDao()` $\rightarrow$ `DynamoUserDao`
+  - `getAuthTokenDao()` $\rightarrow$ `DynamoAuthTokenDao`
+  - `getAuthUserDao()` $\rightarrow$ `DynamoAuthUserDao`
+  - `getImageDao()` $\rightarrow$ `S3ImageDao`
+  - `getSocialDao()` $\rightarrow$ `DynamoSocialDao`
+  - `getStoryDao()` $\rightarrow$ `DynamoStoryDao`
+  - `getFeedDao()` $\rightarrow$ `DynamoFeedDao`
+- `specs/2026-11-22-milestone-4a.md`: Marked Phase 3 complete.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Phase 4 (Service Layer & Authorization Refactoring).
