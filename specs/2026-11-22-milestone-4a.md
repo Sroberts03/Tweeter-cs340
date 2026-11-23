@@ -52,19 +52,21 @@ flowchart TD
         DynamoFactory["DynamoDaoFactory (Implementation)"]
     end
 
-    subgraph Interfaces ["Database-Agnostic DAO Interfaces (src/dao/interfaces/)"]
+    subgraph Interfaces ["Database-Agnostic DAO Interfaces (src/features/*/dal/interface/)"]
         IUserDao["IUserDao"]
         IAuthTokenDao["IAuthTokenDao"]
-        IFollowDao["IFollowDao"]
+        IAuthUserDao["IAuthUserDao"]
+        ISocialDao["ISocialDao"]
         IStoryDao["IStoryDao"]
         IFeedDao["IFeedDao"]
         IImageDao["IImageDao"]
     end
 
-    subgraph Implementations ["DynamoDB & S3 Implementations (src/dao/dynamodb/ & src/dao/s3/)"]
+    subgraph Implementations ["DynamoDB & S3 Implementations (src/features/*/dal/dao/)"]
         DynamoUserDao["DynamoUserDao"]
         DynamoAuthTokenDao["DynamoAuthTokenDao"]
-        DynamoFollowDao["DynamoFollowDao"]
+        DynamoAuthUserDao["DynamoAuthUserDao"]
+        DynamoSocialDao["DynamoSocialDao"]
         DynamoStoryDao["DynamoStoryDao"]
         DynamoFeedDao["DynamoFeedDao"]
         S3ImageDao["S3ImageDao"]
@@ -96,19 +98,24 @@ src/features/
   auth/
     dal/
       interface/IAuthTokenDao.ts
+      interface/IAuthUserDao.ts
       interface/IImageDao.ts
       dao/DynamoAuthTokenDao.ts
+      dao/DynamoAuthUserDao.ts
       dao/S3ImageDao.ts
   social/
     dal/
-      interface/IFollowDao.ts
-      dao/DynamoFollowDao.ts
+      interface/ISocialDao.ts
+      dao/DynamoSocialDao.ts
   post/
     dal/
       interface/IStoryDao.ts
       interface/IFeedDao.ts
       dao/DynamoStoryDao.ts
       dao/DynamoFeedDao.ts
+src/dao/
+  IDaoFactory.ts
+  DynamoDaoFactory.ts
 ```
 
 > [!NOTE]
@@ -296,14 +303,15 @@ export class S3ImageDao implements IImageDao {
   - Create `src/features/post/dal/interface/IFeedDao.ts`
   - Create `src/dao/IDaoFactory.ts`
 - [ ] **Phase 3: DynamoDB & S3 Implementations**
-  - Create DynamoDB client helper with AWS SDK v3 DocumentClient.
-  - Implement `DynamoUserDao`
-  - Implement `DynamoAuthTokenDao`
-  - Implement `DynamoFollowDao`
-  - Implement `DynamoStoryDao`
-  - Implement `DynamoFeedDao`
-  - Implement `S3ImageDao`
-  - Implement `DynamoDaoFactory implements IDaoFactory`
+  - Create DynamoDB client helper with AWS SDK v3 DocumentClient (`src/dao/dynamo/DynamoClient.ts`).
+  - Implement `src/features/user/dal/dao/DynamoUserDao.ts`
+  - Implement `src/features/auth/dal/dao/DynamoAuthTokenDao.ts`
+  - Implement `src/features/auth/dal/dao/DynamoAuthUserDao.ts`
+  - Implement `src/features/auth/dal/dao/S3ImageDao.ts`
+  - Implement `src/features/social/dal/dao/DynamoSocialDao.ts`
+  - Implement `src/features/post/dal/dao/DynamoStoryDao.ts`
+  - Implement `src/features/post/dal/dao/DynamoFeedDao.ts`
+  - Implement `src/dao/DynamoDaoFactory.ts` (implements `IDaoFactory`)
 - [ ] **Phase 4: Service Layer & Authorization Refactoring**
   - Implement `AuthorizationService` for token validation across handlers.
   - Refactor `AuthService` (register, login with bcrypt, logout).
