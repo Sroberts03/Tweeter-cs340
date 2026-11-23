@@ -1026,3 +1026,21 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 **Verified:** `npm run typecheck` passed.
 
 **Not done by AI:** Remaining Phase 4 tasks (refactor `AuthService`, `UserService`, `SocialService`, `PostService`, inject handlers/factory).
+
+
+## 2026-11-23 — Refactor AuthService to use DAOs and bcryptjs (Phase 4) (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "ok lets do authservice"
+
+**What the AI did:**
+- `tweeter-server/src/features/auth/AuthService.ts`:
+  - Injected `IDaoFactory` with default fallback to `new DynamoDaoFactory()`.
+  - Refactored `login`: Queries `authUserDao.getUserWithPassword`, verifies password hash via `bcrypt.compare`, creates `AuthToken.Generate()`, stores token in `authTokenDao.putAuthToken`, and returns `[User, AuthToken]`.
+  - Refactored `register`: Uploads user profile image via `imageDao.putImage`, salts & hashes password with `bcrypt.hash(password, 10)`, creates user record via `authUserDao.putUser`, stores session token with `authTokenDao.putAuthToken`, and returns `[User, AuthToken]`.
+  - Refactored `logout`: Deletes session token via `authTokenDao.deleteAuthToken`.
+  - Replaced all `FakeData` imports and dummy delays with real DAO operations.
+- `specs/2026-11-22-milestone-4a.md`: Marked `AuthService` refactoring complete.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Remaining Phase 4 tasks (refactor `UserService`, `SocialService`, `PostService`, inject authorization checks into handlers).
