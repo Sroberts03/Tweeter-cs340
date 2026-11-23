@@ -317,8 +317,8 @@ export class S3ImageDao implements IImageDao {
   - [x] Implement `src/features/post/dal/dao/DynamoFeedDao.ts`
   - [x] Implement `src/dal/dao/DynamoDaoFactory.ts` (implements `IDaoFactory`)
 - [ ] **Phase 4: Service Layer & Authorization Refactoring**
-  - Implement `AuthorizationService` for token validation across handlers.
-  - Refactor `AuthService` (register, login with bcrypt, logout).
+  - [x] Implement `AuthorizationService` for token validation across handlers.
+  - [ ] Refactor `AuthService` (register, login with bcrypt, logout).
   - Refactor `UserService` (`getUser` via DAO).
   - Refactor `SocialService` (follow, unfollow, follower/followee pagination, counts).
   - Refactor `PostService` (postStatus with fanout, loadMoreStoryItems, loadMoreFeedItems).

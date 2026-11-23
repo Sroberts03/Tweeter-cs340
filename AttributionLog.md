@@ -1012,3 +1012,17 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 **Verified:** `npm run typecheck` passed.
 
 **Not done by AI:** Phase 4 (Service Layer & Authorization Refactoring).
+
+
+## 2026-11-23 — Implement AuthorizationService (Phase 4) (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "yep lets move to phase four doing the same one at a time"
+
+**What the AI did:**
+- `tweeter-server/src/features/auth/AuthorizationService.ts` (new): Created authorization service receiving `IDaoFactory` via dependency injection:
+  - `validateToken`: Verifies token existence, validates 60-minute inactivity timeout, deletes expired tokens, refreshes `timestamp` via `updateTimestamp`, and returns caller alias. Throws errors prefixed with `[Unauthorized]` for API Gateway HTTP 401 mapping.
+- `specs/2026-11-22-milestone-4a.md`: Checked off `AuthorizationService` in Phase 4 checklist.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Remaining Phase 4 tasks (refactor `AuthService`, `UserService`, `SocialService`, `PostService`, inject handlers/factory).
