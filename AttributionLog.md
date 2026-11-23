@@ -1110,3 +1110,24 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 **Verified:** `npm run typecheck` passed.
 
 **Not done by AI:** Remaining Phase 4 task (refactor `PostService`).
+
+
+## 2026-11-23 — Refactor PostService with Story, Feed, and Fanout (Phase 4) (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "thats great lets do postService"
+
+**What the AI did:**
+- `tweeter-server/src/features/post/PostService.ts`:
+  - Injected `IDaoFactory` (defaulting to `DynamoDaoFactory`), initializing `IStoryDao`, `IFeedDao`, `ISocialDao`, and `AuthorizationService`.
+  - Refactored `loadMoreStoryItems` and `loadMoreFeedItems` with shared `fetchStatusPage` helper to avoid code duplication while performing token authentication and pagination.
+  - Refactored `postStatus`:
+    - Validates caller auth token and ensures the author matches the authenticated caller.
+    - Persists status to author's story via `storyDao.putStory`.
+    - Retrieves author's followers across pages via `getAllFollowerAliases(callerAlias)`.
+    - Fans out status to all followers via `feedDao.batchWriteFeedItems(followerAliases, newStatus)`.
+  - Removed all `FakeData` references and dummy delays.
+- `specs/2026-11-22-milestone-4a.md`: Marked Phase 4 complete!
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Phase 5 (Data Seeding & Verification).

@@ -316,13 +316,13 @@ export class S3ImageDao implements IImageDao {
   - [x] Implement `src/features/post/dal/dao/DynamoStoryDao.ts`
   - [x] Implement `src/features/post/dal/dao/DynamoFeedDao.ts`
   - [x] Implement `src/dal/dao/DynamoDaoFactory.ts` (implements `IDaoFactory`)
-- [ ] **Phase 4: Service Layer & Authorization Refactoring**
+- [x] **Phase 4: Service Layer & Authorization Refactoring**
   - [x] Implement `AuthorizationService` for token validation across handlers.
   - [x] Refactor `AuthService` (register, login with bcrypt, logout).
   - [x] Refactor `UserService` (`getUser` via DAO).
   - [x] Refactor `SocialService` (follow, unfollow, follower/followee pagination, counts).
-  - [ ] Refactor `PostService` (postStatus with fanout, loadMoreStoryItems, loadMoreFeedItems).
-  - Inject `IDaoFactory` into all services.
+  - [x] Refactor `PostService` (postStatus with fanout, loadMoreStoryItems, loadMoreFeedItems).
+  - [x] Inject `IDaoFactory` into all services.
 - [ ] **Phase 5: Data Seeding & Verification**
   - Create a seed script to populate $>10$ items for scrolling/pagination validation.
   - Verify `npm run typecheck` passes cleanly.
