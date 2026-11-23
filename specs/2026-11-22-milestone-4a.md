@@ -320,8 +320,8 @@ export class S3ImageDao implements IImageDao {
   - [x] Implement `AuthorizationService` for token validation across handlers.
   - [x] Refactor `AuthService` (register, login with bcrypt, logout).
   - [x] Refactor `UserService` (`getUser` via DAO).
-  - [ ] Refactor `SocialService` (follow, unfollow, follower/followee pagination, counts).
-  - Refactor `PostService` (postStatus with fanout, loadMoreStoryItems, loadMoreFeedItems).
+  - [x] Refactor `SocialService` (follow, unfollow, follower/followee pagination, counts).
+  - [ ] Refactor `PostService` (postStatus with fanout, loadMoreStoryItems, loadMoreFeedItems).
   - Inject `IDaoFactory` into all services.
 - [ ] **Phase 5: Data Seeding & Verification**
   - Create a seed script to populate $>10$ items for scrolling/pagination validation.

@@ -1061,3 +1061,52 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 **Verified:** `npm run typecheck` passed.
 
 **Not done by AI:** Remaining Phase 4 tasks (refactor `SocialService`, `PostService`, verify handler token validations).
+
+
+## 2026-11-23 — Refactor SocialService with DAOs and Authorization (Phase 4) (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "yep lets do social service"
+
+**What the AI did:**
+- `tweeter-server/src/features/social/SocialService.ts`:
+  - Injected `IDaoFactory` (defaulting to `DynamoDaoFactory`) and `AuthorizationService`.
+  - Added token authentication to all operations (`loadMoreFollowers`, `loadMoreFollowees`, `getIsFollowerStatus`, `getFollowerCount`, `getFolloweeCount`, `follow`, `unfollow`).
+  - Refactored `follow` and `unfollow` to identify the authenticated caller alias via `validateToken` and invoke `socialDao.follow` / `socialDao.unfollow` transactions, returning updated target user counts.
+  - Replaced all `FakeData` calls and timeouts with real DynamoDB DAO queries.
+- `specs/2026-11-22-milestone-4a.md`: Marked `SocialService` refactoring complete.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Remaining Phase 4 task (refactor `PostService`).
+
+
+## 2026-11-23 — Deduplicate SocialService helper methods (Phase 4) (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "get rid of the duplicate code"
+
+**What the AI did:**
+- `tweeter-server/src/features/social/SocialService.ts`:
+  - Extracted `loadFollowPage` to eliminate duplicate validation, auth check, and DAO invocation between `loadMoreFollowers` and `loadMoreFollowees`.
+  - Extracted `getUserCount` helper to eliminate duplicate validation and auth check between `getFolloweeCount` and `getFollowerCount`.
+  - Extracted `mutateFollow` helper to eliminate duplicate validation, caller alias extraction, follow action, and count lookups between `follow` and `unfollow`.
+  - Resolved all duplicate code blocks flagged by Fallow/IDE.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Remaining Phase 4 task (refactor `PostService`).
+
+
+## 2026-11-23 — Eliminate duplicate parameter signatures in SocialService (Phase 4) (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "theres still duplicate code"
+
+**What the AI did:**
+- `tweeter-server/src/features/social/SocialService.ts`:
+  - Consolidated method bodies by forwarding `loadMoreFollowers` / `loadMoreFollowees` to single-line dispatches through `fetchPagedRelationship("followers" | "followees", ...)`.
+  - Consolidated `getFolloweeCount` / `getFollowerCount` into single-line calls through `retrieveCount("followers" | "followees", ...)`.
+  - Consolidated `follow` / `unfollow` into single-line calls through `modifyRelationship(true | false, ...)`.
+  - Removed all multi-line callback structures that triggered the Sonar/Fallow linter's identical token sequence detector.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Remaining Phase 4 task (refactor `PostService`).
