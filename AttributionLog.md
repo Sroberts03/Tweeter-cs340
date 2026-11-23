@@ -464,3 +464,76 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 **Verified:** `npm run typecheck` (server) passed. Using the `cs340` profile, the AI confirmed that the bucket is reachable and the stack exists. The AI did not run the deploy.
 
 **Not done by AI:** Run `sam build && sam deploy` again. The other `aws` commands, such as the Swagger export, still default to the other account unless you pass `--profile cs340`.
+
+## 2026-11-22 — Create Frontend agent instructions in .agents/agents (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "I want you to create me the Frontend agent.md file in .agents/agents"
+
+**What the AI did:**
+- `.agents/agents/frontend.md` (new): Created comprehensive frontend agent instructions detailing the role/scope, Model-View-Presenter (MVP) architecture (Views, Presenters, Model/Services, Network Facades, Contexts/Hooks), directory structure, commands for local development, building, testing, `tweeter-shared` dependency compilation, and testing guidelines.
+- `.agents/agents/frontend-agent.md` and `.agents/agents/Frontend agent.md` (new symlinks): Created symlinks pointing to `frontend.md` for case and naming flexibility.
+
+**Verified:** `npm run typecheck` (server) passed. `npm run build` (web) passed.
+
+**Not done by AI:** None.
+
+## 2026-11-22 — Clean up redundant symlinks in .agents/agents (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "just keep one"
+
+**What the AI did:**
+- Removed `.agents/agents/frontend-agent.md` and `.agents/agents/Frontend agent.md` symlinks, keeping solely `.agents/agents/frontend.md`.
+
+**Verified:** `npm run typecheck` (server) passed.
+
+**Not done by AI:** None.
+
+## 2026-11-22 — Create Backend agent instructions in .agents/agents (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "ok lets make a backend agent now"
+
+**What the AI did:**
+- `.agents/agents/backend.md` (new): Created comprehensive backend agent instructions detailing the role/scope, Serverless Lambda architecture (Handlers, Services, DAOs/DynamoDB/S3, Layer packaging), directory structure, build/typecheck/SAM commands, API Gateway error prefix tagging conventions (`[Bad Request]`, etc.), and the mandatory post-change checklist.
+
+**Verified:** `npm run typecheck` (server) passed.
+
+**Not done by AI:** None.
+
+## 2026-11-22 — Create Project Manager agent instructions in .agents/agents (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "ok now lets make a project manager agent"
+
+**What the AI did:**
+- `.agents/agents/project-manager.md` (new): Created project manager agent instructions defining orchestration roles, the multi-agent pipeline framework (`tweeter-shared` -> `backend` -> `frontend` -> `qa`), phase-by-phase execution roadmap, milestone context, and verification standards.
+
+**Verified:** `npm run typecheck` (server) passed.
+
+**Not done by AI:** None.
+
+## 2026-11-22 — Create QA agent instructions in .agents/agents (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "ok lastly lets add a QA agent"
+
+**What the AI did:**
+- `.agents/agents/qa.md` (new): Created QA agent instructions detailing testing tiers (Presenter unit tests with ts-mockito, View component tests with React Testing Library, Server Facade integration tests, backend validation of error status code prefixes and SAM linting), defect verification checklist, testing commands, and the mandatory post-change checklist.
+
+**Verified:** `npm run typecheck` (server) passed.
+
+**Not done by AI:** None.
+
+## 2026-11-22 — Refine Agent Pipeline section in AGENTS.md (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "yes" (approving review recommendations to update AGENTS.md)
+
+**What the AI did:**
+- `AGENTS.md`: Updated "The Agent pipeline" section with explicit references to the specialized agents in `.agents/agents/` (`project-manager.md`, `backend.md`, `frontend.md`, `qa.md`), execution order rules (Shared -> Backend -> Frontend -> QA), review criteria, and single-scope bypass guidance.
+
+**Verified:** `npm run typecheck` (server) passed.
+
+**Not done by AI:** None.
+
+
+
+
+
+
