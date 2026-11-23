@@ -1044,3 +1044,20 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 **Verified:** `npm run typecheck` passed.
 
 **Not done by AI:** Remaining Phase 4 tasks (refactor `UserService`, `SocialService`, `PostService`, inject authorization checks into handlers).
+
+
+## 2026-11-23 — Refactor UserService with DAO and Authorization (Phase 4) (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "userService it is"
+
+**What the AI did:**
+- `tweeter-server/src/features/user/UserService.ts`:
+  - Injected `IDaoFactory` with default fallback to `new DynamoDaoFactory()`.
+  - Injected `AuthorizationService` to validate `authToken` on `getUser` before database access.
+  - Refactored `getUser` to retrieve users from DynamoDB via `userDao.getUser(alias)`.
+  - Removed `FakeData` dependency.
+- `specs/2026-11-22-milestone-4a.md`: Marked `UserService` refactoring complete.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Remaining Phase 4 tasks (refactor `SocialService`, `PostService`, verify handler token validations).
