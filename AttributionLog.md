@@ -532,6 +532,33 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 
 **Not done by AI:** None.
 
+## 2026-11-22 — Create Milestone 4A specification and roadmap document (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "ok i want you to add this to the specs folder so that i can work on this throughout the next few days. create a file called 2026-11-22-milestone-4a.md"
+
+**What the AI did:**
+- `specs/2026-11-22-milestone-4a.md` (new): Created the complete Milestone 4 Part A specification and architecture blueprint, containing official requirements, Mermaid architecture diagrams, database-agnostic DAO design, DynamoDB table schemas, feed pre-computation (fanout) strategy, S3 image upload implementation, session & authorization design with bcryptjs, and a 5-phase implementation roadmap.
+
+**Verified:** `npm run typecheck` (server) passed.
+
+**Not done by AI:** None.
+
+## 2026-11-22 — Implement Milestone 4A Phase 1 (Dependencies & Lambda Layer) (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "ok now I want you to implement phase 1"
+
+**What the AI did:**
+- `tweeter-server/package.json`: Installed `@aws-sdk/client-dynamodb`, `@aws-sdk/lib-dynamodb`, `@aws-sdk/client-s3`, `bcryptjs`, and devDependencies `@types/bcryptjs`, `@types/node`.
+- `tweeter-server/scripts/build-layer.sh`: Updated layer build script to include `bcryptjs@^2.4.3` in the Lambda layer bundle.
+- `tweeter-server/layer/`: Rebuilt the Lambda layer bundle with `bcryptjs`.
+- `specs/2026-11-22-milestone-4a.md`: Marked Phase 1 checklist items complete.
+
+**Verified:** `npm run build:layer` succeeded, verified layer contents, and `npm run typecheck` passed.
+
+**Not done by AI:** None.
+
+
+
 
 
 

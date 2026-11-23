@@ -16,7 +16,7 @@ mkdir -p layer/nodejs
 cd layer/nodejs
 
 npm init -y > /dev/null
-npm install --omit=dev date-fns@^3.3.1 uuid@^9.0.1
+npm install --omit=dev date-fns@^3.3.1 uuid@^9.0.1 bcryptjs@^2.4.3
 
 mkdir -p node_modules/tweeter-shared
 cp "../../$SHARED/package.json" node_modules/tweeter-shared/
