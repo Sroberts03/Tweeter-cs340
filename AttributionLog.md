@@ -945,3 +945,19 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 **Verified:** `npm run typecheck` passed.
 
 **Not done by AI:** Remaining Phase 3 DAO implementations (`DynamoStoryDao`, `DynamoFeedDao`, `DynamoDaoFactory`).
+
+
+## 2026-11-23 — Implement DynamoStoryDao (Phase 3) (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "ok build out Story"
+
+**What the AI did:**
+- `tweeter-server/src/features/post/dal/dao/DynamoStoryDao.ts` (new): Implemented `IStoryDao` using AWS SDK v3 DocumentClient:
+  - `getPageOfStoryItems`: Queries the `story` table by `sender_alias` partition key, configured with `ScanIndexForward: false` (newest posts first), `Limit: pageSize`, and `ExclusiveStartKey` pagination based on `lastTimestamp`. Deserializes items into `Status` domain models.
+  - `putStory`: Persists status author info (`sender_alias`, `sender_firstName`, `sender_lastName`, `sender_imageUrl`), timestamp, and post text into the `story` table with `PutCommand`.
+  - Defined `StoryTableRecord` schema interface and typed key constants.
+- `specs/2026-11-22-milestone-4a.md`: Marked `DynamoStoryDao` complete.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Remaining Phase 3 DAO implementations (`DynamoFeedDao`, `DynamoDaoFactory`).

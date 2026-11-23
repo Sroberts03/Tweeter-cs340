@@ -309,7 +309,7 @@ export class S3ImageDao implements IImageDao {
   - [x] Implement `src/features/auth/dal/dao/DynamoAuthUserDao.ts`
   - [x] Implement `src/features/auth/dal/dao/S3ImageDao.ts`
   - [x] Implement `src/features/social/dal/dao/DynamoSocialDao.ts`
-  - Implement `src/features/post/dal/dao/DynamoStoryDao.ts`
+  - [x] Implement `src/features/post/dal/dao/DynamoStoryDao.ts`
   - Implement `src/features/post/dal/dao/DynamoFeedDao.ts`
   - Implement `src/dao/DynamoDaoFactory.ts` (implements `IDaoFactory`)
 - [ ] **Phase 4: Service Layer & Authorization Refactoring**
