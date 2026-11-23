@@ -961,3 +961,34 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 **Verified:** `npm run typecheck` passed.
 
 **Not done by AI:** Remaining Phase 3 DAO implementations (`DynamoFeedDao`, `DynamoDaoFactory`).
+
+
+## 2026-11-23 — Implement DynamoFeedDao (Phase 3) (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "ok that looks good next"
+
+**What the AI did:**
+- `tweeter-server/src/features/post/dal/dao/DynamoFeedDao.ts` (new): Implemented `IFeedDao` using AWS SDK v3 DocumentClient:
+  - `getPageOfFeedItems`: Queries the `feed` table by `receiver_alias` partition key, configured with `ScanIndexForward: false` (newest posts first), `Limit: pageSize`, and `ExclusiveStartKey` pagination based on `lastTimestamp`. Maps denormalized author attributes to `Status` models.
+  - `batchWriteFeedItems`: Implements feed pre-computation fanout by chunking receiver aliases into batches of $\le 25$ items using `BatchWriteCommand`. Implements an automatic retry loop with backoff for any `UnprocessedItems` returned by DynamoDB.
+  - Defined `FeedTableRecord` schema interface and typed key constants.
+- `specs/2026-11-22-milestone-4a.md`: Marked `DynamoFeedDao` complete.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Remaining Phase 3 DAO implementation (`DynamoDaoFactory`).
+
+
+## 2026-11-23 — Deduplicate Status deserialization logic between Story and Feed DAOs (Phase 3) (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "get rid of the duplicate code"
+
+**What the AI did:**
+- `tweeter-server/src/features/post/dal/dao/StatusItemConverter.ts` (new): Created `StatusItemConverter.fromRecords()` and `StatusTableRecord` interface to handle converting raw DynamoDB items into `Status` domain objects with type validation.
+- `tweeter-server/src/features/post/dal/dao/DynamoStoryDao.ts`: Refactored `getPageOfStoryItems` to delegate status list deserialization to `StatusItemConverter.fromRecords`.
+- `tweeter-server/src/features/post/dal/dao/DynamoFeedDao.ts`: Refactored `getPageOfFeedItems` to delegate status list deserialization to `StatusItemConverter.fromRecords`.
+- Eliminated the 22-line duplicate code warning in IDE between `DynamoFeedDao` and `DynamoStoryDao`.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Remaining Phase 3 DAO implementation (`DynamoDaoFactory`).

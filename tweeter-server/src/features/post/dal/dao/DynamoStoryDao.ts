@@ -1,18 +1,14 @@
 import { PutCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
-import { Status, User } from "tweeter-shared";
+import { Status } from "tweeter-shared";
 import { DynamoClient } from "../../../../dal/dao/dynamo/DynamoClient";
 import { IStoryDao } from "../interface/IStoryDao";
+import { StatusItemConverter, StatusTableRecord } from "./StatusItemConverter";
 
 /**
  * Shape of a Story record stored in the DynamoDB `story` table.
  */
-export interface StoryTableRecord {
+export interface StoryTableRecord extends StatusTableRecord {
   readonly sender_alias: string;
-  readonly timestamp: number;
-  readonly post: string;
-  readonly sender_firstName: string;
-  readonly sender_lastName: string;
-  readonly sender_imageUrl: string;
 }
 
 /**
@@ -57,27 +53,7 @@ export class DynamoStoryDao implements IStoryDao {
 
     const response = await client.send(command);
     const items = (response.Items ?? []) as StoryTableRecord[];
-
-    const statuses: Status[] = [];
-    for (const item of items) {
-      if (
-        item &&
-        typeof item.post === "string" &&
-        typeof item.sender_firstName === "string" &&
-        typeof item.sender_lastName === "string" &&
-        typeof item.sender_alias === "string" &&
-        typeof item.sender_imageUrl === "string" &&
-        typeof item.timestamp === "number"
-      ) {
-        const author = new User(
-          item.sender_firstName,
-          item.sender_lastName,
-          item.sender_alias,
-          item.sender_imageUrl
-        );
-        statuses.push(new Status(item.post, author, item.timestamp));
-      }
-    }
+    const statuses = StatusItemConverter.fromRecords(items);
 
     return [statuses, !!response.LastEvaluatedKey];
   }
