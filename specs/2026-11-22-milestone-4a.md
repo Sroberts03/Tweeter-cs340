@@ -286,14 +286,15 @@ export class S3ImageDao implements IImageDao {
 - [x] **Phase 1: Dependencies & Lambda Layer**
   - Install `@aws-sdk/client-dynamodb`, `@aws-sdk/lib-dynamodb`, `@aws-sdk/client-s3`, `bcryptjs`, and `@types/bcryptjs` in `tweeter-server/package.json`.
   - Update `tweeter-server/scripts/build-layer.sh` to package `bcryptjs` into the Lambda layer.
-- [ ] **Phase 2: Database-Agnostic DAO Interfaces & Abstract Factory**
-  - Create `src/dao/interfaces/IUserDao.ts`
-  - Create `src/dao/interfaces/IAuthTokenDao.ts`
-  - Create `src/dao/interfaces/IFollowDao.ts`
-  - Create `src/dao/interfaces/IStoryDao.ts`
-  - Create `src/dao/interfaces/IFeedDao.ts`
-  - Create `src/dao/interfaces/IImageDao.ts`
-  - Create `src/dao/interfaces/IDaoFactory.ts`
+- [x] **Phase 2: Database-Agnostic DAO Interfaces & Abstract Factory**
+  - Create `src/features/user/dal/interface/IUserDao.ts`
+  - Create `src/features/auth/dal/interface/IAuthTokenDao.ts`
+  - Create `src/features/auth/dal/interface/IAuthUserDao.ts`
+  - Create `src/features/auth/dal/interface/IImageDao.ts`
+  - Create `src/features/social/dal/interface/ISocialDao.ts`
+  - Create `src/features/post/dal/interface/IStoryDao.ts`
+  - Create `src/features/post/dal/interface/IFeedDao.ts`
+  - Create `src/dao/IDaoFactory.ts`
 - [ ] **Phase 3: DynamoDB & S3 Implementations**
   - Create DynamoDB client helper with AWS SDK v3 DocumentClient.
   - Implement `DynamoUserDao`

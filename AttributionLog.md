@@ -777,3 +777,16 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 **Verified:** `npm run typecheck` passed.
 
 **Not done by AI:** Remaining Phase 2 interface: `IDaoFactory`.
+
+
+## 2026-11-22 — Create IDaoFactory interface (Phase 2) (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "ok lets do the last interface"
+
+**What the AI did:**
+- `tweeter-server/src/dao/IDaoFactory.ts` (new): Created an abstract factory interface exposing factory methods for all DAO interfaces (`getUserDao`, `getAuthTokenDao`, `getAuthUserDao`, `getImageDao`, `getSocialDao`, `getStoryDao`, `getFeedDao`), allowing dependency injection into service classes without coupling them to DynamoDB or S3.
+- `specs/2026-11-22-milestone-4a.md`: Phase 2 DAO interfaces completed.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Phase 3 (DynamoDB & S3 implementations).
