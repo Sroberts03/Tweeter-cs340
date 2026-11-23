@@ -1131,3 +1131,27 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 **Verified:** `npm run typecheck` passed.
 
 **Not done by AI:** Phase 5 (Data Seeding & Verification).
+
+
+## 2026-11-23 — Implement Data Seeding & Complete Phase 5 (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "ok do phase five all in one go"
+
+**What the AI did:**
+- `tweeter-server/scripts/seed-data.ts` (new): Created an automated database seed script using `DynamoDaoFactory`:
+  - Seeds primary user `@allen` (`Allen Anderson`) with hashed password `password123`.
+  - Seeds 25 additional users (`@user1` through `@user25`).
+  - Creates 15 followers and 15 followees for `@allen` via `socialDao.follow` (enabling $>10$ item pagination testing on followers/followees tabs).
+  - Creates 15 story statuses for `@allen` (enabling $>10$ item pagination testing on story tab).
+  - Creates 15 pre-computed feed items for `@allen` via `feedDao.batchWriteFeedItems` (enabling $>10$ item pagination testing on feed tab).
+  - Creates persistent test auth token `seed-test-token-allen`.
+- `tweeter-server/package.json`: Added `"seed": "npx ts-node scripts/seed-data.ts"` script.
+- `tweeter-server/tsconfig.json`: Added `"include": ["src/**/*"]` to keep scripts isolated from the core production build bundle.
+- `specs/2026-11-22-milestone-4a.md`: Marked all Phase 5 checklist items complete.
+
+**Verified:**
+- `npm run typecheck` in `tweeter-server/` passed with 0 errors.
+- `npm run compile` in `tweeter-server/` passed cleanly.
+- `npx jest` presenter and view unit tests in `tweeter-web/` passed with 12/12 passing.
+
+**Not done by AI:** None. Milestone 4 Part A is complete and ready for deployment (`sam build && sam deploy`).

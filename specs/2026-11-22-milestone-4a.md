@@ -323,10 +323,10 @@ export class S3ImageDao implements IImageDao {
   - [x] Refactor `SocialService` (follow, unfollow, follower/followee pagination, counts).
   - [x] Refactor `PostService` (postStatus with fanout, loadMoreStoryItems, loadMoreFeedItems).
   - [x] Inject `IDaoFactory` into all services.
-- [ ] **Phase 5: Data Seeding & Verification**
-  - Create a seed script to populate $>10$ items for scrolling/pagination validation.
-  - Verify `npm run typecheck` passes cleanly.
-  - Update `AttributionLog.md`.
+- [x] **Phase 5: Data Seeding & Verification**
+  - [x] Create a seed script to populate $>10$ items for scrolling/pagination validation (`scripts/seed-data.ts`).
+  - [x] Verify `npm run typecheck` passes cleanly across `tweeter-server`.
+  - [x] Update `AttributionLog.md`.
 
 ---
 
