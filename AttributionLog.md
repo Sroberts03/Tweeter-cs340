@@ -578,7 +578,19 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 
 **Verified:** `npm run typecheck` passed.
 
-**Not done by AI:** Remaining Phase 2 interfaces: `IImageDao`, `IFollowDao`, `IStoryDao`, `IFeedDao`, `IDaoFactory`.
+**Not done by AI:** Remaining Phase 2 interfaces: `IFollowDao`, `IStoryDao`, `IFeedDao`, `IDaoFactory`.
+
+## 2026-11-22 — Create IImageDao interface (Phase 2) (Antigravity, Claude Opus 4.6)
+
+**Prompt:** "Ok lets hit the IImageDao next"
+
+**What the AI did:**
+- `tweeter-server/src/features/auth/dal/interface/IImageDao.ts` (new): Created a database-agnostic DAO interface for image storage with a single `putImage(fileName, imageStringBase64Encoded, imageFileExtension): Promise<string>` method that returns the public URL of the uploaded image. Used by AuthService for profile image uploads during registration.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Remaining Phase 2 interfaces: `IFollowDao`, `IStoryDao`, `IFeedDao`, `IDaoFactory`.
+
 
 ## 2026-11-22 — Create IAuthUserDao interface (Phase 2) (Antigravity, Claude Opus 4.6)
 
@@ -589,7 +601,19 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 
 **Verified:** `npm run typecheck` passed.
 
-**Not done by AI:** Remaining Phase 2 interfaces: `IImageDao`, `IFollowDao`, `IStoryDao`, `IFeedDao`, `IDaoFactory`.
+**Not done by AI:** Remaining Phase 2 interfaces: `IFollowDao`, `IStoryDao`, `IFeedDao`, `IDaoFactory`.
+
+## 2026-11-22 — Create IImageDao interface (Phase 2) (Antigravity, Claude Opus 4.6)
+
+**Prompt:** "Ok lets hit the IImageDao next"
+
+**What the AI did:**
+- `tweeter-server/src/features/auth/dal/interface/IImageDao.ts` (new): Created a database-agnostic DAO interface for image storage with a single `putImage(fileName, imageStringBase64Encoded, imageFileExtension): Promise<string>` method that returns the public URL of the uploaded image. Used by AuthService for profile image uploads during registration.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Remaining Phase 2 interfaces: `IFollowDao`, `IStoryDao`, `IFeedDao`, `IDaoFactory`.
+
 
 
 
