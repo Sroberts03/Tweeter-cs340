@@ -790,3 +790,16 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 **Verified:** `npm run typecheck` passed.
 
 **Not done by AI:** Phase 3 (DynamoDB & S3 implementations).
+
+
+## 2026-11-22 — Create DynamoClient helper (Phase 3) (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "ok lets start on phase 3 starting with the DynamoClient"
+
+**What the AI did:**
+- `tweeter-server/src/dao/dynamo/DynamoClient.ts` (new): Created a singleton helper providing an AWS SDK v3 `DynamoDBDocumentClient` with automated marshaling/unmarshaling, `removeUndefinedValues: true`, and configurable AWS region via `AWS_REGION` (defaulting to `us-east-1`).
+- `specs/2026-11-22-milestone-4a.md`: Checked off DynamoDB client helper task in Phase 3.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Remaining Phase 3 DAO implementations (`DynamoUserDao`, `DynamoAuthTokenDao`, `DynamoAuthUserDao`, `S3ImageDao`, `DynamoSocialDao`, `DynamoStoryDao`, `DynamoFeedDao`, `DynamoDaoFactory`).
