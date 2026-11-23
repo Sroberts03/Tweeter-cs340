@@ -765,3 +765,15 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 
 
 
+
+
+## 2026-11-22 — Create IFeedDao interface (Phase 2) (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "ok i want you to do IFeedDao"
+
+**What the AI did:**
+- `tweeter-server/src/features/post/dal/interface/IFeedDao.ts` (new): Created a database-agnostic DAO interface for feed data access with two methods: `getPageOfFeedItems` (paginated, newest-first, returning `[Status[], boolean]`, cursor is `lastTimestamp`) and `batchWriteFeedItems` (bulk writes status items to multiple receiver feeds, supporting up to 25 items per batch). Uses the `Status` domain model from `tweeter-shared`.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Remaining Phase 2 interface: `IDaoFactory`.
