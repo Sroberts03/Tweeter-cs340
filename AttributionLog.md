@@ -578,7 +578,19 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 
 **Verified:** `npm run typecheck` passed.
 
-**Not done by AI:** Remaining Phase 2 interfaces: `IFollowDao`, `IStoryDao`, `IFeedDao`, `IDaoFactory`.
+**Not done by AI:** Remaining Phase 2 interfaces: `IStoryDao`, `IFeedDao`, `IDaoFactory`.
+
+## 2026-11-22 — Create IFollowDao interface (Phase 2) (Antigravity, Claude Opus 4.6)
+
+**Prompt:** "Ok lets move to the next one"
+
+**What the AI did:**
+- `tweeter-server/src/features/social/dal/interface/IFollowDao.ts` (new): Created a database-agnostic DAO interface for follow relationship operations with seven methods: `getPageOfFollowers` and `getPageOfFollowees` (paginated, returning `[User[], boolean]`), `isFollower` (boolean check), `getFollowerCount` and `getFolloweeCount` (count reads), `follow` and `unfollow` (relationship mutations). Uses the `User` domain model from `tweeter-shared`.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Remaining Phase 2 interfaces: `IStoryDao`, `IFeedDao`, `IDaoFactory`.
+
 
 ## 2026-11-22 — Create IImageDao interface (Phase 2) (Antigravity, Claude Opus 4.6)
 
@@ -589,7 +601,19 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 
 **Verified:** `npm run typecheck` passed.
 
-**Not done by AI:** Remaining Phase 2 interfaces: `IFollowDao`, `IStoryDao`, `IFeedDao`, `IDaoFactory`.
+**Not done by AI:** Remaining Phase 2 interfaces: `IStoryDao`, `IFeedDao`, `IDaoFactory`.
+
+## 2026-11-22 — Create IFollowDao interface (Phase 2) (Antigravity, Claude Opus 4.6)
+
+**Prompt:** "Ok lets move to the next one"
+
+**What the AI did:**
+- `tweeter-server/src/features/social/dal/interface/IFollowDao.ts` (new): Created a database-agnostic DAO interface for follow relationship operations with seven methods: `getPageOfFollowers` and `getPageOfFollowees` (paginated, returning `[User[], boolean]`), `isFollower` (boolean check), `getFollowerCount` and `getFolloweeCount` (count reads), `follow` and `unfollow` (relationship mutations). Uses the `User` domain model from `tweeter-shared`.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Remaining Phase 2 interfaces: `IStoryDao`, `IFeedDao`, `IDaoFactory`.
+
 
 
 ## 2026-11-22 — Create IAuthUserDao interface (Phase 2) (Antigravity, Claude Opus 4.6)
@@ -601,7 +625,19 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 
 **Verified:** `npm run typecheck` passed.
 
-**Not done by AI:** Remaining Phase 2 interfaces: `IFollowDao`, `IStoryDao`, `IFeedDao`, `IDaoFactory`.
+**Not done by AI:** Remaining Phase 2 interfaces: `IStoryDao`, `IFeedDao`, `IDaoFactory`.
+
+## 2026-11-22 — Create IFollowDao interface (Phase 2) (Antigravity, Claude Opus 4.6)
+
+**Prompt:** "Ok lets move to the next one"
+
+**What the AI did:**
+- `tweeter-server/src/features/social/dal/interface/IFollowDao.ts` (new): Created a database-agnostic DAO interface for follow relationship operations with seven methods: `getPageOfFollowers` and `getPageOfFollowees` (paginated, returning `[User[], boolean]`), `isFollower` (boolean check), `getFollowerCount` and `getFolloweeCount` (count reads), `follow` and `unfollow` (relationship mutations). Uses the `User` domain model from `tweeter-shared`.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Remaining Phase 2 interfaces: `IStoryDao`, `IFeedDao`, `IDaoFactory`.
+
 
 ## 2026-11-22 — Create IImageDao interface (Phase 2) (Antigravity, Claude Opus 4.6)
 
@@ -612,7 +648,19 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 
 **Verified:** `npm run typecheck` passed.
 
-**Not done by AI:** Remaining Phase 2 interfaces: `IFollowDao`, `IStoryDao`, `IFeedDao`, `IDaoFactory`.
+**Not done by AI:** Remaining Phase 2 interfaces: `IStoryDao`, `IFeedDao`, `IDaoFactory`.
+
+## 2026-11-22 — Create IFollowDao interface (Phase 2) (Antigravity, Claude Opus 4.6)
+
+**Prompt:** "Ok lets move to the next one"
+
+**What the AI did:**
+- `tweeter-server/src/features/social/dal/interface/IFollowDao.ts` (new): Created a database-agnostic DAO interface for follow relationship operations with seven methods: `getPageOfFollowers` and `getPageOfFollowees` (paginated, returning `[User[], boolean]`), `isFollower` (boolean check), `getFollowerCount` and `getFolloweeCount` (count reads), `follow` and `unfollow` (relationship mutations). Uses the `User` domain model from `tweeter-shared`.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Remaining Phase 2 interfaces: `IStoryDao`, `IFeedDao`, `IDaoFactory`.
+
 
 
 
