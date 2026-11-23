@@ -11,7 +11,7 @@ export class S3ImageDao implements IImageDao {
   private readonly client: S3Client;
 
   public constructor(
-    bucket: string = process.env.IMAGE_BUCKET || "srober29-cs340-sam",
+    bucket: string = process.env.IMAGE_BUCKET || "srober29-cs340-profiles",
     region: string = process.env.AWS_REGION || "us-east-1"
   ) {
     this.bucket = bucket;
