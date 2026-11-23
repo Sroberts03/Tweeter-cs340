@@ -803,3 +803,32 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 **Verified:** `npm run typecheck` passed.
 
 **Not done by AI:** Remaining Phase 3 DAO implementations (`DynamoUserDao`, `DynamoAuthTokenDao`, `DynamoAuthUserDao`, `S3ImageDao`, `DynamoSocialDao`, `DynamoStoryDao`, `DynamoFeedDao`, `DynamoDaoFactory`).
+
+
+## 2026-11-22 — Implement DynamoUserDao (Phase 3) (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "ok lets move to the next implementation"
+
+**What the AI did:**
+- `tweeter-server/src/features/user/dal/dao/DynamoUserDao.ts` (new): Implemented `IUserDao` using AWS SDK v3 DocumentClient (`GetCommand`). Retrieves user by partition key `alias` from the `user` table and maps it to a `User` domain model.
+- `specs/2026-11-22-milestone-4a.md`: Marked `DynamoUserDao` complete.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Remaining Phase 3 DAO implementations (`DynamoAuthTokenDao`, `DynamoAuthUserDao`, `S3ImageDao`, `DynamoSocialDao`, `DynamoStoryDao`, `DynamoFeedDao`, `DynamoDaoFactory`).
+
+
+## 2026-11-22 — Enhance DynamoUserDao type safety (Phase 3) (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "can we add more type of safety to the class"
+
+**What the AI did:**
+- `tweeter-server/src/features/user/dal/dao/DynamoUserDao.ts`:
+  - Added strongly-typed `UserTableRecord` interface representing the DynamoDB schema.
+  - Added input validation for `alias`.
+  - Added explicit runtime type guards checking all required fields (`alias`, `firstName`, `lastName`, `imageUrl`) before instantiating `User`.
+  - Defined `TABLE_NAME` and `PARTITION_KEY` as typed constants.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Remaining Phase 3 DAO implementations.
