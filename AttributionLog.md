@@ -1187,3 +1187,33 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 - `npm run typecheck` in `tweeter-server/` passed cleanly.
 
 **Not done by AI:** None.
+
+---
+
+**Date:** 2026-11-23
+**Agent/Tool:** Antigravity (Claude Opus 4.6)
+**Prompt:** Remove `= new DynamoDaoFactory()` default parameter from all service constructors so services have zero knowledge of the concrete factory; pass the factory explicitly from each handler instead.
+
+**Changes:**
+- `tweeter-server/src/features/auth/AuthService.ts` — removed `DynamoDaoFactory` import and default parameter
+- `tweeter-server/src/features/post/PostService.ts` — removed `DynamoDaoFactory` import and default parameter
+- `tweeter-server/src/features/social/SocialService.ts` — removed `DynamoDaoFactory` import and default parameter
+- `tweeter-server/src/features/user/UserService.ts` — removed `DynamoDaoFactory` import and default parameter
+- `tweeter-server/src/features/auth/handlers/Login.ts` — added `DynamoDaoFactory` import, pass to `AuthService`
+- `tweeter-server/src/features/auth/handlers/Register.ts` — added `DynamoDaoFactory` import, pass to `AuthService`
+- `tweeter-server/src/features/auth/handlers/Logout.ts` — added `DynamoDaoFactory` import, pass to `AuthService`
+- `tweeter-server/src/features/post/handlers/PostStatus.ts` — added `DynamoDaoFactory` import, pass to `PostService`
+- `tweeter-server/src/features/post/handlers/GetFeed.ts` — added `DynamoDaoFactory` import, pass to `PostService`
+- `tweeter-server/src/features/post/handlers/GetStory.ts` — added `DynamoDaoFactory` import, pass to `PostService`
+- `tweeter-server/src/features/social/handlers/Follow.ts` — added `DynamoDaoFactory` import, pass to `SocialService`
+- `tweeter-server/src/features/social/handlers/Unfollow.ts` — added `DynamoDaoFactory` import, pass to `SocialService`
+- `tweeter-server/src/features/social/handlers/GetIsFollower.ts` — added `DynamoDaoFactory` import, pass to `SocialService`
+- `tweeter-server/src/features/social/handlers/GetFollowers.ts` — added `DynamoDaoFactory` import, pass to `SocialService`
+- `tweeter-server/src/features/social/handlers/GetFollowees.ts` — added `DynamoDaoFactory` import, pass to `SocialService`
+- `tweeter-server/src/features/social/handlers/GetFollowerCount.ts` — added `DynamoDaoFactory` import, pass to `SocialService`
+- `tweeter-server/src/features/social/handlers/GetFolloweeCount.ts` — added `DynamoDaoFactory` import, pass to `SocialService`
+- `tweeter-server/src/features/user/handlers/GetUser.ts` — added `DynamoDaoFactory` import, pass to `UserService`
+
+**Typecheck:** ✅ Passed
+
+**Not done by AI:** None.

@@ -1,9 +1,10 @@
 import { AuthToken, CountResponse, User, UserRequest } from "tweeter-shared";
+import { DynamoDaoFactory } from "../../../dal/dao/DynamoDaoFactory";
 import { SocialService } from "../SocialService";
 
 export const handler = async (req: UserRequest): Promise<CountResponse> => {
   const { authToken, user } = req;
-  const socialService = new SocialService();
+  const socialService = new SocialService(new DynamoDaoFactory());
 
   const count = await socialService.getFolloweeCount(
     AuthToken.fromDto(authToken)!,

@@ -1,5 +1,4 @@
 import { AuthToken, Status } from "tweeter-shared";
-import { DynamoDaoFactory } from "../../dal/dao/DynamoDaoFactory";
 import { IDaoFactory } from "../../dal/interface/IDaoFactory";
 import { Service } from "../../Service";
 import { AuthorizationService } from "../auth/AuthorizationService";
@@ -15,7 +14,7 @@ export class PostService implements Service {
   private readonly socialDao: ISocialDao;
   private readonly authService: AuthorizationService;
 
-  public constructor(daoFactory: IDaoFactory = new DynamoDaoFactory()) {
+  public constructor(daoFactory: IDaoFactory) {
     this.storyDao = daoFactory.getStoryDao();
     this.feedDao = daoFactory.getFeedDao();
     this.socialDao = daoFactory.getSocialDao();

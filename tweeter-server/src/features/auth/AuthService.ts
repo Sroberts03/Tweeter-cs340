@@ -1,6 +1,5 @@
 import bcrypt from "bcryptjs";
 import { AuthToken, User } from "tweeter-shared";
-import { DynamoDaoFactory } from "../../dal/dao/DynamoDaoFactory";
 import { IDaoFactory } from "../../dal/interface/IDaoFactory";
 import { Service } from "../../Service";
 import { IAuthTokenDao } from "./dal/interface/IAuthTokenDao";
@@ -12,7 +11,7 @@ export class AuthService implements Service {
   private readonly authTokenDao: IAuthTokenDao;
   private readonly imageDao: IImageDao;
 
-  public constructor(daoFactory: IDaoFactory = new DynamoDaoFactory()) {
+  public constructor(daoFactory: IDaoFactory) {
     this.authUserDao = daoFactory.getAuthUserDao();
     this.authTokenDao = daoFactory.getAuthTokenDao();
     this.imageDao = daoFactory.getImageDao();

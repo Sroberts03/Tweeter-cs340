@@ -1,4 +1,5 @@
 import { AuthToken, PostStatusRequest, Status, TweeterResponse } from "tweeter-shared";
+import { DynamoDaoFactory } from "../../../dal/dao/DynamoDaoFactory";
 import { PostService } from "../PostService";
 
 export async function handler(req: PostStatusRequest): Promise<TweeterResponse> {
@@ -10,7 +11,7 @@ export async function handler(req: PostStatusRequest): Promise<TweeterResponse> 
         throw new Error("[Bad Request] A status with non-empty text is required");
     }
 
-    const postService = new PostService();
+    const postService = new PostService(new DynamoDaoFactory());
     await postService.postStatus(AuthToken.fromDto(authToken)!, Status.fromDto(newStatus)!);
     return {
         success: true,
