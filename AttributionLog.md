@@ -850,3 +850,35 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 **Verified:** `npm run typecheck` passed.
 
 **Not done by AI:** Remaining Phase 3 DAO implementations (`DynamoAuthUserDao`, `S3ImageDao`, `DynamoSocialDao`, `DynamoStoryDao`, `DynamoFeedDao`, `DynamoDaoFactory`).
+
+
+## 2026-11-22 — Implement DynamoAuthUserDao (Phase 3) (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "ok great lets move to the next one"
+
+**What the AI did:**
+- `tweeter-server/src/features/auth/dal/dao/DynamoAuthUserDao.ts` (new): Implemented `IAuthUserDao` using AWS SDK v3 DocumentClient:
+  - `getUserWithPassword`: Retrieves user by `alias` from the `user` table, returning `{ user: User, passwordHash: string }` with strict type guards for login credential verification.
+  - `putUser`: Creates a new user record with `followerCount: 0`, `followeeCount: 0`, and a conditional check `attribute_not_exists(#pk)` to ensure duplicate user aliases are prevented with `[Bad Request] User with this alias already exists`.
+- `specs/2026-11-22-milestone-4a.md`: Marked `DynamoAuthUserDao` complete.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Remaining Phase 3 DAO implementations (`S3ImageDao`, `DynamoSocialDao`, `DynamoStoryDao`, `DynamoFeedDao`, `DynamoDaoFactory`).
+
+
+## 2026-11-22 — Eliminate duplicate DynamoDB user retrieval code (Phase 3) (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "fix this duplicate code issue"
+
+**What the AI did:**
+- `tweeter-server/src/features/user/dal/dao/DynamoUserDao.ts`:
+  - Extracted shared `DynamoUserDao.getRecord(alias): Promise<UserTableRecord | null>` helper that handles querying the `user` table and runtime field validation.
+  - Refactored `DynamoUserDao.getUser` to delegate to `getRecord`.
+- `tweeter-server/src/features/auth/dal/dao/DynamoAuthUserDao.ts`:
+  - Refactored `getUserWithPassword` to delegate directly to `DynamoUserDao.getRecord`, eliminating the duplicate `GetCommand` and duplicate validation logic highlighted by the IDE.
+  - Reused `DynamoUserDao.TABLE_NAME` and `DynamoUserDao.PARTITION_KEY`.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Remaining Phase 3 DAO implementations (`S3ImageDao`, `DynamoSocialDao`, `DynamoStoryDao`, `DynamoFeedDao`, `DynamoDaoFactory`).

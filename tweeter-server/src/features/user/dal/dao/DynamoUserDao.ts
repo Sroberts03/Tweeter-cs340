@@ -24,7 +24,11 @@ export class DynamoUserDao implements IUserDao {
   public static readonly TABLE_NAME = "user" as const;
   public static readonly PARTITION_KEY = "alias" as const;
 
-  public async getUser(alias: string): Promise<User | null> {
+  /**
+   * Helper to retrieve the raw UserTableRecord from the `user` table by alias.
+   * Can be reused by other DAOs (like DynamoAuthUserDao) that access the same underlying table.
+   */
+  public static async getRecord(alias: string): Promise<UserTableRecord | null> {
     if (!alias?.trim()) {
       return null;
     }
@@ -45,16 +49,28 @@ export class DynamoUserDao implements IUserDao {
       typeof item.alias !== "string" ||
       typeof item.firstName !== "string" ||
       typeof item.lastName !== "string" ||
-      typeof item.imageUrl !== "string"
+      typeof item.imageUrl !== "string" ||
+      typeof item.passwordHash !== "string" ||
+      typeof item.followerCount !== "number" ||
+      typeof item.followeeCount !== "number"
     ) {
       return null;
     }
 
+    return item as UserTableRecord;
+  }
+
+  public async getUser(alias: string): Promise<User | null> {
+    const record = await DynamoUserDao.getRecord(alias);
+    if (!record) {
+      return null;
+    }
+
     return new User(
-      item.firstName,
-      item.lastName,
-      item.alias,
-      item.imageUrl
+      record.firstName,
+      record.lastName,
+      record.alias,
+      record.imageUrl
     );
   }
 }

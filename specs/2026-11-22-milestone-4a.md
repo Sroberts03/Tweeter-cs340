@@ -306,7 +306,7 @@ export class S3ImageDao implements IImageDao {
   - [x] Create DynamoDB client helper with AWS SDK v3 DocumentClient (`src/dal/dao/dynamo/DynamoClient.ts`).
   - [x] Implement `src/features/user/dal/dao/DynamoUserDao.ts`
   - [x] Implement `src/features/auth/dal/dao/DynamoAuthTokenDao.ts`
-  - Implement `src/features/auth/dal/dao/DynamoAuthUserDao.ts`
+  - [x] Implement `src/features/auth/dal/dao/DynamoAuthUserDao.ts`
   - Implement `src/features/auth/dal/dao/S3ImageDao.ts`
   - Implement `src/features/social/dal/dao/DynamoSocialDao.ts`
   - Implement `src/features/post/dal/dao/DynamoStoryDao.ts`
