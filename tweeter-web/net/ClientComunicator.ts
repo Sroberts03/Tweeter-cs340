@@ -54,15 +54,18 @@ export class ClientCommunicator {
         return response;
       } else {
         const error = await resp.json();
-        throw new Error(error.error);
+        const rawMessage: string = error?.errorMessage ?? error?.error ?? error?.message ?? "An error occurred";
+        // Strip API Gateway status mapping prefixes (e.g., "[Bad Request] ", "[Unauthorized] ", etc.)
+        const cleanMessage = rawMessage.replace(/^\[.*?\]\s*/, "").trim();
+        throw new Error(cleanMessage);
       }
     } catch (error) {
       console.error(error);
-      throw new Error(
-        `Client communicator ${params.method} failed:\n${
-          (error as Error).message
-        }`,
-      );
+      // Re-throw cleaned server error messages directly without wrapper noise
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error(`Client communicator ${params.method} failed:\n${error}`);
     }
   }
 

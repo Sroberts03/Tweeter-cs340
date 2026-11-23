@@ -1155,3 +1155,20 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 - `npx jest` presenter and view unit tests in `tweeter-web/` passed with 12/12 passing.
 
 **Not done by AI:** None. Milestone 4 Part A is complete and ready for deployment (`sam build && sam deploy`).
+
+
+## 2026-11-23 — Clean up user-facing error messages in ClientCommunicator (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "ok i want to work on these error messages that im getting. They're way to verbose something like this should just show invalid alias or password not the whole message from the backend"
+
+**What the AI did:**
+- `tweeter-web/net/ClientComunicator.ts`:
+  - Updated error response handling to extract error text from `error?.errorMessage`, `error?.error`, or `error?.message`.
+  - Added regex `replace(/^\[.*?\]\s*/, "")` to strip API Gateway prefix tags (e.g. `[Bad Request]`, `[Unauthorized]`, `[Internal Server Error]`).
+  - Removed the `Client communicator POST failed:\n` wrapper on standard server error responses so clean human-readable error messages are shown in dialogs.
+
+**Verified:**
+- `npx tsc --noEmit` in `tweeter-web/` passed with 0 errors.
+- `npm run typecheck` in `tweeter-server/` passed with 0 errors.
+
+**Not done by AI:** None.
