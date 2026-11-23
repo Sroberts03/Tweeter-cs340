@@ -899,3 +899,49 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 **Verified:** `npm run typecheck` passed.
 
 **Not done by AI:** Remaining Phase 3 DAO implementations (`DynamoSocialDao`, `DynamoStoryDao`, `DynamoFeedDao`, `DynamoDaoFactory`).
+
+
+## 2026-11-22 — Implement DynamoSocialDao (Phase 3) (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "ok thats great lets move to the next one"
+
+**What the AI did:**
+- `tweeter-server/src/features/social/dal/dao/DynamoSocialDao.ts` (new): Implemented `ISocialDao` using AWS SDK v3 DocumentClient:
+  - `getPageOfFollowers`: Queries `follow_index` GSI with pagination (`ExclusiveStartKey`) and batch-resolves `User` models using `DynamoUserDao.getRecord`.
+  - `getPageOfFollowees`: Queries base `follow` table with pagination (`ExclusiveStartKey`) and batch-resolves `User` models using `DynamoUserDao.getRecord`.
+  - `isFollower`: Performs `GetCommand` with composite key `(follower_alias, followee_alias)`.
+  - `getFollowerCount` and `getFolloweeCount`: Reads counts from the `user` table using `DynamoUserDao.getRecord`.
+  - `follow` & `unfollow`: Uses `TransactWriteCommand` to atomically modify the `follow` relationship and increment/decrement the respective `followeeCount` and `followerCount` counters on the `user` table, with condition checks preventing double-following or unfollowing non-followed users.
+- `specs/2026-11-22-milestone-4a.md`: Marked `DynamoSocialDao` complete.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Remaining Phase 3 DAO implementations (`DynamoStoryDao`, `DynamoFeedDao`, `DynamoDaoFactory`).
+
+
+## 2026-11-22 — Deduplicate DynamoSocialDao pagination and transaction logic (Phase 3) (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "fix the duplicate code"
+
+**What the AI did:**
+- `tweeter-server/src/features/social/dal/dao/DynamoSocialDao.ts`:
+  - Extracted `resolveUsers(aliases: string[])` helper to eliminate the duplicate user fetching and domain model transformation between `getPageOfFollowers` and `getPageOfFollowees`.
+  - Extracted `executeFollowTransaction` helper to eliminate the duplicate 50+ lines of `TransactWriteCommand` structure between `follow` and `unfollow`.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Remaining Phase 3 DAO implementations (`DynamoStoryDao`, `DynamoFeedDao`, `DynamoDaoFactory`).
+
+
+## 2026-11-22 — Consolidate queryFollowPage in DynamoSocialDao (Phase 3) (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "theres still duplicate code"
+
+**What the AI did:**
+- `tweeter-server/src/features/social/dal/dao/DynamoSocialDao.ts`:
+  - Consolidated the remaining duplicate `QueryCommand` setup, pagination cursor construction, and execution between `getPageOfFollowers` and `getPageOfFollowees` into a single private `queryFollowPage` method.
+  - Eliminated the Sonar/Fallow duplicate code warning in IDE.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Remaining Phase 3 DAO implementations (`DynamoStoryDao`, `DynamoFeedDao`, `DynamoDaoFactory`).
