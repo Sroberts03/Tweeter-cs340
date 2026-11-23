@@ -832,3 +832,21 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 **Verified:** `npm run typecheck` passed.
 
 **Not done by AI:** Remaining Phase 3 DAO implementations.
+
+
+## 2026-11-22 — Implement DynamoAuthTokenDao (Phase 3) (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "yes lets move on"
+
+**What the AI did:**
+- `tweeter-server/src/features/auth/dal/dao/DynamoAuthTokenDao.ts` (new): Implemented `IAuthTokenDao` using AWS SDK v3 DocumentClient:
+  - `putAuthToken` with `PutCommand` (`satisfies AuthTokenTableRecord`)
+  - `getAuthToken` with `GetCommand` and runtime type checks
+  - `deleteAuthToken` with `DeleteCommand`
+  - `updateTimestamp` with `UpdateCommand` using expression attribute names/values
+  - Added `AuthTokenTableRecord` interface and typed key/table constants.
+- `specs/2026-11-22-milestone-4a.md`: Marked `DynamoAuthTokenDao` complete.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Remaining Phase 3 DAO implementations (`DynamoAuthUserDao`, `S3ImageDao`, `DynamoSocialDao`, `DynamoStoryDao`, `DynamoFeedDao`, `DynamoDaoFactory`).
