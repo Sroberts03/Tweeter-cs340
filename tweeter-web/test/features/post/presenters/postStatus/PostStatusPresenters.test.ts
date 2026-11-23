@@ -54,7 +54,7 @@ describe('PostStatusPresenter', () => {
         when(mockStatusService.postStatus(anything(), anything())).thenThrow(error);
         await postStatusPresenter.submitPost(authToken, currentUser, post);
         verify(mockPostStatusView.deleteMessage("mock-toast-id")).once();
-        verify(mockPostStatusView.displayErrorMessage(`Failed to post the status because of exception: ${error}`)).once();
+        verify(mockPostStatusView.displayErrorMessage(`Failed to post the status because of exception: ${error.message}`)).once();
         verify(mockPostStatusView.setPost(anything())).never();
         verify(mockPostStatusView.displayInfoMessage("Status posted!", anything())).never();
     });

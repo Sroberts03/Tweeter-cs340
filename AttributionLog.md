@@ -1172,3 +1172,18 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 - `npm run typecheck` in `tweeter-server/` passed with 0 errors.
 
 **Not done by AI:** None.
+
+
+## 2026-11-23 — Strip 'Error:' prefix in base Presenter (Antigravity, Gemini 3.8 Flash)
+
+**Prompt:** "i just dont want the extra "error:""
+
+**What the AI did:**
+- `tweeter-web/src/presenter/Presenter.ts`: Changed `(error as Error).toString()` to `(error as Error).message` in `doFailureReportingOperation`, removing the duplicate `Error:` class name from user-facing error dialogs.
+- `tweeter-web/test/features/post/presenters/postStatus/PostStatusPresenters.test.ts` & `tweeter-web/test/presenter/AppNavbarPresenter.test.ts`: Updated unit test assertions to match `error.message`.
+
+**Verified:**
+- `npx jest` in `tweeter-web/` passed with 16/16 unit and component tests passing.
+- `npm run typecheck` in `tweeter-server/` passed cleanly.
+
+**Not done by AI:** None.

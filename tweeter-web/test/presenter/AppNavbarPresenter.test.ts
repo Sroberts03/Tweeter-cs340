@@ -45,7 +45,7 @@ describe('AppNavbarPresenter', () => {
         const error = new Error("Logout failed");    
         when(mockAuthService.logout(anything())).thenThrow(error);
         await appNavbarPresenter.logOut(authToken);
-        verify(mockAppNavbarPresenterView.displayErrorMessage(`Failed to log user out because of exception: ${error}`)).once();
+        verify(mockAppNavbarPresenterView.displayErrorMessage(`Failed to log user out because of exception: ${error.message}`)).once();
         verify(mockAppNavbarPresenterView.deleteMessage(anything())).never();
         verify(mockAppNavbarPresenterView.clearUserInfo()).never();
         verify(mockAppNavbarPresenterView.navigate("/login")).never();
