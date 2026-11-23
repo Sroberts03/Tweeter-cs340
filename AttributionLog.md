@@ -569,6 +569,29 @@ Created plain data interfaces in `tweeter-shared` so the client and the 14 Lambd
 
 **Not done by AI:** Remaining Phase 2 interfaces: `IAuthTokenDao`, `IImageDao`, `IFollowDao`, `IStoryDao`, `IFeedDao`, `IDaoFactory`.
 
+## 2026-11-22 — Create IAuthTokenDao interface (Phase 2) (Antigravity, Claude Opus 4.6)
+
+**Prompt:** "Ok lets do the next interface"
+
+**What the AI did:**
+- `tweeter-server/src/features/auth/dal/interface/IAuthTokenDao.ts` (new): Created a database-agnostic DAO interface for auth token operations with four methods: `putAuthToken` (login/register), `getAuthToken` (token validation), `deleteAuthToken` (logout), and `updateTimestamp` (refresh on use). Uses the `AuthToken` domain model from `tweeter-shared`.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Remaining Phase 2 interfaces: `IImageDao`, `IFollowDao`, `IStoryDao`, `IFeedDao`, `IDaoFactory`.
+
+## 2026-11-22 — Create IAuthUserDao interface (Phase 2) (Antigravity, Claude Opus 4.6)
+
+**Prompt:** "Tackle it now. Lets add those to the auth feature DAL"
+
+**What the AI did:**
+- `tweeter-server/src/features/auth/dal/interface/IAuthUserDao.ts` (new): Created a database-agnostic DAO interface for auth-related user operations with two methods: `getUserWithPassword` (returns `User` + `passwordHash` for login credential verification) and `putUser` (creates a new user for registration). Uses the `User` domain model from `tweeter-shared`.
+
+**Verified:** `npm run typecheck` passed.
+
+**Not done by AI:** Remaining Phase 2 interfaces: `IImageDao`, `IFollowDao`, `IStoryDao`, `IFeedDao`, `IDaoFactory`.
+
+
 
 
 
