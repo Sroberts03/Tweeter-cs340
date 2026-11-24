@@ -1,11 +1,8 @@
 import { v4 as uuid } from "uuid";
 
 export enum ToastType {
-  Success = "Success",
   Error = "Error",
   Info = "Info",
-  Warning = "Warning",
-  Other = "",
 }
 export interface Toast {
   id: string;
